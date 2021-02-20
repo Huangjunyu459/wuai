@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+index
+<hr>
+<shiro:guest>
+    欢迎游客访问，<a href="login.html">登录</a>
+</shiro:guest>
+<shiro:user>
+    用户[
+    <shiro:principal/>
+    ],欢迎您
+    <a href="/test/logout">退出</a>
+</shiro:user>
+</body>
+</html>
