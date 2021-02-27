@@ -75,7 +75,7 @@ public class CodeGenerator {
         //  列的驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         //  设置表名的映射
-        strategy.setInclude("urs","rps","permissions","roles");
+        strategy.setInclude("category","article");
         //  自动生成Lombok
         strategy.setEntityLombokModel(true);
         //  逻辑删除

@@ -145,4 +145,22 @@ class HjyApplicationTests {
     }
 
 
+    @Test
+    public void testFindByEmail() {
+        System.out.println(userController.findUserByEmail("541605007@qq.com"));
+        System.out.println(userController.findUserByEmail("qz@qq.com"));
+    }
+
+    @Test
+    public void testFindByMap() {
+        NameAndEmail entity = new NameAndEmail(null, "qz@qq.com");
+        String page = userController.findByMap(entity);
+        List<User> userList = userService.findByMap(entity);
+        Iterator<User> iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+
 }

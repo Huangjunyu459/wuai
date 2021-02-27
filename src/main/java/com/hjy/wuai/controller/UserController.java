@@ -1,6 +1,7 @@
 package com.hjy.wuai.controller;
 
 
+import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.service.UserService;
 import com.hjy.wuai.service.impl.UserServiceImpl;
@@ -158,6 +159,18 @@ public class UserController {
     @GetMapping("findUserByIdOrUsername")
     public String findUserByIdOrUsername(Object idOrUsername) {
         List<User> userList = userService.findUserByIdOrUsername(idOrUsername);
+        return "admin";
+    }
+
+    @GetMapping("findUserByEmail")
+    public String findUserByEmail(String email) {
+        List<User> userList = userService.findUserByEmail(email);
+        return "admin";
+    }
+
+    @GetMapping("findByMap")
+    public String findByMap(NameAndEmail entity) {
+        List<User> usserlist = userService.findByMap(entity);
         return "admin";
     }
 

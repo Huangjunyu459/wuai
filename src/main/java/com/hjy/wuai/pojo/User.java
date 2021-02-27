@@ -115,5 +115,10 @@ public class User implements Serializable {
      */
     private Integer state;
 
+    /**
+     * 签到状态，默认为0，已签到为1，每过晚上12点刷新为 0
+     */
+    private Integer qiandao;
+
 
 }

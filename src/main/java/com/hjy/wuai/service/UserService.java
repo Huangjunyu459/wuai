@@ -1,5 +1,6 @@
 package com.hjy.wuai.service;
 
+import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -65,5 +66,23 @@ public interface UserService extends IService<User> {
      * @return
      */
     public List<User> findUserByIdOrUsername(Object idOrUsername);
+
+
+    /**
+     * 根据邮箱查询用户
+     *
+     * @param email
+     * @return
+     */
+    public List<User> findUserByEmail(String email);
+
+
+    /**
+     * 根据 组合条件 查询
+     *
+     * @param entity
+     * @return
+     */
+    public List<User> findByMap(NameAndEmail entity);
 
 }

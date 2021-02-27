@@ -3,6 +3,7 @@ package com.hjy.wuai.service.impl;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hjy.wuai.config.MyToken;
+import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.mapper.UserMapper;
 import com.hjy.wuai.service.UserService;
@@ -15,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * <p>
@@ -181,8 +180,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public boolean signIn(Long id) {
         User user = userMapper.selectById(id);
         user.setScore(user.getScore() + 5);
+        user.setQiandao(1);
         return userMapper.updateById(user) == 1 ? true : false;
     }
+
+
+    /**
+     * 根据邮箱查询用户
+     *
+     * @param email
+     * @return
+     */
+    @Override
+    public List<User> findUserByEmail(String email) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("email", email);
+        return userMapper.selectList(wrapper);
+    }
+
 
     /**
      * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
@@ -202,8 +217,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
+    /**
+     * 根据 组合条件 查询
+     *
+     * @param entity
+     * @return
+     */
     @Override
-    public List<User> list(Wrapper<User> queryWrapper) {
-        return null;
+    public List<User> findByMap(NameAndEmail entity) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", entity.getUsername());
+        map.put("email", entity.getEmail());
+        if (entity.getEmail() == null && entity.getUsername() == null) {
+            return findAllUser();
+        } else if (entity.getUsername() == null && entity.getEmail() != null) {
+            return findUserByEmail(entity.getEmail());
+        } else if (entity.getUsername() != null && entity.getEmail() == null) {
+            return findUserByUsername(entity.getUsername());
+        } else {
+            return userMapper.selectByMap(map);
+        }
     }
+
+
 }
