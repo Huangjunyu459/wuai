@@ -24,6 +24,7 @@ import java.util.Random;
 @Controller
 @RequestMapping("test")
 @Slf4j
+@Deprecated
 public class TestController {
 
     @Autowired

@@ -44,6 +44,11 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * 获取 AdminRealm，弃用
+     * @param matcher
+     * @return
+     */
     @Bean
     public AdminRealm getAdminRealm(HashedCredentialsMatcher matcher) {
         AdminRealm adminRealm = new AdminRealm();
@@ -52,6 +57,11 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * 获取 UserRealm
+     * @param matcher
+     * @return
+     */
     @Bean
     public UserRealm getUserRealm(HashedCredentialsMatcher matcher) {
         UserRealm userRealm = new UserRealm();
@@ -94,31 +104,6 @@ public class ShiroConfig {
 
         return defaultWebSessionManager;
     }
-
-
-    /**
-     * 缓存管理器
-     *
-     * @return
-     */
-/*    @Bean
-    public EhCacheManager getEhCacheManager() {
-
-        CacheManager cacheManager = CacheManager.getCacheManager("");
-        if (cacheManager == null) {
-            try {
-                cacheManager = CacheManager.create(ResourceUtils.getInputStreamForPath("classpath:ehcache.xml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        EhCacheManager ehCacheManager = new EhCacheManager();
-        //  设置缓存管理机制
-        ehCacheManager.setCacheManager(cacheManager);
-        return ehCacheManager;
-
-    }*/
-
 
     /**
      * 开启 shiro 权限注解
@@ -193,16 +178,15 @@ public class ShiroConfig {
      * return jdbcRealm;
      * <p>
      * }
+
+    @Bean
+    public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
+        MyRealm myRealm = new MyRealm();
+        //  把加密规则给 MyRealm
+        myRealm.setCredentialsMatcher(matcher);
+        return myRealm;
+    }
      */
-
-
-//    @Bean
-//    public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
-//        MyRealm myRealm = new MyRealm();
-//        //  把加密规则给 MyRealm
-//        myRealm.setCredentialsMatcher(matcher);
-//        return myRealm;
-//    }
 
 
     /**
@@ -212,20 +196,19 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm,AdminRealm adminRealm, DefaultWebSessionManager sessionManager) {
+    public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm, DefaultWebSessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
         //  配置认证器
-        securityManager.setAuthenticator(getMyModularRealmAuthenticator());
+        //securityManager.setAuthenticator(getMyModularRealmAuthenticator());
 
         //  securityManager 要完成校验，就需要 realm
-        //securityManager.setRealm(myRealm);
+        securityManager.setRealm(userRealm);
 
         //  设置多 realm
-        List<Realm> realms = new ArrayList<>();
-        realms.add(userRealm);
-        realms.add(adminRealm);
-        securityManager.setRealms(realms);
+//        List<Realm> realms = new ArrayList<>();
+//        realms.add(userRealm);
+//        securityManager.setRealms(realms);
 
         //  设置缓存管理器
         //securityManager.setCacheManager(ehCacheManager);

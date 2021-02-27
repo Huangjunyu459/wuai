@@ -58,9 +58,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("login")
-    public String login(String username, String password, String loginType, String email) {
+    public String login(String username, String password, String email) {
         try {
-            userService.checkLogin(username, password, loginType, email);
+            userService.checkLogin(username, password, email);
             return "index";
         } catch (Exception e) {
             return "fail";

@@ -23,15 +23,15 @@ public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
 
-    @RequestMapping("login")
-    public String login(String username, String password, String loginType) {
-        try {
-            adminService.checkLogin(username, password, loginType);
-            return "index";
-        } catch (Exception e) {
-            return "fail";
-        }
-    }
+//    @RequestMapping("login")
+//    public String login(String username, String password, String loginType) {
+//        try {
+//            adminService.checkLogin(username, password, loginType);
+//            return "index";
+//        } catch (Exception e) {
+//            return "fail";
+//        }
+//    }
 
 
 

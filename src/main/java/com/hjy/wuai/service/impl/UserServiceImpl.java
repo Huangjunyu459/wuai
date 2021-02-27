@@ -38,16 +38,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      *
      * @param username
      * @param password
-     * @param loginType
      */
-    public void checkLogin(String username, String password, String loginType, String email) {
+    public void checkLogin(String username, String password,  String email) {
 
         Subject subject = SecurityUtils.getSubject();
         /**
          * 弃用，不能满足需求
          * UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
          */
-        MyToken token = new MyToken(username, password, loginType, email);
+        MyToken token = new MyToken(username, password, email);
 
         //token.setRememberMe(rememberMe);
         subject.login(token);

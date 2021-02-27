@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @date： 2021/2/20 0020,上午 11:22
  * @email: 541605007@qq.com
  */
+@Deprecated
 @Slf4j
 public class AdminRealm extends AuthorizingRealm {
 

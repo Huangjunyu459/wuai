@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
  * @email: 541605007@qq.com
  */
 @Service
+@Deprecated
 public class TestServiceImpl {
 
     public void checkLogin(String username, String password, String loginType,String email) throws Exception {
@@ -21,7 +22,7 @@ public class TestServiceImpl {
          * 弃用，不能满足需求
          * UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
          */
-        MyToken token = new MyToken(username, password,loginType,email);
+        MyToken token = new MyToken(username, password,email);
         
         //token.setRememberMe(rememberMe);
         subject.login(token);

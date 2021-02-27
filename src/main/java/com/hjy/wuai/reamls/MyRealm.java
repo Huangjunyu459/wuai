@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * <p>
  * 自定义 MyRealm 类，继承 AuthorizingRealm（实现了 Realm 接口）
  */
+@Deprecated
 public class MyRealm extends AuthorizingRealm {
 
     @Autowired

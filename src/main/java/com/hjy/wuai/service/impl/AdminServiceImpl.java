@@ -21,17 +21,17 @@ import org.springframework.stereotype.Service;
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
 
-    public void checkLogin(String username, String password, String loginType) {
-
-        Subject subject = SecurityUtils.getSubject();
-        /**
-         * 弃用，不能满足需求
-         * UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
-         */
-        MyToken token = new MyToken(username, password, loginType,null);
-
-        subject.login(token);
-
-    }
+//    public void checkLogin(String username, String password, String loginType) {
+//
+//        Subject subject = SecurityUtils.getSubject();
+//        /**
+//         * 弃用，不能满足需求
+//         * UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
+//         */
+//        MyToken token = new MyToken(username, password, loginType,null);
+//
+//        subject.login(token);
+//
+//    }
 
 }

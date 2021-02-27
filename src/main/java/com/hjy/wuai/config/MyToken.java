@@ -17,8 +17,6 @@ public class MyToken extends UsernamePasswordToken {
     /**
      * 自定义的 loginType 属性
      */
-    private String loginType;
-
     private String email;
 
 
@@ -27,11 +25,9 @@ public class MyToken extends UsernamePasswordToken {
      *
      * @param username
      * @param password
-     * @param loginType
      */
-    public MyToken(String username, String password, String loginType, String email) {
+    public MyToken(String username, String password,  String email) {
         super(username, password);
-        this.loginType = loginType;
         this.email = email;
     }
 

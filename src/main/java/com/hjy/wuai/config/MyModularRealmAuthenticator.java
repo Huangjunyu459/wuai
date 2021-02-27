@@ -19,6 +19,7 @@ import java.util.List;
  * 自定义认证器
  */
 @Slf4j
+@Deprecated
 public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
 
     /**
@@ -36,13 +37,13 @@ public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
         Collection<Realm> realms = this.getRealms();
 
         MyToken token = (MyToken) authenticationToken;
-        String loginType = token.getLoginType();
+        //String loginType = token.getLoginType();
 
         List<Realm> typeRealms = new ArrayList<>();
         for (Realm realm : realms) {
-            if (realm.getName().startsWith(loginType)) {
-                typeRealms.add(realm);
-            }
+//            if (realm.getName().startsWith(loginType)) {
+//                typeRealms.add(realm);
+//            }
         }
 
         if (typeRealms.size() == 1) {

@@ -8,13 +8,8 @@
 login
 <hr>
 <form action="/admin/login" method="post">
-    <p>用户名：<input type="text" name="username"></p>
+    <p>用户名：<input type="text" name="adminName"></p>
     <p>密码：<input type="text" name="password"></p>
-    <p>记住我：<input type="radio" name="rememberMe"></p>
-    <p>
-        用户登录：<input type="radio" name="loginType" value="User">
-        管理员登录：<input type="radio" name="loginType" value="Admin" checked hidden>
-    </p>
     <p><input type="submit" value="登录"></p>
 </form>
 
@@ -23,22 +18,10 @@ login
     <p>邮箱：<input type="text" name="email"></p>
     <p>密码：<input type="text" name="password"></p>
     <p>记住我：<input type="radio" name="rememberMe"></p>
-    <p>
-        用户登录：<input type="radio" name="loginType" value="User" checked hidden>
-    </p>
     <p><input type="submit" value="登录"></p>
 </form>
 
 <hr>
-<form action="/admin/login" method="post">
-    <p>邮箱：<input type="text" name="username"></p>
-    <p>密码：<input type="text" name="password"></p>
-    <p>
-        用户登录：<input type="radio" name="loginType" value="User" checked>
-        管理员登录：<input type="radio" name="loginType" value="Admin">
-    </p>
-    <p><input type="submit" value="登录"></p>
-</form>
 
 <form action="/user/findUserById" method="get">
     用户id：<input type="text" name="id">
