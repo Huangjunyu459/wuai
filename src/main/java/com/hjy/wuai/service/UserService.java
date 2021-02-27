@@ -85,4 +85,11 @@ public interface UserService extends IService<User> {
      */
     public List<User> findByMap(NameAndEmail entity);
 
+
+    /**
+     * 查询已删除的用户
+     *
+     * @return
+     */
+    public List<User> findIsDelete();
 }

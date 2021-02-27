@@ -14,30 +14,44 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author hjy
- * @since 2021-02-20
+ * @since 2021-02-27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Admin implements Serializable {
+public class Article implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 全局唯一标识id
+     * 唯一标识id
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 管理员名称
+     * 文章标题
      */
-    private String adminName;
+    private String title;
 
     /**
-     * 管理员密码
+     * 编写文章的用户id
      */
-    private String password;
+    private Long authorId;
 
+    /**
+     * 文章分类
+     */
+    private Integer categoryId;
+
+    /**
+     * 文章内容
+     */
+    private String content;
+
+    /**
+     * 文章封面
+     */
+    private String articleCover;
 
     /**
      * 创建时间
@@ -56,6 +70,11 @@ public class Admin implements Serializable {
      */
     @Version
     private Integer version;
+
+    /**
+     * 点赞人数
+     */
+    private Integer love;
 
     /**
      * 逻辑删除

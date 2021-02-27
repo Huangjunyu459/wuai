@@ -1,14 +1,9 @@
 package com.hjy.wuai.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
 
@@ -97,6 +92,7 @@ public class User implements Serializable {
     /**
      * 逻辑删除
      */
+    @TableLogic
     private Integer isDelete;
 
     /**

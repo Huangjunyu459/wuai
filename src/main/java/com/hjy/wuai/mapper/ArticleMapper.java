@@ -1,7 +1,7 @@
 package com.hjy.wuai.mapper;
 
-import com.hjy.wuai.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hjy.wuai.pojo.Article;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -13,17 +13,17 @@ import java.util.List;
  * </p>
  *
  * @author hjy
- * @since 2021-02-18
+ * @since 2021-02-20
  */
 @Repository
-public interface UserMapper extends BaseMapper<User> {
+public interface ArticleMapper extends BaseMapper<Article> {
 
     /**
-     * 查询已删除的用户
+     * 查询已删除的作品
      *
      * @return
      */
-    @Select("select * from user where is_delete = 1")
-    public List<User> findIsDelete();
+    @Select("select * from article where is_delete = 1")
+    public List<Article> findIsDelete();
 
 }

@@ -37,7 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     /**
-     * 1、用户登录功能
+     * 用户登录功能
      *
      * @param username 用户名
      * @param password 密码
@@ -67,7 +67,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 2、用户注册功能
+     * 用户注册功能
      *
      * @param entity 用户实体
      * @return
@@ -84,7 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 3、根据 id 获取用户
+     * 根据 id 获取用户
      *
      * @param id
      * @return
@@ -95,7 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 4、用户更新信息（有待完善，具体要更新哪些信息）
+     * 用户更新信息（有待完善，具体要更新哪些信息）
      *
      * @param entity 用户实体
      * @return
@@ -115,7 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 5、根据 id 删除用户
+     * 根据 id 删除用户
      *
      * @param id 用户 id
      * @return
@@ -127,7 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     /**
-     * 6、查询所有用户
+     * 查询所有用户
      *
      * @return
      */
@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 7、根据用户名 模糊查询
+     * 根据用户名 模糊查询
      *
      * @param username
      * @return
@@ -151,7 +151,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     /**
-     * 8、会员充值功能
+     * 会员充值功能
      * 难点：比如充值一个月会员，把 state 设为 1，如何在一个月之后自动把 state 设为 0？
      *
      * @param id
@@ -171,7 +171,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     /**
-     * 9、用户签到功能，每次签到增加 5 积分（如何每次过12点就刷新签到功能）
+     * 用户签到功能，每次签到增加 5 积分（如何每次过12点就刷新签到功能）
      *
      * @param id
      * @return
@@ -238,6 +238,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             return userMapper.selectByMap(map);
         }
+    }
+
+    /**
+     * 查询已删除的用户
+     *
+     * @return
+     */
+    @Override
+    public List<User> findIsDelete() {
+        return userMapper.findIsDelete();
     }
 
 

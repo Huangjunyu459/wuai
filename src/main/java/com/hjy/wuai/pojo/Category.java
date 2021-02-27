@@ -14,30 +14,24 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author hjy
- * @since 2021-02-20
+ * @since 2021-02-27
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Admin implements Serializable {
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 全局唯一标识id
+     * 唯一标识id
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 管理员名称
+     * 分类标题
      */
-    private String adminName;
-
-    /**
-     * 管理员密码
-     */
-    private String password;
-
+    private String categoryName;
 
     /**
      * 创建时间

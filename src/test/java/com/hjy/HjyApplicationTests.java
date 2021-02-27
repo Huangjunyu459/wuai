@@ -162,5 +162,15 @@ class HjyApplicationTests {
         }
     }
 
+    @Test
+    void testFindIsDelete() {
+        System.out.println(userController.findIsDelete());
+        List<User> isDelete = userService.findIsDelete();
+        Iterator<User> iterator = isDelete.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
 
 }

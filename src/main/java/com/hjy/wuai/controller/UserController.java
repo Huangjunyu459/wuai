@@ -174,6 +174,12 @@ public class UserController {
         return "admin";
     }
 
+    @GetMapping("findIsDelete")
+    public String findIsDelete() {
+        List<User> isDelete = userService.findIsDelete();
+        return "success";
+    }
+
 
 }
 
