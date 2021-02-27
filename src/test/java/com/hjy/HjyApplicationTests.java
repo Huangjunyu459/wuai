@@ -28,7 +28,6 @@ class HjyApplicationTests {
     private RolesMapper rolesMapper;
 
 
-
     @Test
     void contextLoads() {
 
@@ -82,10 +81,9 @@ class HjyApplicationTests {
 
     @Test
     public void testUpdateUser() {
-        User user = new User();
-        user.setId(1365470493997563906L);
-        user.setUsername("zzw");
-        user.setPassword("zzw");
+        User user = userMapper.selectById(1365502991892807681L);
+        user.setUsername("xg");
+        user.setPassword("xg");
         System.out.println(userController.updateUser(user));
     }
 
@@ -102,8 +100,48 @@ class HjyApplicationTests {
     }
 
     @Test
-    void testRecharge(){
+    void testRecharge() {
         System.out.println(userController.recharge(1365472501483728897L));
+    }
+
+
+    @Test
+    public void testFindAllUser() {
+        System.out.println(userController.findAllUser());
+        List<User> userList = userService.findAllUser();
+        Iterator<User> iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    @Test
+    public void testFindUserByUsername() {
+        System.out.println(userController.findUserByUsername("sam"));
+        List<User> userList = userService.findUserByUsername("sam");
+        Iterator<User> iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    @Test
+    public void testSignIn() {
+        userService.signIn(1365502991892807681L);
+    }
+
+
+    @Test
+    public void testFindUserByIdOrUsername() {
+        //List<User> userList = userService.findUserByIdOrUsername(1365502991892807681L);
+        List<User> userList = userService.findUserByIdOrUsername("sam");
+        Iterator<User> iterator = userList.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        String page = userController.findUserByIdOrUsername("sam");
+        System.out.println(page);
     }
 
 

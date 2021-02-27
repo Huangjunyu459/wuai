@@ -81,7 +81,6 @@ public class AdminRealm extends AuthorizingRealm {
          */
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(adminName,
                 admin.getPassword(),
-                ByteSource.Util.bytes(admin.getPasswordSalt()),
                 getName());
         return info;
     }

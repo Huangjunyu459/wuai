@@ -42,10 +42,6 @@ public class Admin implements Serializable {
      */
     private String password;
 
-    /**
-     * 密码盐值
-     */
-    private String passwordSalt;
 
     /**
      * 创建时间

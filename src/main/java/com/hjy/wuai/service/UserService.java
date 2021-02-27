@@ -26,19 +26,44 @@ public interface UserService extends IService<User> {
 
 
     /**
-     * 根据用户名 模糊查询
+     * 查询所有用户
      *
-     * @param username
      * @return
      */
-    List<User> list(String username);
+    public List<User> findAllUser();
+
+
+    /**
+     * 根据用户名 模糊查询
+     *
+     * @param username 用户名
+     * @return
+     */
+    List<User> findUserByUsername(String username);
 
     /**
      * 会员充值功能
      *
-     * @param id
+     * @param id 用户 id
      * @return
      */
     boolean recharge(Long id);
+
+
+    /**
+     * 用户签到功能
+     *
+     * @param id 用户 id
+     * @return
+     */
+    public boolean signIn(Long id);
+
+    /**
+     * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
+     *
+     * @param idOrUsername 传入的参数
+     * @return
+     */
+    public List<User> findUserByIdOrUsername(Object idOrUsername);
 
 }

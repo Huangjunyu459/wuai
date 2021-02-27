@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -84,6 +85,31 @@ public class UserController {
 
 
     /**
+     * 查询所有用户
+     *
+     * @return
+     */
+    @GetMapping("findAllUser")
+    public String findAllUser() {
+        List<User> userList = userService.findAllUser();
+        return userList.size() != 0 ? "success" : "fail";
+    }
+
+
+    /**
+     * 根据用户名模糊查询
+     *
+     * @param username
+     * @return
+     */
+    @GetMapping("findUserByUsername")
+    public String findUserByUsername(String username) {
+        List<User> userList = userService.findUserByUsername(username);
+        return userList.size() != 0 ? "success" : "fail";
+    }
+
+
+    /**
      * 更新用户信息功能
      *
      * @param user
@@ -111,9 +137,28 @@ public class UserController {
         return "redirect:/";
     }
 
+    /**
+     * 会员充值
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("recharge")
     public String recharge(Long id) {
         return userService.recharge(id) == true ? "success" : "fail";
+    }
+
+
+    /**
+     * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
+     *
+     * @param idOrUsername
+     * @return
+     */
+    @GetMapping("findUserByIdOrUsername")
+    public String findUserByIdOrUsername(Object idOrUsername) {
+        List<User> userList = userService.findUserByIdOrUsername(idOrUsername);
+        return "admin";
     }
 
 
