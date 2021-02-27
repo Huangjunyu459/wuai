@@ -83,9 +83,9 @@ class HjyApplicationTests {
     @Test
     public void testUpdateUser() {
         User user = new User();
-        user.setId(1363164704243023874L);
-        user.setUsername("hjy");
-        user.setPassword("hjy");
+        user.setId(1365470493997563906L);
+        user.setUsername("zzw");
+        user.setPassword("zzw");
         System.out.println(userController.updateUser(user));
     }
 
@@ -99,21 +99,11 @@ class HjyApplicationTests {
 //        roles.setRoleId(2);
 //        roles.setRoleName("vip");
 
-        roles.setRoleId(3);
-        roles.setRoleName("admin");
-        System.out.println(rolesMapper.insert(roles));
-
     }
 
-
-
     @Test
-    void testQuery(){
-        Set<String> permissions = rolesMapper.queryRoleNamesByUserId(1363164704243023874L);
-        Iterator<String> iterator = permissions.iterator();
-        while (iterator.hasNext()){
-            System.out.println(iterator.next());
-        }
+    void testRecharge(){
+        System.out.println(userController.recharge(1365472501483728897L));
     }
 
 

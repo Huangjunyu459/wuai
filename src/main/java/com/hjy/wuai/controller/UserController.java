@@ -13,6 +13,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +36,9 @@ import java.util.Random;
 @Slf4j
 public class UserController {
 
+    /**
+     * 注入 UserServiceImpl
+     */
     @Autowired
     private UserServiceImpl userService;
 
@@ -42,10 +47,8 @@ public class UserController {
      *
      * @param user
      */
-    @RequestMapping("register")
+    @PostMapping("register")
     public String register(User user) {
-        log.info("controller注册");
-
         return userService.save(user) == true ? "login" : "fail";
     }
 
@@ -54,10 +57,9 @@ public class UserController {
      *
      * @param username
      * @param password
-     * @param loginType
      * @return
      */
-    @RequestMapping("login")
+    @PostMapping("login")
     public String login(String username, String password, String email) {
         try {
             userService.checkLogin(username, password, email);
@@ -69,6 +71,7 @@ public class UserController {
 
     /**
      * 根据 id 查询用户
+     *
      * @param id
      * @return
      */
@@ -82,19 +85,18 @@ public class UserController {
 
     /**
      * 更新用户信息功能
+     *
      * @param user
      * @return
      */
     @RequestMapping("updateUser")
-    public String updateUser(User user){
-        if (userService.updateById(user)){
+    public String updateUser(User user) {
+        if (userService.updateById(user)) {
             return "success";
-        }else {
+        } else {
             return "fail";
         }
     }
-
-
 
 
     /**
@@ -107,6 +109,11 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return "redirect:/";
+    }
+
+    @GetMapping("recharge")
+    public String recharge(Long id) {
+        return userService.recharge(id) == true ? "success" : "fail";
     }
 
 

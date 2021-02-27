@@ -6,6 +6,8 @@ import com.hjy.wuai.reamls.MyRealm;
 import com.hjy.wuai.reamls.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.realm.jdbc.JdbcRealm;
+import org.apache.shiro.realm.text.IniRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -16,6 +18,7 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,34 +34,31 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-
     /**
      * 自定义认证器
      *
      * @return
      */
-    @Bean
     public MyModularRealmAuthenticator getMyModularRealmAuthenticator() {
         MyModularRealmAuthenticator myModularRealmAuthenticator = new MyModularRealmAuthenticator();
         return myModularRealmAuthenticator;
     }
 
-
     /**
      * 获取 AdminRealm，弃用
+     *
      * @param matcher
      * @return
      */
-    @Bean
     public AdminRealm getAdminRealm(HashedCredentialsMatcher matcher) {
         AdminRealm adminRealm = new AdminRealm();
         adminRealm.setCredentialsMatcher(matcher);
         return adminRealm;
     }
 
-
     /**
      * 获取 UserRealm
+     *
      * @param matcher
      * @return
      */
@@ -69,27 +69,21 @@ public class ShiroConfig {
         return userRealm;
     }
 
-
     /**
      * RememberMe 管理器
      *
      * @return
      */
-    @Bean
     public CookieRememberMeManager getCookieRememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-
         //  创建 cookies
         SimpleCookie cookie = new SimpleCookie("rememberMe");
         //  设置 cookies 存活时间，单位为 秒
         cookie.setMaxAge(30 * 24 * 60 * 60);
         //  把 cookies 交给 rememberMeManager
         cookieRememberMeManager.setCookie(cookie);
-
         return cookieRememberMeManager;
-
     }
-
 
     /**
      * 自定义 sessionManager 会话管理器
@@ -101,7 +95,6 @@ public class ShiroConfig {
         DefaultWebSessionManager defaultWebSessionManager = new DefaultWebSessionManager();
         //  配置 sessionManager，单位是毫秒
         defaultWebSessionManager.setGlobalSessionTimeout(5 * 60 * 1000);
-
         return defaultWebSessionManager;
     }
 
@@ -117,7 +110,6 @@ public class ShiroConfig {
         return autoProxyCreator;
     }
 
-
     /**
      * shiro 的权限注解
      *
@@ -130,7 +122,6 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-
     /**
      * 加密器
      *
@@ -139,15 +130,12 @@ public class ShiroConfig {
     @Bean
     public HashedCredentialsMatcher getHashedCredentialsMatcher() {
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-
         //  用来指定加密规则，加密方式：md5
         matcher.setHashAlgorithmName("md5");
         //  hash 加密循环的次数
         matcher.setHashIterations(1);
-
         return matcher;
     }
-
 
     /**
      * 启用 thymeleaf 对 shiro 的方言支持
@@ -159,35 +147,43 @@ public class ShiroConfig {
         return new ShiroDialect();
     }
 
+    /**
+     * 废弃，不使用文件的 realm
+     *
+     * @return
+     */
+    public IniRealm getIniRealm() {
+        IniRealm iniRealm = new IniRealm("classpath:shiro.ini");
+        return iniRealm;
+    }
 
     /**
-     * @Bean 废弃，不使用文件的 realm，使用 jdbcRealm
-     * public IniRealm getIniRealm() {
-     * IniRealm iniRealm = new IniRealm("classpath:shiro.ini");
-     * return iniRealm;
-     * }
-     * @Bean 废弃，改用自定义 realm
-     * public JdbcRealm getJdbcRealm(DataSource dataSource) {
-     * JdbcRealm jdbcRealm = new JdbcRealm();
-     * <p>
-     * //  JdbcRealm   会自行从数据库查询用户及权限数据（前提是数据库的表结构符合 JdbcRealm 的规范）
-     * jdbcRealm.setDataSource(dataSource);
-     * //  JdbcRealm 默认开启认证功能，需要手动开启授权功能
-     * jdbcRealm.setPermissionsLookupEnabled(true);
-     * <p>
-     * return jdbcRealm;
-     * <p>
-     * }
+     * 废弃，改用自定义 realm
+     *
+     * @param dataSource
+     * @return
+     */
+    public JdbcRealm getJdbcRealm(DataSource dataSource) {
+        JdbcRealm jdbcRealm = new JdbcRealm();
+        //  JdbcRealm   会自行从数据库查询用户及权限数据（前提是数据库的表结构符合 JdbcRealm 的规范）
+        jdbcRealm.setDataSource(dataSource);
+        //  JdbcRealm 默认开启认证功能，需要手动开启授权功能
+        jdbcRealm.setPermissionsLookupEnabled(true);
+        return jdbcRealm;
+    }
 
-    @Bean
+    /**
+     * 弃用
+     *
+     * @param matcher
+     * @return
+     */
     public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
         MyRealm myRealm = new MyRealm();
         //  把加密规则给 MyRealm
         myRealm.setCredentialsMatcher(matcher);
         return myRealm;
     }
-     */
-
 
     /**
      * 安全管理器
@@ -199,25 +195,11 @@ public class ShiroConfig {
     public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm, DefaultWebSessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
-        //  配置认证器
-        //securityManager.setAuthenticator(getMyModularRealmAuthenticator());
-
         //  securityManager 要完成校验，就需要 realm
         securityManager.setRealm(userRealm);
 
-        //  设置多 realm
-//        List<Realm> realms = new ArrayList<>();
-//        realms.add(userRealm);
-//        securityManager.setRealms(realms);
-
-        //  设置缓存管理器
-        //securityManager.setCacheManager(ehCacheManager);
-
         //  设置 sessionManger
         securityManager.setSessionManager(sessionManager);
-
-        //  设置 RememberMeManager
-        securityManager.setRememberMeManager(getCookieRememberMeManager());
 
         return securityManager;
     }
@@ -257,7 +239,6 @@ public class ShiroConfig {
 
         //  设置登录页面
         shiroFilterFactoryBean.setLoginUrl("/login.html");
-
 
         //  设置未授权访问的页面路径
         shiroFilterFactoryBean.setUnauthorizedUrl("/login.html");
