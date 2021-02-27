@@ -2,15 +2,20 @@ package com.hjy.wuai.reamls;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hjy.wuai.config.MyToken;
+import com.hjy.wuai.mapper.RolesMapper;
 import com.hjy.wuai.mapper.UserMapper;
 import com.hjy.wuai.pojo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author： hjy
@@ -22,6 +27,10 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RolesMapper rolesMapper;
+
 
     /**
      * 重写 getName 方法，获取当前 Realm 的自定义名字
@@ -43,7 +52,25 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //  获取当前用户的用户名
         String username = (String) principalCollection.iterator().next();
+        System.out.println(username);
+
+        User user = userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+
         //  根据用户名查询当前用户的角色列表
+        Set<String> roles = rolesMapper.queryRoleNamesByUserId(user.getId());
+        Iterator<String> iterator = roles.iterator();
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+
+        //  逻辑代码  ps
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        info.setRoles(roles);
+        return info;
+
+
+        //  根据用户名查询当前用户的角色列表
+        //rolesMapper.queryRoleNamesByUserId()
         //  逻辑代码 roleNames
         //  根据用户名查询当前用户的权限列表
         //  逻辑代码  ps
@@ -54,7 +81,6 @@ public class UserRealm extends AuthorizingRealm {
  * info.setStringPermissions(ps);
  * return info;
  * */
-        return null;
     }
 
     /**

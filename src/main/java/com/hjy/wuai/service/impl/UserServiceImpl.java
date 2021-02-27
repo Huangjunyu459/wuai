@@ -40,7 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param password
      * @param loginType
      */
-    public void CheckLogin(String username, String password, String loginType, String email) {
+    public void checkLogin(String username, String password, String loginType, String email) {
 
         Subject subject = SecurityUtils.getSubject();
         /**

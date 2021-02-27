@@ -27,19 +27,4 @@ public class TestServiceImpl {
         subject.login(token);
 
     }
-
-
-    public void checkLogin1(String username, String password, boolean rememberMe) throws Exception {
-
-        Subject subject = SecurityUtils.getSubject();
-        /**
-         * 弃用，不能满足需求
-         * UsernamePasswordToken token = new UsernamePasswordToken(name, pwd);
-         */
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
-
-        token.setRememberMe(rememberMe);
-        subject.login(token);
-
-    }
 }

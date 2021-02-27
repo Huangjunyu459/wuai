@@ -1,10 +1,9 @@
 package com.hjy.wuai.reamls;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.hjy.wuai.config.MyToken;
 import com.hjy.wuai.mapper.AdminMapper;
-import com.hjy.wuai.mapper.UserMapper;
 import com.hjy.wuai.pojo.Admin;
-import com.hjy.wuai.pojo.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -42,12 +41,7 @@ public class AdminRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //  获取当前用户的用户名
-        String username = (String) principalCollection.iterator().next();
-        //  根据用户名查询当前用户的角色列表
-        //  逻辑代码 roleNames
-        //  根据用户名查询当前用户的权限列表
-        //  逻辑代码  ps
+        return null;
 
 /**
  * SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -55,7 +49,6 @@ public class AdminRealm extends AuthorizingRealm {
  * info.setStringPermissions(ps);
  * return info;
  * */
-        return null;
     }
 
     /**
@@ -69,13 +62,13 @@ public class AdminRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         log.info("-----------------adminRealm");
         //  参数 authenticationToken 就是传递的 subject.login(token) 中的 token
-        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+        MyToken token = (MyToken) authenticationToken;
         //  从 token 中获取需要登录的用户名
-        String username = token.getUsername();
+        String adminName = token.getUsername();
 
         //  根据用户名，从数据库查询当前用户的安全数据
         QueryWrapper<Admin> wrapper = new QueryWrapper<>();
-        wrapper.eq("admin_name", username);
+        wrapper.eq("admin_name", adminName);
         Admin admin = adminMapper.selectOne(wrapper);
 
         /**
@@ -85,12 +78,10 @@ public class AdminRealm extends AuthorizingRealm {
          * ByteSource.Util.bytes(user.getPasswordSalt())：加盐的值，若不加，则可以不写
          * getName()：哪个 realm 返回的数据
          */
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username,
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(adminName,
                 admin.getPassword(),
                 ByteSource.Util.bytes(admin.getPasswordSalt()),
                 getName());
-
-
         return info;
     }
 }

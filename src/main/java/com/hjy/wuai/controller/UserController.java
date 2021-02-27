@@ -60,7 +60,7 @@ public class UserController {
     @RequestMapping("login")
     public String login(String username, String password, String loginType, String email) {
         try {
-            userService.CheckLogin(username, password, loginType, email);
+            userService.checkLogin(username, password, loginType, email);
             return "index";
         } catch (Exception e) {
             return "fail";
@@ -93,6 +93,8 @@ public class UserController {
             return "fail";
         }
     }
+
+
 
 
     /**

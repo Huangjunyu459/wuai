@@ -63,7 +63,7 @@ public class CodeGenerator {
         pc.setModuleName("wuai");
         pc.setParent("com.hjy");
         pc.setEntity("pojo");
-        pc.setMapper("mapper");
+        pc.setMapper("xml");
         pc.setService("service");
         pc.setController("controller");
         mpg.setPackageInfo(pc);
@@ -75,7 +75,7 @@ public class CodeGenerator {
         //  列的驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         //  设置表名的映射
-        strategy.setInclude("admin");
+        strategy.setInclude("urs","rps","permissions","roles");
         //  自动生成Lombok
         strategy.setEntityLombokModel(true);
         //  逻辑删除

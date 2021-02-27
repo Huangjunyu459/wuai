@@ -18,5 +18,15 @@ index
     ],欢迎您
     <a href="/test/logout">退出</a>
 </shiro:user>
+
+<shiro:hasRole name="admin">
+    <a href="#">我是admin</a>
+</shiro:hasRole>
+<shiro:hasPermission name="sys:admin:find">
+    <a href="#">我是admin的find查找</a>
+</shiro:hasPermission>
+<hr>
+
+能看到吗
 </body>
 </html>

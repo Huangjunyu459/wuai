@@ -38,4 +38,9 @@ public class PageController {
     public String regist() {
         return "regist";
     }
+
+    @RequestMapping("/admin/login.html")
+    public String adminLogin() {
+        return "admin/login";
+    }
 }

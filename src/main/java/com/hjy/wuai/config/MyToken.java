@@ -36,4 +36,7 @@ public class MyToken extends UsernamePasswordToken {
     }
 
 
+    public MyToken(String username, String password) {
+        super(username,password);
+    }
 }

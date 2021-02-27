@@ -43,7 +43,9 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //  获取当前用户的用户名
         String username = (String) principalCollection.iterator().next();
+
         //  根据用户名查询当前用户的角色列表
+
         //  逻辑代码 roleNames
         //  根据用户名查询当前用户的权限列表
         //  逻辑代码  ps

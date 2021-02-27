@@ -196,13 +196,13 @@ public class ShiroConfig {
      */
 
 
-    @Bean
-    public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
-        MyRealm myRealm = new MyRealm();
-        //  把加密规则给 MyRealm
-        myRealm.setCredentialsMatcher(matcher);
-        return myRealm;
-    }
+//    @Bean
+//    public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
+//        MyRealm myRealm = new MyRealm();
+//        //  把加密规则给 MyRealm
+//        myRealm.setCredentialsMatcher(matcher);
+//        return myRealm;
+//    }
 
 
     /**
@@ -261,7 +261,10 @@ public class ShiroConfig {
         filterMap.put("/login.html", "anon");
         filterMap.put("/index.html", "user");
         filterMap.put("/regist.html", "anon");
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/admin/login.html", "anon");
         filterMap.put("/user/login", "anon");
+        filterMap.put("/admin/login", "anon");
         filterMap.put("/user/register", "anon");
         filterMap.put("/static/**", "anon");
 
