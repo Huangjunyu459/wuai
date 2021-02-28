@@ -1,5 +1,7 @@
 package com.hjy;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hjy.wuai.controller.ArticleController;
 import com.hjy.wuai.mapper.ArticleMapper;
 import com.hjy.wuai.pojo.Article;
@@ -94,6 +96,15 @@ public class ArticleTest {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+    }
+
+    @Test
+    void testPage() {
+//        IPage<Article> page = new Page<>(1, 5);
+//        IPage<Article> articleIPage = articleMapper.selectPage(page, null);
+//        articleIPage.getRecords().forEach(System.out::println);
+
+        articleController.pagingQuery(1);
     }
 
 

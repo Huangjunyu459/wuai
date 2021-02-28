@@ -2,6 +2,8 @@ package com.hjy.wuai.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hjy.wuai.config.MyToken;
 import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.User;
@@ -248,6 +250,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> findIsDelete() {
         return userMapper.findIsDelete();
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param index
+     * @return
+     */
+    @Override
+    public IPage<User> pagingQuery(Integer index) {
+        IPage<User> page = new Page<>(index, 5);
+        IPage<User> userIPage = userMapper.selectPage(page, null);
+        return userIPage;
     }
 
 

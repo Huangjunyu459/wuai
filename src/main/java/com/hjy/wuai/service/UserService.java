@@ -1,5 +1,6 @@
 package com.hjy.wuai.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -92,4 +93,13 @@ public interface UserService extends IService<User> {
      * @return
      */
     public List<User> findIsDelete();
+
+
+    /**
+     * 分页查询
+     *
+     * @param index
+     * @return
+     */
+    IPage<User> pagingQuery(Integer index);
 }

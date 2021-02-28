@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -177,7 +178,14 @@ public class UserController {
     @GetMapping("findIsDelete")
     public String findIsDelete() {
         List<User> isDelete = userService.findIsDelete();
-        return "success";
+        return "admin";
+    }
+
+    @GetMapping("pagingQuery")
+    public String pagingQuery(Integer index) {
+        Serializable userIPage = userService.pagingQuery(index);
+        System.out.println(userIPage);
+        return "admin";
     }
 
 

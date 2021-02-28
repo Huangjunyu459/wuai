@@ -1,5 +1,6 @@
 package com.hjy.wuai.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hjy.wuai.pojo.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -46,6 +47,14 @@ public interface ArticleService extends IService<Article> {
      * @return
      */
     public List<Article> findIsDelete();
+
+    /**
+     * 分页查询
+     *
+     * @param index
+     * @return
+     */
+    public IPage<Article> pagingQuery(Integer index);
 
 
 }

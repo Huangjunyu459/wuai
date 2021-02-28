@@ -229,6 +229,7 @@ public class ShiroConfig {
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/admin/login.html", "anon");
         filterMap.put("/user/login", "anon");
+        filterMap.put("/oss/upload", "anon");
         filterMap.put("/admin/login", "anon");
         filterMap.put("/user/register", "anon");
         filterMap.put("/static/**", "anon");

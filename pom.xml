@@ -18,6 +18,20 @@
     </properties>
     <dependencies>
 
+        <!--引入阿里云 OSS 依赖-->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.11.3</version>
+        </dependency>
+        <!--文件上传依赖-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
         <!--引入 swagger2 依赖-->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -163,6 +177,11 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
             <version>3.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>5.2.8.RELEASE</version>
         </dependency>
     </dependencies>
 

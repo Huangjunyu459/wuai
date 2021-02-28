@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -68,6 +69,13 @@ public class ArticleController {
     @GetMapping("findIsDelete")
     public String findIsDelete() {
         List<Article> isDelete = articleService.findIsDelete();
+        return "admin";
+    }
+
+    @GetMapping("pagingQuery")
+    public String pagingQuery(Integer index) {
+        Serializable articleIPage = articleService.pagingQuery(index);
+        System.out.println(articleIPage);
         return "admin";
     }
 

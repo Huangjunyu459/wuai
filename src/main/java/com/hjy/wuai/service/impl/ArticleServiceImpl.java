@@ -1,6 +1,8 @@
 package com.hjy.wuai.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.ArticleMapper;
 import com.hjy.wuai.pojo.Article;
@@ -122,6 +124,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Article> findIsDelete() {
         return articleMapper.findIsDelete();
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param index
+     * @return
+     */
+    @Override
+    public IPage<Article> pagingQuery(Integer index) {
+        IPage<Article> page = new Page<>(index, 5);
+        IPage<Article> userIPage = articleMapper.selectPage(page, null);
+        return userIPage;
     }
 
 

@@ -1,5 +1,7 @@
 package com.hjy;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hjy.wuai.controller.UserController;
 import com.hjy.wuai.mapper.*;
 import com.hjy.wuai.pojo.*;
@@ -170,6 +172,19 @@ class HjyApplicationTests {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+    }
+
+    //  分页查询
+    @Test
+    public void testPage() {
+        //  参数1：当前页     参数2：页面大小
+//        Page<User> page = new Page<>(1, 5);
+//        IPage<User> userIPage = userMapper.selectPage(page, null);
+//
+//        page.getRecords().forEach(System.out::println);
+//        System.out.println(page.getTotal());
+        userController.pagingQuery(1);
+
     }
 
 
