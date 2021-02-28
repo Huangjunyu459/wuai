@@ -1,8 +1,10 @@
 package com.hjy.wuai.utils;
 
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
  * @author： hjy
@@ -17,7 +19,9 @@ public class GlobalException {
     @ExceptionHandler
     public String doException(Exception e) {
         if (e instanceof AuthorizationException) {
-
+            return "shiro认证器异常";
+        } else if (e instanceof MaxUploadSizeExceededException) {
+            return "文件大小超过限制";
         }
         return null;
     }

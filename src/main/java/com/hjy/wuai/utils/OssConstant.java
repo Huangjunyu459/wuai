@@ -25,7 +25,7 @@ public interface OssConstant {
     public static final String ACCESS_KEY_SECRET = "TqKbMmXFI7OgxwYwSbKTMMI8956nq5";
 
     /**
-     * 文件存储空间
+     * 文章存储空间
      */
     public static final String BUCKET = "2021article";
 }

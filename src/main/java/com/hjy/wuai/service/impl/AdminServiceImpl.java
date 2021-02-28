@@ -11,6 +11,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ import java.util.Objects;
  * @since 2021-02-20
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
 
     @Autowired
@@ -54,6 +56,5 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Admin admin = adminMapper.selectOne(wrapper);
         return (Objects.equals(md5(password), admin.getPassword()));
     }
-
 
 }

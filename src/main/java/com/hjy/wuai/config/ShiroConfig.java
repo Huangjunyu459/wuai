@@ -235,7 +235,7 @@ public class ShiroConfig {
         filterMap.put("/static/**", "anon");
 
 
-        filterMap.put("/**", "authc");
+        filterMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
 
         //  设置登录页面
