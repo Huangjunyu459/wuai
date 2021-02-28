@@ -1,7 +1,6 @@
 package com.hjy.wuai.config;
 
 import com.aliyun.oss.OSSClient;
-import com.hjy.wuai.utils.OssConstant;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

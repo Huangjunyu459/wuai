@@ -1,20 +1,14 @@
 package com.hjy.wuai.service.impl;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSBuilder;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.internal.OSSConstants;
-import com.aliyun.oss.model.PutObjectResult;
-import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Music;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.OssService;
 import com.hjy.wuai.utils.OssConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
