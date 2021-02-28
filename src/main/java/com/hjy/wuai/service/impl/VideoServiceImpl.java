@@ -41,7 +41,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
 
 
     /**
-     * 根据 id 获取作品
+     * 根据 id 获取视频
      *
      * @param id
      * @return
@@ -52,9 +52,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     }
 
     /**
-     * 作品更新（有待完善，具体要更新哪些信息）
+     * 视频更新（有待完善，具体要更新哪些信息）
      *
-     * @param entity 作品实体
+     * @param entity 视频实体
      * @return
      */
     @Override
@@ -79,7 +79,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
 
 
     /**
-     * 查询所有作品
+     * 查询所有视频
      *
      * @return
      */
@@ -89,7 +89,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     }
 
     /**
-     * 根据 作品名 模糊查询
+     * 根据 视频名 模糊查询
      *
      * @param videoName
      * @return
@@ -97,7 +97,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     @Override
     public List<Video> findVideoByVideoName(String videoName) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
-        wrapper.like("vedio_name", videoName);
+        wrapper.like("video_name", videoName);
         return videoMapper.selectList(wrapper);
     }
 

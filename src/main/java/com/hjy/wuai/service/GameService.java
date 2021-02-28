@@ -12,7 +12,7 @@ import java.util.List;
  * </p>
  *
  * @author hjy
- * @since 2021-02-28
+ * @since 2021-03-01
  */
 public interface GameService extends IService<Game> {
 

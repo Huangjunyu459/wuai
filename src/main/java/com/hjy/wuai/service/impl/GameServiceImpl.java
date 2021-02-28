@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.GameMapper;
-import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +15,17 @@ import java.util.List;
 
 /**
  * <p>
- * 服务实现类
+ *  服务实现类
  * </p>
  *
  * @author hjy
- * @since 2021-02-28
+ * @since 2021-03-01
  */
 @Service
 public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements GameService {
 
     @Autowired
-    private GameMapper gameMapper;
+    private com.hjy.wuai.mapper.GameMapper gameMapper;
 
     /**
      * 上传
@@ -139,5 +138,4 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         IPage<Game> gameIPage = gameMapper.selectPage(page, null);
         return gameIPage;
     }
-
 }

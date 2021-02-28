@@ -1,8 +1,14 @@
 package com.hjy.wuai.pojo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
 
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
 
 import lombok.Data;
@@ -14,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author hjy
- * @since 2021-02-28
+ * @since 2021-03-01
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -84,7 +90,6 @@ public class Game implements Serializable {
     /**
      * 逻辑删除
      */
-    @TableLogic
     private Integer isDelete;
 
 

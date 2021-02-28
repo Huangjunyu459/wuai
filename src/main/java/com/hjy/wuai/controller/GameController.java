@@ -2,7 +2,6 @@ package com.hjy.wuai.controller;
 
 
 import com.hjy.wuai.pojo.Game;
-import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +15,11 @@ import java.util.List;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author hjy
- * @since 2021-02-28
+ * @since 2021-03-01
  */
 @RestController
 @RequestMapping("/game")

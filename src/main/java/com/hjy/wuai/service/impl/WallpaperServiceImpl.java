@@ -116,7 +116,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
     }
 
     /**
-     * 查询已删除的作品
+     * 查询已删除的壁纸
      *
      * @return
      */
