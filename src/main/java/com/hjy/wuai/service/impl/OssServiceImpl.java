@@ -4,6 +4,7 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
 import com.hjy.wuai.pojo.Music;
+import com.hjy.wuai.pojo.Video;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.OssService;
 import com.hjy.wuai.utils.OssConstant;
@@ -68,6 +69,13 @@ public class OssServiceImpl implements OssService {
                 music.setCategoryId(4);
                 try {
                     musicService.save(music);
+                } catch (Exception e) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    e.printStackTrace();
+                }
+            } else if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".mp4")) {
+                try {
+                    Video video = new Video();
                 } catch (Exception e) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     e.printStackTrace();

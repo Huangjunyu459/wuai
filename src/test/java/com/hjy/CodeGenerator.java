@@ -38,7 +38,7 @@ public class CodeGenerator {
         //  是否打开资源管理器
         gc.setOpen(false);
         //  是否覆盖
-        gc.setFileOverride(false);
+        gc.setFileOverride(true);
         //  去Service的I前缀
         gc.setServiceName("%sService");
         //  设置主键策略
@@ -75,7 +75,7 @@ public class CodeGenerator {
         //  列的驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         //  设置表名的映射
-        strategy.setInclude("music","game","video");
+        strategy.setInclude("game");
         //  自动生成Lombok
         strategy.setEntityLombokModel(true);
         //  逻辑删除

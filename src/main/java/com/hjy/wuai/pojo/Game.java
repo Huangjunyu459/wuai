@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hjy
@@ -30,7 +31,7 @@ public class Game implements Serializable {
     /**
      * 游戏名称
      */
-    private String gNamne;
+    private String gameName;
 
     /**
      * 描述
