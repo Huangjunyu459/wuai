@@ -3,9 +3,9 @@ package com.hjy.wuai.service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * @author： hjy
- * @date： 2021/2/28 0028,上午 9:53
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/28 0028,上午 9:53
+ * @email 541605007@qq.com
  * Oss服务接口类
  */
 public interface OssService {
@@ -16,7 +16,33 @@ public interface OssService {
      * @param file
      * @return oss服务器图片访问url
      */
-    public String upload(MultipartFile file);
+    String uploadPic(MultipartFile file);
+
+
+    /**
+     * 上传图片到OSS服务器
+     *
+     * @param file
+     * @return oss服务文章封面访问url
+     */
+    String uploadArticle(MultipartFile file);
+
+
+    /**
+     * 上传音频到OSS服务器
+     *
+     * @param file
+     * @return oss服务器音频访问url
+     */
+    String uploadMusic(MultipartFile file);
+
+    /**
+     * 上传视频到OSS服务器
+     *
+     * @param file
+     * @return oss服务器视频访问url
+     */
+    String uploadVideo(MultipartFile file);
 
 
     /**
@@ -25,7 +51,7 @@ public interface OssService {
      * @param filePath
      * @return
      */
-    public boolean deleteFile(String filePath);
+    boolean deleteFile(String filePath);
 
 
 }

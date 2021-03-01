@@ -45,4 +45,16 @@ public class VideoTest {
 
         videoController.pagingQuery(1);
     }
+
+    @Test
+    void save(){
+        Video video = new Video();
+        video.setVideoName("videoName");
+        video.setOosName("fileName");
+        video.setOosSrc("url");
+        video.setCategoryId(3);
+        video.setAuthorId(1365502991892807681L);
+        videoService.save(video);
+        System.out.println(video);
+    }
 }

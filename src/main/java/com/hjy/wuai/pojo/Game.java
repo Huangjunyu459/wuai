@@ -1,13 +1,8 @@
 package com.hjy.wuai.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
-
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;
 
@@ -42,7 +37,7 @@ public class Game implements Serializable {
     /**
      * 描述
      */
-    private String describe;
+    private String description;
 
     /**
      * 游戏存储在百度盘的链接
@@ -90,6 +85,7 @@ public class Game implements Serializable {
     /**
      * 逻辑删除
      */
+    @TableLogic
     private Integer isDelete;
 
 

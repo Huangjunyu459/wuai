@@ -138,5 +138,15 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
         return userIPage;
     }
 
+    /**
+     * 根据 壁纸的 id 查询 所属的分类名
+     *
+     * @param wid 壁纸 id
+     * @return 分类的名称
+     */
+    @Override
+    public String findCategoryNameByWid(Long wid) {
+        return wallpaperMapper.findCategoryNameByWid(wid);
+    }
 }
 

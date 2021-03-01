@@ -17,20 +17,20 @@ import java.util.List;
 public interface GameService extends IService<Game> {
 
     /**
-     * 查询所有作品
+     * 查询所有游戏
      *
      * @return
      */
-    public List<Game> findAllGame();
+     List<Game> findAllGame();
 
 
     /**
-     * 根据 作品名 模糊查询
+     * 根据 游戏名 模糊查询
      *
-     * @param title
+     * @param gameName
      * @return
      */
-    public List<Game> findGameByTitle(String title);
+    List<Game> findGameByGameName(String gameName);
 
     /**
      * 点赞功能
@@ -38,14 +38,14 @@ public interface GameService extends IService<Game> {
      * @param id
      * @return
      */
-    public boolean likes(Long id);
+     boolean likes(Long id);
 
     /**
-     * 查询已删除的作品
+     * 查询已删除的游戏
      *
      * @return
      */
-    public List<Game> findIsDelete();
+     List<Game> findIsDelete();
 
     /**
      * 分页查询
@@ -53,6 +53,14 @@ public interface GameService extends IService<Game> {
      * @param index
      * @return
      */
-    public IPage<Game> pagingQuery(Integer index);
+     IPage<Game> pagingQuery(Integer index);
+
+    /**
+     * 根据 游戏的 id 查询 所属的分类名
+     *
+     * @param gid 游戏 id
+     * @return 分类名称
+     */
+    String findCategoryNameByGid(Long gid);
 
 }

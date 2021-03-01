@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 
 /**
- * @author： hjy
- * @date： 2021/2/18 0018,下午 14:04
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/18 0018,下午 14:04
+ * @email 541605007@qq.com
  */
 @Configuration
 @Primary    //  在同样的Datasource中，优先被使用

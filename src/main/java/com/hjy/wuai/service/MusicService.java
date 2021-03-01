@@ -17,20 +17,20 @@ import java.util.List;
 public interface MusicService extends IService<Music> {
 
     /**
-     * 查询所有作品
+     * 查询所有音乐
      *
      * @return
      */
-    public List<Music> findAllMusic();
+     List<Music> findAllMusic();
 
 
     /**
-     * 根据 作品名 模糊查询
+     * 根据 歌名 模糊查询
      *
-     * @param title
+     * @param song
      * @return
      */
-    public List<Music> findMusicByTitle(String title);
+     List<Music> findMusicBySong(String song);
 
     /**
      * 点赞功能
@@ -38,14 +38,14 @@ public interface MusicService extends IService<Music> {
      * @param id
      * @return
      */
-    public boolean likes(Long id);
+     boolean likes(Long id);
 
     /**
      * 查询已删除的作品
      *
      * @return
      */
-    public List<Music> findIsDelete();
+     List<Music> findIsDelete();
 
     /**
      * 分页查询
@@ -53,6 +53,14 @@ public interface MusicService extends IService<Music> {
      * @param index
      * @return
      */
-    public IPage<Music> pagingQuery(Integer index);
+     IPage<Music> pagingQuery(Integer index);
+
+    /**
+     * 根据 音频的 id 查询 所属的分类名
+     *
+     * @param mid 音频 id
+     * @return 分类名称
+     */
+    String findCategoryNameByMid(Long mid);
 
 }

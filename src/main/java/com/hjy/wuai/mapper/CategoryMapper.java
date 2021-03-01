@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * <p>AdminMapper
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author hjy
@@ -14,5 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CategoryMapper extends BaseMapper<Category> {
+
+
+
 
 }

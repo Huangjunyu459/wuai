@@ -1,20 +1,18 @@
 package com.hjy.wuai.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.hjy.wuai.handler.MyMetaObjectHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * @author： hjy
- * @date： 2021/2/18 0018,下午 14:20
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/18 0018,下午 14:20
+ * @email 541605007@qq.com
  */
 
 @MapperScan("com.hjy.wuai.mapper")

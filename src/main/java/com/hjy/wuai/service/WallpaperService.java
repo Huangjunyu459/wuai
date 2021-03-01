@@ -3,12 +3,13 @@ package com.hjy.wuai.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author hjy
@@ -21,7 +22,7 @@ public interface WallpaperService extends IService<Wallpaper> {
      *
      * @return
      */
-    public List<Wallpaper> findAllWallpaper();
+    List<Wallpaper> findAllWallpaper();
 
 
     /**
@@ -30,7 +31,7 @@ public interface WallpaperService extends IService<Wallpaper> {
      * @param title
      * @return
      */
-    public List<Wallpaper> findWallpaperByTitle(String title);
+    List<Wallpaper> findWallpaperByTitle(String title);
 
     /**
      * 点赞功能
@@ -38,14 +39,14 @@ public interface WallpaperService extends IService<Wallpaper> {
      * @param id
      * @return
      */
-    public boolean likes(Long id);
+    boolean likes(Long id);
 
     /**
      * 查询已删除的壁纸
      *
      * @return
      */
-    public List<Wallpaper> findIsDelete();
+    List<Wallpaper> findIsDelete();
 
     /**
      * 分页查询
@@ -53,6 +54,14 @@ public interface WallpaperService extends IService<Wallpaper> {
      * @param index
      * @return
      */
-    public IPage<Wallpaper> pagingQuery(Integer index);
+    IPage<Wallpaper> pagingQuery(Integer index);
+
+    /**
+     * 根据 壁纸的 id 查询 所属的分类名
+     *
+     * @param wid 壁纸 id
+     * @return 分类名称
+     */
+    String findCategoryNameByWid(Long wid);
 
 }

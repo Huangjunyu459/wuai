@@ -62,7 +62,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
 
         //  获取要更新的用户
         Video video = getById(entity.getId());
-        video.setVedioName(entity.getVedioName());
+        video.setVideoName(entity.getVideoName());
         return videoMapper.updateById(video) == 1 ? true : false;
     }
 
@@ -136,6 +136,17 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         IPage<Video> page = new Page<>(index, 5);
         IPage<Video> videoIPage = videoMapper.selectPage(page, null);
         return videoIPage;
+    }
+
+    /**
+     * 根据 视频的 id 查询 所属的分类名
+     *
+     * @param vid 视频 id
+     * @return 分类的名称
+     */
+    @Override
+    public String findCategoryNameByVid(Long vid) {
+        return videoMapper.findCategoryNameByVid(vid);
     }
 
 

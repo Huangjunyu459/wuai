@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author hjy
@@ -20,16 +20,22 @@ public interface GameMapper extends BaseMapper<Game> {
 
     /**
      * 查询已删除的作品
+     *
      * @return 返回 Game 的集合
      */
     @Select("select * from game where is_delete = 1")
-     List<Game> findIsDelete();
+    List<Game> findIsDelete();
 
     /**
-     * 查询所有的游戏
-     * @return 返回游戏的集合
+     * 根据 视频的 id 查询 所属的分类名
+     *
+     * @param gid 视频 id
+     * @return 分类名称
      */
-    @Select("select * from game where is_delete = 0")
-    List<Game> findAll();
+    @Select("SELECT category.category_name FROM category " +
+            "INNER JOIN game " +
+            "ON game.category_id = category.id " +
+            "WHERE game.id = #{gid}")
+    String findCategoryNameByGid(Long gid);
 
 }

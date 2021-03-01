@@ -5,7 +5,6 @@ import com.hjy.wuai.reamls.AdminRealm;
 import com.hjy.wuai.reamls.MyRealm;
 import com.hjy.wuai.reamls.UserRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.realm.Realm;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.apache.shiro.realm.text.IniRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -19,15 +18,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author： hjy
- * @date： 2021/2/19 0019,上午 11:37
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/19 0019,上午 11:37
+ * @email 541605007@qq.com
  * <p>
  * Shiro的配置类
  */
@@ -35,7 +32,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     /**
-     * 自定义认证器
+     * 自定义认证器，暂时不用
      *
      * @return
      */
@@ -47,7 +44,7 @@ public class ShiroConfig {
     /**
      * 获取 AdminRealm，弃用
      *
-     * @param matcher
+     * @param matcher 加密器
      * @return
      */
     public AdminRealm getAdminRealm(HashedCredentialsMatcher matcher) {
@@ -59,7 +56,7 @@ public class ShiroConfig {
     /**
      * 获取 UserRealm
      *
-     * @param matcher
+     * @param matcher 加密器
      * @return
      */
     @Bean
@@ -72,7 +69,7 @@ public class ShiroConfig {
     /**
      * RememberMe 管理器
      *
-     * @return
+     * @return 返回一个管理器对象
      */
     public CookieRememberMeManager getCookieRememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -88,7 +85,7 @@ public class ShiroConfig {
     /**
      * 自定义 sessionManager 会话管理器
      *
-     * @return
+     * @return 返回一个会话管理器对象
      */
     @Bean
     public DefaultWebSessionManager getDefaultWebSessionManager() {
@@ -101,7 +98,7 @@ public class ShiroConfig {
     /**
      * 开启 shiro 权限注解
      *
-     * @return
+     * @return 开启 shiro 权限对象的注解
      */
     @Bean
     public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
@@ -113,7 +110,7 @@ public class ShiroConfig {
     /**
      * shiro 的权限注解
      *
-     * @return
+     * @return 返回 shiro 权限注解对象
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
@@ -125,7 +122,7 @@ public class ShiroConfig {
     /**
      * 加密器
      *
-     * @return
+     * @return 返回设置加密方法后的加密器
      */
     @Bean
     public HashedCredentialsMatcher getHashedCredentialsMatcher() {
@@ -140,7 +137,7 @@ public class ShiroConfig {
     /**
      * 启用 thymeleaf 对 shiro 的方言支持
      *
-     * @return
+     * @return 返回 thymeleaf 对 shiro 的方言支持的对象
      */
     @Bean
     public ShiroDialect getShiroDialect() {
@@ -150,7 +147,7 @@ public class ShiroConfig {
     /**
      * 废弃，不使用文件的 realm
      *
-     * @return
+     * @return 返回一个读取本地文件的 realm
      */
     public IniRealm getIniRealm() {
         IniRealm iniRealm = new IniRealm("classpath:shiro.ini");
@@ -160,8 +157,8 @@ public class ShiroConfig {
     /**
      * 废弃，改用自定义 realm
      *
-     * @param dataSource
-     * @return
+     * @param dataSource 数据源
+     * @return 返回一个 jdbc 的realm
      */
     public JdbcRealm getJdbcRealm(DataSource dataSource) {
         JdbcRealm jdbcRealm = new JdbcRealm();
@@ -175,8 +172,8 @@ public class ShiroConfig {
     /**
      * 弃用
      *
-     * @param matcher
-     * @return
+     * @param matcher 加密器
+     * @return 返回一个自定义的 myRealm 对象
      */
     public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
         MyRealm myRealm = new MyRealm();
@@ -185,11 +182,13 @@ public class ShiroConfig {
         return myRealm;
     }
 
+
     /**
      * 安全管理器
      *
-     * @param
-     * @return
+     * @param userRealm      用户类的 Realm
+     * @param sessionManager 会话管理器
+     * @return 返回一个 默认的网络安全管理器
      */
     @Bean
     public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm, DefaultWebSessionManager sessionManager) {
@@ -205,6 +204,12 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * shiro 过滤器，核心
+     *
+     * @param securityManager 安全管理器
+     * @return 返回一个 shiro 过滤器的对象
+     */
     @Bean
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();

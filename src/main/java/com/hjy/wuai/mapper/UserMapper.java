@@ -21,9 +21,11 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 查询已删除的用户
      *
-     * @return
+     * @return 返回已被删除的用户集合
      */
     @Select("select * from user where is_delete = 1")
-    public List<User> findIsDelete();
+    List<User> findIsDelete();
+
+
 
 }

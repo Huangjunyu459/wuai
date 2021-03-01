@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author hjy
@@ -25,7 +25,7 @@ import java.util.List;
 public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements GameService {
 
     @Autowired
-    private com.hjy.wuai.mapper.GameMapper gameMapper;
+    private GameMapper gameMapper;
 
     /**
      * 上传
@@ -40,7 +40,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
 
 
     /**
-     * 根据 id 获取作品
+     * 根据 id 获取游戏
      *
      * @param id
      * @return
@@ -51,9 +51,9 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     }
 
     /**
-     * 作品更新（有待完善，具体要更新哪些信息）
+     * 游戏更新（有待完善，具体要更新哪些信息）
      *
-     * @param entity 作品实体
+     * @param entity 游戏实体
      * @return
      */
     @Override
@@ -80,25 +80,25 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
 
 
     /**
-     * 查询所有作品
+     * 查询所有游戏
      *
      * @return
      */
     @Override
     public List<Game> findAllGame() {
-        return gameMapper.findAll();
+        return gameMapper.selectList(null);
     }
 
     /**
      * 根据 作品名 模糊查询
      *
-     * @param title
+     * @param gameName
      * @return
      */
     @Override
-    public List<Game> findGameByTitle(String title) {
+    public List<Game> findGameByGameName(String gameName) {
         QueryWrapper<Game> wrapper = new QueryWrapper<>();
-        wrapper.like("game_name", title);
+        wrapper.like("game_name", gameName);
         return gameMapper.selectList(wrapper);
     }
 
@@ -117,7 +117,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     }
 
     /**
-     * 查询已删除的作品
+     * 查询已删除的游戏
      *
      * @return
      */
@@ -137,5 +137,16 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         IPage<Game> page = new Page<>(index, 5);
         IPage<Game> gameIPage = gameMapper.selectPage(page, null);
         return gameIPage;
+    }
+
+    /**
+     * 根据 游戏的 id 查询 所属的分类名
+     *
+     * @param gid 游戏 id
+     * @return 分类的名称
+     */
+    @Override
+    public String findCategoryNameByGid(Long gid) {
+        return gameMapper.findCategoryNameByGid(gid);
     }
 }

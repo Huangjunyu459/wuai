@@ -1,0 +1,62 @@
+package com.hjy.wuai.pojo;
+
+import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * @author hjy
+ * @date 2021/3/1 0001,上午 11:19
+ * @email 541605007@qq.com
+ */
+@Data
+public class Result1 {
+
+    public static final Integer DEFAULT_FAILED_CODE = 9999;
+    public static final Integer DEFAULT_SUCCESS_CODE = 0;
+
+    private Integer statue;
+
+    private String msg;
+
+    private Map<String, Object> data = new HashMap<>();
+
+    public static Result1 success() {
+        Result1 result1 = new Result1();
+        result1.setCode(Result1.DEFAULT_SUCCESS_CODE);
+        result1.setMsg("成功");
+        return result1;
+    }
+
+
+    public static Result1 fail() {
+        Result1 result1 = new Result1();
+        result1.setCode(Result1.DEFAULT_FAILED_CODE);
+        result1.setMsg("失败");
+        return result1;
+    }
+
+    public Result1 setCode(Integer code) {
+        this.setStatue(code);
+        return this;
+    }
+
+    public Result1 setMessage(String msg) {
+        this.setMsg(msg);
+        return this;
+    }
+
+
+    public Result1 data(String key, Object value) {
+        this.data.put(key, value);
+        return this;
+    }
+
+    public Result1 data(Map<String, Object> map) {
+        this.setData(map);
+        return this;
+    }
+
+}

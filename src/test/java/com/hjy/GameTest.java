@@ -39,12 +39,6 @@ public class GameTest {
         }
     }
 
-    @Test
-    void testGameMapper(){
-        List<Game> gameList = gameMapper.findAll();
-        gameList.forEach(System.out::println);
-    }
-
 
     @Test
     void testPage() {

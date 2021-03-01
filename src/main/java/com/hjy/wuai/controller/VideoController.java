@@ -1,7 +1,7 @@
 package com.hjy.wuai.controller;
 
 
-import com.hjy.wuai.pojo.Article;
+import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.Video;
 import com.hjy.wuai.service.impl.VideoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,56 +29,161 @@ public class VideoController {
     @Autowired
     private VideoServiceImpl videoService;
 
-    @PostMapping("upload")
-    public String upload(Video video) {
-        return videoService.save(video) == true ? "admin" : "fail";
+    /**
+     * 上传视频
+     *
+     * @param video 视频实体类
+     * @return 返回上传的结果 msg
+     */
+    @PostMapping("/save")
+    public Result1 save(Video video) {
+        if (videoService.save(video)) {
+            return Result1.success().setMessage("上传成功");
+        } else {
+            return Result1.fail().setMessage("上传失败");
+        }
     }
 
+
+    /**
+     * 根据 id 获取视频
+     *
+     * @param id 视频 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("getById")
-    public String getById(Long id) {
+    public Result1 getById(Long id) {
         Video video = videoService.getById(id);
-        return "admin";
+        if (video != null) {
+            return Result1.success().data("wallpaper", video);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
     }
 
+    /**
+     * 更新视频信息
+     *
+     * @param video 视频实体
+     * @return 返回的结果 msg
+     */
     @PostMapping("updateById")
-    public String updateById(Video video) {
-        return videoService.updateById(video) == true ? "admin" : "fail";
+    public Result1 updateById(Video video) {
+        if (videoService.updateById(video)) {
+            return Result1.success().setMessage("更新成功");
+        } else {
+            return Result1.fail().setMessage("更新失败");
+        }
     }
 
+    /**
+     * 根据 id 删除视频
+     *
+     * @param id 视频 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("removeById")
-    public String removeById(Long id) {
-        return videoService.removeById(id) == true ? "admin" : "fail";
+    public Result1 removeById(Long id) {
+        if (videoService.removeById(id)) {
+            return Result1.success().setMessage("删除成功");
+        } else {
+            return Result1.fail().setMessage("删除失败");
+        }
     }
 
+    /**
+     * 查找所有视频
+     *
+     * @return 返回的结果 msg
+     */
     @GetMapping("/findAllVideo")
-    public String findAllVideo() {
-        List<Video> videos = videoService.findAllVideo();
-        return "admin";
+    public Result1 findAllVideo() {
+        List<Video> videoList = videoService.findAllVideo();
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
     }
 
+    /**
+     * 根据 视频名称 查询
+     *
+     * @param videoName 视频标题
+     * @return 返回的结果 msg
+     */
     @GetMapping("findVideoByVideoName")
-    public String findVideoByVideoName(String videoName) {
-        List<Video> videos = videoService.findVideoByVideoName(videoName);
-        return "admin";
+    public Result1 findVideoByVideoName(String videoName) {
+        List<Video> videoList = videoService.findVideoByVideoName(videoName);
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
     }
 
+    /**
+     * 视频点赞
+     *
+     * @param id 视频的 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("likes")
-    public String likes(Long id) {
-        return videoService.likes(id) == true ? "admin" : "fail";
+    public Result1 likes(Long id) {
+        if (videoService.likes(id)) {
+            return Result1.success().setMessage("点赞成功");
+        } else {
+            return Result1.fail().setMessage("点赞失败");
+        }
     }
 
+    /**
+     * 查询已删除的视频
+     *
+     * @return 返回的结果 msg
+     */
     @GetMapping("findIsDelete")
-    public String findIsDelete() {
-        List<Video> isDelete = videoService.findIsDelete();
-        return "admin";
+    public Result1 findIsDelete() {
+        List<Video> videoList = videoService.findIsDelete();
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
     }
 
+    /**
+     * 视频分页查询
+     *
+     * @param index 起始页
+     * @return 返回的结果 msg
+     */
     @GetMapping("pagingQuery")
-    public String pagingQuery(Integer index) {
+    public Result1 pagingQuery(Integer index) {
         Serializable videoIPage = videoService.pagingQuery(index);
-        System.out.println(videoIPage);
-        return "admin";
+        if (videoIPage != null) {
+            return Result1.success().data("videoIPage", videoIPage);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
     }
 
+
+    /**
+     * 根据 视频的 id 查询 所属的分类名
+     *
+     * @param vid 视频 id
+     * @return 分类的名称
+     */
+    @GetMapping("findCategoryNameByVid")
+    public Result1 findCategoryNameByVid(Long vid) {
+        String categoryName = videoService.findCategoryNameByVid(vid);
+        if (categoryName != null) {
+            return Result1.success().data("categoryName", categoryName);
+        } else {
+            return Result1.fail().setMessage("没有所属分类名称");
+        }
+
+    }
 }
 

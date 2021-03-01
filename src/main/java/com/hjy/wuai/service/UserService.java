@@ -32,7 +32,15 @@ public interface UserService extends IService<User> {
      *
      * @return
      */
-    public List<User> findAllUser();
+    List<User> findAllUser();
+
+    /**
+     * 根据用户名精准查询
+     *
+     * @param username
+     * @return
+     */
+    User findUserByUsername(String username);
 
 
     /**
@@ -41,7 +49,7 @@ public interface UserService extends IService<User> {
      * @param username 用户名
      * @return
      */
-    List<User> findUserByUsername(String username);
+    List<User> findUsersByUsername(String username);
 
     /**
      * 会员充值功能
@@ -51,6 +59,14 @@ public interface UserService extends IService<User> {
      */
     boolean recharge(Long id);
 
+    /**
+     * 会员逾期功能（把用户的会员等级设置为普通用户）
+     *
+     * @param id
+     * @return
+     */
+    boolean overdue(Long id);
+
 
     /**
      * 用户签到功能
@@ -58,16 +74,14 @@ public interface UserService extends IService<User> {
      * @param id 用户 id
      * @return
      */
-    public boolean signIn(Long id);
+    boolean signIn(Long id);
 
     /**
-     * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
+     * 重置所有用户签到状态（每天凌晨12点后触发）
      *
-     * @param idOrUsername 传入的参数
-     * @return
+     * @return 结果
      */
-    public List<User> findUserByIdOrUsername(Object idOrUsername);
-
+    boolean resetSignIn();
 
     /**
      * 根据邮箱查询用户
@@ -75,7 +89,7 @@ public interface UserService extends IService<User> {
      * @param email
      * @return
      */
-    public List<User> findUserByEmail(String email);
+    User findUserByEmail(String email);
 
 
     /**
@@ -84,7 +98,7 @@ public interface UserService extends IService<User> {
      * @param entity
      * @return
      */
-    public List<User> findByMap(NameAndEmail entity);
+    List<User> findByMap(NameAndEmail entity);
 
 
     /**
@@ -92,7 +106,7 @@ public interface UserService extends IService<User> {
      *
      * @return
      */
-    public List<User> findIsDelete();
+    List<User> findIsDelete();
 
 
     /**

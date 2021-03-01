@@ -3,6 +3,7 @@ package com.hjy.wuai.service.impl;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
+import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Music;
 import com.hjy.wuai.pojo.Video;
 import com.hjy.wuai.pojo.Wallpaper;
@@ -38,6 +39,9 @@ public class OssServiceImpl implements OssService {
     private ArticleServiceImpl articleService;
 
     @Autowired
+    private VideoServiceImpl videoService;
+
+    @Autowired
     private MusicServiceImpl musicService;
 
     @Autowired
@@ -49,7 +53,7 @@ public class OssServiceImpl implements OssService {
      * @return oss服务器图片访问url
      */
     @Override
-    public String upload(MultipartFile file) {
+    public String uploadPic(MultipartFile file) {
         String url = "";
         try {
             InputStream inputStream = file.getInputStream();
@@ -59,40 +63,17 @@ public class OssServiceImpl implements OssService {
             ossClient.putObject(OssConstant.BUCKET, fileName, inputStream);
             System.out.println("上传后");
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + fileName;
-            if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".mp3")) {
-                Music music = new Music();
-                music.setSinger(file.getOriginalFilename().split("-")[0]);
-                music.setSong(file.getOriginalFilename().split("-")[1]);
-                music.setOssSong(fileName);
-                music.setOosSrc(url);
-                music.setAuthorId(1365502991892807681L);
-                music.setCategoryId(4);
-                try {
-                    musicService.save(music);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    e.printStackTrace();
-                }
-            } else if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".mp4")) {
-                try {
-                    Video video = new Video();
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    e.printStackTrace();
-                }
-            } else {
-                Wallpaper wallpaper = new Wallpaper();
-                wallpaper.setCategoryId(1);
-                wallpaper.setAuthorId(1365502991892807681L);
-                wallpaper.setOosSrc(url);
-                wallpaper.setTitle(file.getOriginalFilename());
-                wallpaper.setOosTitle(fileName);
-                try {
-                    wallpaperService.save(wallpaper);
-                } catch (Exception e) {
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    e.printStackTrace();
-                }
+            Wallpaper wallpaper = new Wallpaper();
+            wallpaper.setCategoryId(1);
+            wallpaper.setAuthorId(1365502991892807681L);
+            wallpaper.setOosSrc(url);
+            wallpaper.setTitle(file.getOriginalFilename());
+            wallpaper.setOosTitle(fileName);
+            try {
+                wallpaperService.save(wallpaper);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                e.printStackTrace();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,6 +82,118 @@ public class OssServiceImpl implements OssService {
             return url;
         }
     }
+
+    /**
+     * 上传图片到OSS服务器
+     *
+     * @return oss服务器图片访问url
+     */
+    @Override
+    public String uploadArticle(MultipartFile file) {
+        String url = "";
+        try {
+            InputStream inputStream = file.getInputStream();
+            OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
+            String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
+            System.out.println("上传之前");
+            ossClient.putObject(OssConstant.BUCKET, fileName, inputStream);
+            System.out.println("上传后");
+            url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + fileName;
+            Article article = new Article();
+            article.setTitle("title");
+            article.setContent("content");
+            article.setArticleCover("oos_src");
+            article.setAuthorId(1365502991892807681L);
+            article.setCategoryId(5);
+            try {
+                articleService.save(article);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            ossClient.shutdown();
+            return url;
+        }
+    }
+
+    /**
+     * 上传音频到OSS服务器
+     *
+     * @return oss服务器图片访问url
+     */
+    @Override
+    public String uploadMusic(MultipartFile file) {
+        String url = "";
+        try {
+            InputStream inputStream = file.getInputStream();
+            OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
+            String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
+            System.out.println("上传之前");
+            ossClient.putObject(OssConstant.BUCKET, fileName, inputStream);
+            System.out.println("上传后");
+            url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + fileName;
+            Music music = new Music();
+            music.setSinger(file.getOriginalFilename().split("-")[0]);
+            music.setSong(file.getOriginalFilename().split("-")[1]);
+            music.setOssSong(fileName);
+            music.setOosSrc(url);
+            music.setAuthorId(1365502991892807681L);
+            music.setCategoryId(4);
+            try {
+                musicService.save(music);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            ossClient.shutdown();
+            return url;
+        }
+    }
+
+
+    /**
+     * 上传视频到OSS服务器
+     *
+     * @return oss服务器视频访问url
+     */
+    @Override
+    public String uploadVideo(MultipartFile file) {
+        String url = "";
+        try {
+            InputStream inputStream = file.getInputStream();
+            OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
+            String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
+            System.out.println("上传之前");
+            ossClient.putObject(OssConstant.BUCKET, fileName, inputStream);
+            System.out.println("上传后");
+            url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + fileName;
+            Video video = new Video();
+            video.setVideoName(file.getOriginalFilename());
+            video.setOosName(fileName);
+            video.setOosSrc(url);
+            video.setCategoryId(3);
+            video.setAuthorId(1365502991892807681L);
+            System.out.println(video);
+            try {
+                videoService.save(video);
+            } catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            ossClient.shutdown();
+            return url;
+        }
+    }
+
 
     /**
      * 删除文件

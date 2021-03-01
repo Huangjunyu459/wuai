@@ -11,9 +11,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @author： hjy
- * @date： 2021/2/26 0026,下午 19:37
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/26 0026,下午 19:37
+ * @email 541605007@qq.com
  */
 @Configuration
 @EnableSwagger2

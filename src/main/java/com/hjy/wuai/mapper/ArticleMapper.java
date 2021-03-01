@@ -21,9 +21,21 @@ public interface ArticleMapper extends BaseMapper<Article> {
     /**
      * 查询已删除的作品
      *
-     * @return
+     * @return 返回已被删除的作品集合
      */
     @Select("select * from article where is_delete = 1")
-    public List<Article> findIsDelete();
+    List<Article> findIsDelete();
+
+    /**
+     * 根据 视频的 id 查询 所属的分类名
+     *
+     * @param aid 视频 id
+     * @return 分类名称
+     */
+    @Select("SELECT category.category_name FROM category " +
+            "INNER JOIN article " +
+            "ON article.category_id = category.id " +
+            "WHERE article.id = #{aid}")
+    String findCategoryNameByAid(Long aid);
 
 }

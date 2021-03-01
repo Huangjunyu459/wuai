@@ -39,7 +39,7 @@ public class ArticleTest {
         article.setAuthorId(4L);
         article.setCategoryId(4);
         article.setArticleCover("这是文章封面图片的路径");
-        articleController.upload(article);
+        articleController.save(article);
     }
 
     @Test

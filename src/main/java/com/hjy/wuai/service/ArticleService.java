@@ -22,7 +22,7 @@ public interface ArticleService extends IService<Article> {
      *
      * @return
      */
-    public List<Article> findAllArticle();
+    List<Article> findAllArticle();
 
 
     /**
@@ -31,7 +31,7 @@ public interface ArticleService extends IService<Article> {
      * @param title
      * @return
      */
-    public List<Article> findArticleByTitle(String title);
+    List<Article> findArticleByTitle(String title);
 
     /**
      * 点赞功能
@@ -39,14 +39,14 @@ public interface ArticleService extends IService<Article> {
      * @param id
      * @return
      */
-    public boolean likes(Long id);
+    boolean likes(Long id);
 
     /**
      * 查询已删除的作品
      *
      * @return
      */
-    public List<Article> findIsDelete();
+    List<Article> findIsDelete();
 
     /**
      * 分页查询
@@ -54,7 +54,15 @@ public interface ArticleService extends IService<Article> {
      * @param index
      * @return
      */
-    public IPage<Article> pagingQuery(Integer index);
+    IPage<Article> pagingQuery(Integer index);
+
+    /**
+     * 根据 文章的 id 查询 所属的分类名
+     *
+     * @param aid 文章 id
+     * @return 分类名称
+     */
+    String findCategoryNameByAid(Long aid);
 
 
 }

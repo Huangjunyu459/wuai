@@ -76,6 +76,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean save(User entity) {
+        System.out.println("进入了service层");
         //  获取 hash 后的密码和盐的集合
         List<String> list = passwordAndSalt(entity.getPassword());
         entity.setPasswordSalt(list.get(0));
@@ -139,13 +140,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 根据用户名 精准查询
+     *
+     * @param username
+     * @return
+     */
+    @Override
+    public User findUserByUsername(String username) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username);
+        return userMapper.selectOne(wrapper);
+    }
+
+
+    /**
      * 根据用户名 模糊查询
      *
      * @param username
      * @return
      */
     @Override
-    public List<User> findUserByUsername(String username) {
+    public List<User> findUsersByUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.like("username", username);
         return userMapper.selectList(wrapper);
@@ -156,8 +171,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 会员充值功能
      * 难点：比如充值一个月会员，把 state 设为 1，如何在一个月之后自动把 state 设为 0？
      *
-     * @param id
-     * @return
+     * @param id 用户id
+     * @return 结果
      */
     @Override
     public boolean recharge(Long id) {
@@ -171,6 +186,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    /**
+     * 会员逾期功能
+     *
+     * @param id 用户id
+     * @return 结果
+     */
+    @Override
+    public boolean overdue(Long id) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            return false;
+        } else {
+            user.setState(1);
+            userMapper.updateById(user);
+            return true;
+        }
+    }
 
     /**
      * 用户签到功能，每次签到增加 5 积分（如何每次过12点就刷新签到功能）
@@ -186,6 +218,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.updateById(user) == 1 ? true : false;
     }
 
+    /**
+     * 重置所有用户签到状态（每天凌晨12点后触发）
+     *
+     * @return
+     */
+    @Override
+    public boolean resetSignIn() {
+        User user = new User();
+        user.setQiandao(0);
+        try {
+            userMapper.update(user, null);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     /**
      * 根据邮箱查询用户
@@ -194,29 +244,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return
      */
     @Override
-    public List<User> findUserByEmail(String email) {
+    public User findUserByEmail(String email) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("email", email);
-        return userMapper.selectList(wrapper);
-    }
-
-
-    /**
-     * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
-     *
-     * @param idOrUsername
-     * @return
-     */
-    @Override
-    public List<User> findUserByIdOrUsername(Object idOrUsername) {
-        List<User> list = new ArrayList<>();
-        if (idOrUsername instanceof Long) {
-            User user = userMapper.selectById(idOrUsername.toString());
-            list.add(user);
-            return list;
-        } else {
-            return findUserByUsername(idOrUsername.toString());
-        }
+        return userMapper.selectOne(wrapper);
     }
 
 
@@ -234,9 +265,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (entity.getEmail() == null && entity.getUsername() == null) {
             return findAllUser();
         } else if (entity.getUsername() == null && entity.getEmail() != null) {
-            return findUserByEmail(entity.getEmail());
+            return Arrays.asList(findUserByEmail(entity.getEmail()));
         } else if (entity.getUsername() != null && entity.getEmail() == null) {
-            return findUserByUsername(entity.getUsername());
+            return findUsersByUsername(entity.getUsername());
         } else {
             return userMapper.selectByMap(map);
         }

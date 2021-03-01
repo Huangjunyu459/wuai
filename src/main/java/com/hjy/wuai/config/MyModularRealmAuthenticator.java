@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @author： hjy
- * @date： 2021/2/20 0020,下午 12:13
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/20 0020,下午 12:13
+ * @email 541605007@qq.com
  * <p>
  * 自定义认证器
  */

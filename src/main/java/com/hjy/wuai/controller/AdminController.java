@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hjy
  * @since 2021-02-20
  */
-@Controller
+@RestController
 @RequestMapping("admin")
 public class AdminController {
 
@@ -27,7 +27,6 @@ public class AdminController {
     public String login(String adminName, String password) {
         return adminService.login(adminName, password) == true ? "admin" : "fail";
     }
-
 
 }
 

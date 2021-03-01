@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author： hjy
- * @date： 2021/2/28 0028,上午 9:48
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/28 0028,上午 9:48
+ * @email 541605007@qq.com
  * OSS客户端配置类
  */
 @Configuration

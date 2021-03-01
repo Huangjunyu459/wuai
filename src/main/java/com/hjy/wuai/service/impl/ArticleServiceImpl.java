@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.ArticleMapper;
 import com.hjy.wuai.pojo.Article;
-import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -137,6 +136,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         IPage<Article> page = new Page<>(index, 5);
         IPage<Article> userIPage = articleMapper.selectPage(page, null);
         return userIPage;
+    }
+
+    /**
+     * 根据 文章的 id 查询 所属的分类名
+     *
+     * @param aid 文章 id
+     * @return 分类的名称
+     */
+    @Override
+    public String findCategoryNameByAid(Long aid) {
+        return articleMapper.findCategoryNameByAid(aid);
     }
 
 

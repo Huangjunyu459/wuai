@@ -2,15 +2,12 @@ package com.hjy.wuai.pojo;
 
 import com.baomidou.mybatisplus.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 /**
  * <p>
@@ -60,7 +57,7 @@ public class User implements Serializable {
     /**
      * 用户签名
      */
-    private byte[] sign;
+    private String sign;
 
     /**
      * 用户年龄

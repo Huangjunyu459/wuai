@@ -2,6 +2,8 @@ package com.hjy.wuai.controller;
 
 
 import com.hjy.wuai.pojo.Game;
+import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author hjy
@@ -28,60 +30,159 @@ public class GameController {
     @Autowired
     private GameServiceImpl gameService;
 
+    /**
+     * 上传游戏
+     *
+     * @param game 游戏实体类
+     * @return 返回上传的结果 msg
+     */
     @PostMapping("/save")
-    public String save(Game entity) {
-        return gameService.save(entity) == true ? "success" : "fail";
+    public Result1 save(Game game) {
+        if (gameService.save(game)) {
+            return Result1.success().setMessage("上传成功");
+        } else {
+            return Result1.fail().setMessage("上传失败");
+        }
     }
 
-    @PostMapping("upload")
-    public String upload(Game game) {
-        return gameService.save(game) == true ? "admin" : "fail";
-    }
 
+    /**
+     * 根据 id 获取游戏
+     *
+     * @param id 游戏 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("getById")
-    public String getById(Long id) {
+    public Result1 getById(Long id) {
         Game game = gameService.getById(id);
-        return "admin";
+        if (game != null) {
+            return Result1.success().data("game", game);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
     }
 
+    /**
+     * 更新游戏信息
+     *
+     * @param game 游戏实体
+     * @return 返回的结果 msg
+     */
     @PostMapping("updateById")
-    public String updateById(Game game) {
-        return gameService.updateById(game) == true ? "admin" : "fail";
+    public Result1 updateById(Game game) {
+        if (gameService.updateById(game)) {
+            return Result1.success().setMessage("更新成功");
+        } else {
+            return Result1.fail().setMessage("更新失败");
+        }
     }
 
+    /**
+     * 根据 id 删除游戏
+     *
+     * @param id 游戏 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("removeById")
-    public String removeById(Long id) {
-        return gameService.removeById(id) == true ? "admin" : "fail";
+    public Result1 removeById(Long id) {
+        if (gameService.removeById(id)) {
+            return Result1.success().setMessage("删除成功");
+        } else {
+            return Result1.fail().setMessage("删除失败");
+        }
     }
 
+    /**
+     * 查找所有游戏
+     *
+     * @return 返回的结果 msg
+     */
     @GetMapping("/findAllGame")
-    public String findAllGame() {
+    public Result1 findAllGame() {
         List<Game> gameList = gameService.findAllGame();
-        return "admin";
+        if (gameList.size() != 0) {
+            return Result1.success().data("gameList", gameList);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
     }
 
-    @GetMapping("findGameByTitle")
-    public String findGameByTitle(String title) {
-        List<Game> gameList = gameService.findGameByTitle(title);
-        return "admin";
+    /**
+     * 根据 游戏名称 查询
+     *
+     * @param gameName 游戏名称
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findGameByGameName")
+    public Result1 findGameByGameName(String gameName) {
+        List<Game> gameList = gameService.findGameByGameName(gameName);
+        if (gameList.size() != 0) {
+            return Result1.success().data("gameList", gameList);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
     }
 
+    /**
+     * 游戏点赞
+     *
+     * @param id 游戏的 id
+     * @return 返回的结果 msg
+     */
     @GetMapping("likes")
-    public String likes(Long id) {
-        return gameService.likes(id) == true ? "admin" : "fail";
+    public Result1 likes(Long id) {
+        if (gameService.likes(id)) {
+            return Result1.success().setMessage("点赞成功");
+        } else {
+            return Result1.fail().setMessage("点赞失败");
+        }
     }
 
+    /**
+     * 查询已删除的游戏
+     *
+     * @return 返回的结果 msg
+     */
     @GetMapping("findIsDelete")
-    public String findIsDelete() {
+    public Result1 findIsDelete() {
         List<Game> gameList = gameService.findIsDelete();
-        return "admin";
+        if (gameList.size() != 0) {
+            return Result1.success().data("gameList", gameList);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
     }
 
+    /**
+     * 游戏分页查询
+     *
+     * @param index 起始页
+     * @return 返回的结果 msg
+     */
     @GetMapping("pagingQuery")
-    public String pagingQuery(Integer index) {
+    public Result1 pagingQuery(Integer index) {
         Serializable gameIPage = gameService.pagingQuery(index);
-        System.out.println(gameIPage);
-        return "admin";
+        if (gameIPage != null) {
+            return Result1.success().data("gameIPage", gameIPage);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
+    }
+
+    /**
+     * 根据 游戏 id 查询所属分类
+     *
+     * @param gid 游戏的 id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findCategoryNameByGid")
+    public Result1 findCategoryNameByGid(Long gid) {
+        String categoryName = gameService.findCategoryNameByGid(gid);
+        if (categoryName != null) {
+            return Result1.success().data("categoryName", categoryName);
+        } else {
+            return Result1.fail().setMessage("没有所属分类名称");
+        }
     }
 
 }

@@ -31,7 +31,6 @@ public class WallpaperTest {
 
     @Test
     void testFindAll() {
-        System.out.println(wallpaperController.findAllWallpaper());
         List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaper();
         Iterator<Wallpaper> iterator = wallpaperList.iterator();
         while (iterator.hasNext()) {

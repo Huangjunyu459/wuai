@@ -4,12 +4,13 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.util.Date;
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hjy
@@ -30,7 +31,7 @@ public class Video implements Serializable {
     /**
      * 视频名称
      */
-    private String vedioName;
+    private String videoName;
 
     /**
      * 视频存储在 OSS 的名称

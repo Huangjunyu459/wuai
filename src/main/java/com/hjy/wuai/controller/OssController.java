@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 
 /**
  * @author： hjy
@@ -27,16 +26,57 @@ public class OssController {
 
 
     /**
-     * 文件上传到阿里oss服务器
+     * 壁纸上传到阿里oss服务器
      */
-    @PostMapping("upload")
-    public Result<String> upload(MultipartFile file) {
-        String picUrl = ossService.upload(file);
+    @PostMapping("uploadPic")
+    public Result<String> uploadPic(MultipartFile file) {
+        String picUrl = ossService.uploadPic(file);
         if (StringUtils.isEmpty(picUrl)) {
             return Result.failed("上传失败");
         }
         return Result.ok(picUrl);
     }
+
+
+    /**
+     * 文章的封面上传到阿里oss服务器
+     */
+    @PostMapping("uploadArticle")
+    public Result<String> uploadArticle(MultipartFile file) {
+        String picUrl = ossService.uploadArticle(file);
+        if (StringUtils.isEmpty(picUrl)) {
+            return Result.failed("上传失败");
+        }
+        return Result.ok(picUrl);
+    }
+
+
+    /**
+     * 音乐上传到阿里oss服务器
+     */
+    @PostMapping("uploadMusic")
+    public Result<String> uploadMusic(MultipartFile file) {
+        String picUrl = ossService.uploadMusic(file);
+        if (StringUtils.isEmpty(picUrl)) {
+            return Result.failed("上传失败");
+        }
+        return Result.ok(picUrl);
+    }
+
+
+    /**
+     * 视频上传到阿里oss服务器
+     */
+    @PostMapping("uploadVideo")
+    public Result<String> uploadVideo(MultipartFile file) {
+        String picUrl = ossService.uploadVideo(file);
+        if (StringUtils.isEmpty(picUrl)) {
+            return Result.failed("上传失败");
+        }
+        return Result.ok(picUrl);
+    }
+
+
 
     @GetMapping("delete/{filepath}")
     public void delete(@PathVariable String filepath, Model model) {

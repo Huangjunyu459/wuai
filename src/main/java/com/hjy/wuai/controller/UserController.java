@@ -2,27 +2,23 @@ package com.hjy.wuai.controller;
 
 
 import com.hjy.wuai.pojo.NameAndEmail;
+import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.User;
-import com.hjy.wuai.service.UserService;
 import com.hjy.wuai.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Random;
+
 
 /**
  * <p>
@@ -32,7 +28,7 @@ import java.util.Random;
  * @author hjy
  * @since 2021-02-18
  */
-@Controller
+@RestController
 @RequestMapping("user")
 @EnableCaching
 @EnableAsync(proxyTargetClass = true)
@@ -48,89 +44,118 @@ public class UserController {
     /**
      * 用户注册功能
      *
-     * @param user
+     * @param user 用户实体类
+     * @return 返回的结果 msg
      */
     @PostMapping("register")
-    public String register(User user) {
-        return userService.save(user) == true ? "login" : "fail";
+    public Result1 register(User user) {
+        System.out.println(user);
+        boolean statue = userService.save(user);
+        if (statue) {
+            return Result1.success().setMessage("注册成功");
+        } else {
+            return Result1.fail().setMessage("注册失败");
+        }
+
     }
 
     /**
      * 用户登录功能
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username 用户名
+     * @param password 密码
+     * @return 返回的结果 msg
      */
     @PostMapping("login")
-    public String login(String username, String password, String email) {
+    public Result1 login(String username, String password, String email) {
         try {
             userService.checkLogin(username, password, email);
-            return "index";
+            return Result1.success().setMessage("登录成功");
         } catch (Exception e) {
-            return "fail";
+            return Result1.fail().setMessage("注册失败");
         }
     }
 
     /**
      * 根据 id 查询用户
      *
-     * @param id
-     * @return
+     * @param id 用户的 id
+     * @return 返回的结果 msg
      */
     @RequestMapping("findUserById")
-    public String findUserById(Long id) {
+    public Result1 findUserById(Long id) {
         User user = userService.getById(id);
-        System.out.println(user);
-        return user != null ? "index" : "fail";
+        if (user != null) {
+            return Result1.success().data("user", user);
+        } else {
+            return Result1.fail().setMessage("用户不存在");
+        }
     }
 
 
     /**
      * 查询所有用户
      *
-     * @return
+     * @return 返回的结果 msg
      */
     @GetMapping("findAllUser")
-    public String findAllUser() {
+    public Result1 findAllUser() {
         List<User> userList = userService.findAllUser();
-        return userList.size() != 0 ? "success" : "fail";
+        return Result1.success().data("userList", userList);
+    }
+
+    /**
+     * 根据用户名精准查询
+     *
+     * @param username 用户名
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findUserByUsername")
+    public Result1 findUserByUsername(String username) {
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            return Result1.fail().setMessage("用户不存在");
+        } else {
+            return Result1.success().data("user", user);
+        }
     }
 
 
     /**
      * 根据用户名模糊查询
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 返回的结果 msg
      */
-    @GetMapping("findUserByUsername")
-    public String findUserByUsername(String username) {
-        List<User> userList = userService.findUserByUsername(username);
-        return userList.size() != 0 ? "success" : "fail";
+    @GetMapping("findUsersByUsername")
+    public Result1 findUsersByUsername(String username) {
+        List<User> userList = userService.findUsersByUsername(username);
+        if (userList.size() == 0) {
+            return Result1.fail().setMessage("用户不存在");
+        } else {
+            return Result1.success().data("userList", userList);
+        }
     }
-
 
     /**
      * 更新用户信息功能
      *
-     * @param user
-     * @return
+     * @param user 用户实体类
+     * @return 返回的结果 msg
      */
     @RequestMapping("updateUser")
-    public String updateUser(User user) {
+    public Result1 updateUser(User user) {
         if (userService.updateById(user)) {
-            return "success";
+            return Result1.success().setMessage("修改成功");
         } else {
-            return "fail";
+            return Result1.fail().setMessage("修改失败");
         }
     }
-
 
     /**
      * 退出登录功能
      *
-     * @return
+     * @return 重定向到登录页
      */
     @RequestMapping("logout")
     public String logout() {
@@ -142,50 +167,80 @@ public class UserController {
     /**
      * 会员充值
      *
-     * @param id
-     * @return
+     * @param id 用户的 id
+     * @return 返回的结果 msg
      */
     @GetMapping("recharge")
-    public String recharge(Long id) {
-        return userService.recharge(id) == true ? "success" : "fail";
+    public Result1 recharge(Long id) {
+        if (userService.recharge(id)) {
+            return Result1.success().setMessage("充值成功");
+        } else {
+            return Result1.fail().setMessage("充值失败");
+        }
     }
 
 
     /**
-     * 根据传入的 Object ，判断为 Integer 还是 String ，再调用对应的方法
+     * 根据 邮箱 查询用户
      *
-     * @param idOrUsername
-     * @return
+     * @param email 邮箱
+     * @return 返回的结果 msg
      */
-    @GetMapping("findUserByIdOrUsername")
-    public String findUserByIdOrUsername(Object idOrUsername) {
-        List<User> userList = userService.findUserByIdOrUsername(idOrUsername);
-        return "admin";
-    }
-
     @GetMapping("findUserByEmail")
-    public String findUserByEmail(String email) {
-        List<User> userList = userService.findUserByEmail(email);
-        return "admin";
+    public Result1 findUserByEmail(String email) {
+        User user = userService.findUserByEmail(email);
+        if (user != null) {
+            return Result1.success().data("user", user);
+        } else {
+            return Result1.fail().setMessage("用户不存在");
+        }
     }
 
+    /**
+     * 根据组合条件查询用户
+     *
+     * @param entity 传入的组合条件实体类
+     * @return 返回的结果 msg
+     */
     @GetMapping("findByMap")
-    public String findByMap(NameAndEmail entity) {
-        List<User> usserlist = userService.findByMap(entity);
-        return "admin";
+    public Result1 findByMap(NameAndEmail entity) {
+        List<User> userList = userService.findByMap(entity);
+        if (userList.size() == 0) {
+            return Result1.fail().setMessage("用户不存在");
+        } else {
+            return Result1.success().data("userList", userList);
+        }
     }
 
+    /**
+     * 查询已删除的用户
+     *
+     * @return 返回的结果 msg
+     */
     @GetMapping("findIsDelete")
-    public String findIsDelete() {
-        List<User> isDelete = userService.findIsDelete();
-        return "admin";
+    public Result1 findIsDelete() {
+        List<User> userList = userService.findIsDelete();
+        if (userList.size() == 0) {
+            return Result1.fail().setMessage("用户不存在");
+        } else {
+            return Result1.success().data("userList", userList);
+        }
     }
 
+    /**
+     * 用户的分页查询
+     *
+     * @param index 起始页
+     * @return 返回的结果 msg
+     */
     @GetMapping("pagingQuery")
-    public String pagingQuery(Integer index) {
+    public Result1 pagingQuery(Integer index) {
         Serializable userIPage = userService.pagingQuery(index);
-        System.out.println(userIPage);
-        return "admin";
+        if (userIPage != null) {
+            return Result1.success().data("userIPage", userIPage);
+        } else {
+            return Result1.fail().setMessage("没有数据");
+        }
     }
 
 

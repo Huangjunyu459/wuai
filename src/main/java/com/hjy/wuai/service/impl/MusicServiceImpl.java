@@ -41,7 +41,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
 
     /**
-     * 根据 id 获取作品
+     * 根据 id 获取音乐
      *
      * @param id
      * @return
@@ -52,9 +52,9 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
     }
 
     /**
-     * 作品更新（有待完善，具体要更新哪些信息）
+     * 音乐更新（有待完善，具体要更新哪些信息）
      *
-     * @param entity 作品实体
+     * @param entity 音乐实体
      * @return
      */
     @Override
@@ -80,7 +80,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
 
     /**
-     * 查询所有作品
+     * 查询所有音乐
      *
      * @return
      */
@@ -96,7 +96,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      * @return
      */
     @Override
-    public List<Music> findMusicByTitle(String song) {
+    public List<Music> findMusicBySong(String song) {
         QueryWrapper<Music> wrapper = new QueryWrapper<>();
         wrapper.like("song", song);
         return musicMapper.selectList(wrapper);
@@ -137,5 +137,18 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         IPage<Music> page = new Page<>(index, 5);
         IPage<Music> musicIPage = musicMapper.selectPage(page, null);
         return musicIPage;
+    }
+
+    /**
+     * 根据
+     * 音频的 id 查询 所属的分类名
+     *
+     * @param mid
+     * 音频id
+     * @return 分类的名称
+     */
+    @Override
+    public String findCategoryNameByMid(Long mid) {
+        return musicMapper.findCategoryNameByMid(mid);
     }
 }

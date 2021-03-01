@@ -76,8 +76,6 @@ class HjyApplicationTests {
         Long id = 1363146042106732545L;
         User user = userService.getById(id);
         System.out.println(user);
-        String msg = userController.findUserById(id);
-        System.out.println(msg);
 
     }
 
@@ -120,7 +118,7 @@ class HjyApplicationTests {
     @Test
     public void testFindUserByUsername() {
         System.out.println(userController.findUserByUsername("sam"));
-        List<User> userList = userService.findUserByUsername("sam");
+        List<User> userList = userService.findUsersByUsername("sam");
         Iterator<User> iterator = userList.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
@@ -133,18 +131,6 @@ class HjyApplicationTests {
     }
 
 
-    @Test
-    public void testFindUserByIdOrUsername() {
-        //List<User> userList = userService.findUserByIdOrUsername(1365502991892807681L);
-        List<User> userList = userService.findUserByIdOrUsername("sam");
-        Iterator<User> iterator = userList.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-
-        String page = userController.findUserByIdOrUsername("sam");
-        System.out.println(page);
-    }
 
 
     @Test
@@ -156,7 +142,6 @@ class HjyApplicationTests {
     @Test
     public void testFindByMap() {
         NameAndEmail entity = new NameAndEmail(null, "qz@qq.com");
-        String page = userController.findByMap(entity);
         List<User> userList = userService.findByMap(entity);
         Iterator<User> iterator = userList.iterator();
         while (iterator.hasNext()) {

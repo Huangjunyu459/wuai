@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author hjy
@@ -22,9 +22,21 @@ public interface MusicMapper extends BaseMapper<Music> {
     /**
      * 查询已删除的音乐
      *
-     * @return
+     * @return 返回已被删除的音乐集合
      */
     @Select("select * from music where is_delete = 1")
-    public List<Music> findIsDelete();
+    List<Music> findIsDelete();
+
+    /**
+     * 根据 视频的 id 查询 所属的分类名
+     *
+     * @param mid 视频 id
+     * @return 分类名称
+     */
+    @Select("SELECT category.category_name FROM category " +
+            "INNER JOIN music " +
+            "ON music.category_id = category.id " +
+            "WHERE music.id = #{wid}")
+    String findCategoryNameByMid(Long mid);
 
 }
