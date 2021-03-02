@@ -1,6 +1,5 @@
 package com.hjy.wuai.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
 
+
     /**
      * 用户登录功能
      *
@@ -51,6 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         MyToken token = new MyToken(username, password, email);
         subject.login(token);
     }
+
 
     /**
      * 密码加盐算法
@@ -68,11 +69,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return list;
     }
 
+
     /**
      * 用户注册功能
      *
      * @param entity 用户实体
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean save(User entity) {
@@ -83,25 +85,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //  把加密后的密码重新设置给用户
         entity.setPassword(list.get(1));
         return userMapper.insert(entity) == 1 ? true : false;
-
     }
+
 
     /**
      * 根据 id 获取用户
      *
-     * @param id
-     * @return
+     * @param id 用户 id
+     * @return 返回的结果
      */
     @Override
     public User getById(Serializable id) {
         return userMapper.selectById(id);
     }
 
+
     /**
      * 用户更新信息（有待完善，具体要更新哪些信息）
      *
      * @param entity 用户实体
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean updateById(User entity) {
@@ -114,36 +117,38 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         user.setPassword(list.get(1));
         user.setPasswordSalt(list.get(0));
-        return userMapper.updateById(user) == 1 ? true : false;
+        return userMapper.updateById(user) == 1;
     }
+
 
     /**
      * 根据 id 删除用户
      *
      * @param id 用户 id
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean removeById(Serializable id) {
-        return userMapper.deleteById(id) == 1 ? true : false;
+        return userMapper.deleteById(id) == 1;
     }
 
 
     /**
      * 查询所有用户
      *
-     * @return
+     * @return 返回的结果
      */
     @Override
     public List<User> findAllUser() {
         return userMapper.selectList(null);
     }
 
+
     /**
      * 根据用户名 精准查询
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 返回的结果
      */
     @Override
     public User findUserByUsername(String username) {
@@ -156,8 +161,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 根据用户名 模糊查询
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 返回的结果
      */
     @Override
     public List<User> findUsersByUsername(String username) {
@@ -172,7 +177,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 难点：比如充值一个月会员，把 state 设为 1，如何在一个月之后自动把 state 设为 0？
      *
      * @param id 用户id
-     * @return 结果
+     * @return 返回的结果
      */
     @Override
     public boolean recharge(Long id) {
@@ -186,11 +191,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
     /**
      * 会员逾期功能
      *
      * @param id 用户id
-     * @return 结果
+     * @return 返回的结果
      */
     @Override
     public boolean overdue(Long id) {
@@ -204,19 +210,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
     /**
      * 用户签到功能，每次签到增加 5 积分（如何每次过12点就刷新签到功能）
      *
-     * @param id
-     * @return
+     * @param id 用户id
+     * @return 返回的结果
      */
     @Override
     public boolean signIn(Long id) {
         User user = userMapper.selectById(id);
         user.setScore(user.getScore() + 5);
         user.setQiandao(1);
-        return userMapper.updateById(user) == 1 ? true : false;
+        return userMapper.updateById(user) == 1;
     }
+
 
     /**
      * 重置所有用户签到状态（每天凌晨12点后触发）
@@ -240,8 +248,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 根据邮箱查询用户
      *
-     * @param email
-     * @return
+     * @param email 邮箱
+     * @return 返回的结果
      */
     @Override
     public User findUserByEmail(String email) {
@@ -254,8 +262,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 根据 组合条件 查询
      *
-     * @param entity
-     * @return
+     * @param entity 组合条件的实体类
+     * @return 返回的结果
      */
     @Override
     public List<User> findByMap(NameAndEmail entity) {
@@ -273,21 +281,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+
     /**
      * 查询已删除的用户
      *
-     * @return
+     * @return 返回的结果
      */
     @Override
     public List<User> findIsDelete() {
         return userMapper.findIsDelete();
     }
 
+
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引页
+     * @return 返回的结果
      */
     @Override
     public IPage<User> pagingQuery(Integer index) {
@@ -295,6 +305,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         IPage<User> userIPage = userMapper.selectPage(page, null);
         return userIPage;
     }
-
 
 }

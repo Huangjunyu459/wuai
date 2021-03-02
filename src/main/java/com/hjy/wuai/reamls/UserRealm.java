@@ -18,16 +18,22 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * @author： hjy
- * @date： 2021/2/20 0020,上午 11:22
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/20 0020,上午 11:22
+ * @email 541605007@qq.com
  */
 @Slf4j
 public class UserRealm extends AuthorizingRealm {
 
+    /**
+     * 注入 userMapper
+     */
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 注入 rolesMapper
+     */
     @Autowired
     private RolesMapper rolesMapper;
 
@@ -41,6 +47,7 @@ public class UserRealm extends AuthorizingRealm {
     public String getName() {
         return "UserRealm";
     }
+
 
     /**
      * 获取授权数据（将当前用户的角色及权限信息查询出来）
@@ -59,7 +66,7 @@ public class UserRealm extends AuthorizingRealm {
         //  根据用户名查询当前用户的角色列表
         Set<String> roles = rolesMapper.queryRoleNamesByUserId(user.getId());
         Iterator<String> iterator = roles.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
 
@@ -101,7 +108,7 @@ public class UserRealm extends AuthorizingRealm {
 
         //  根据用户名，从数据库查询当前用户的安全数据
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("email",email );
+        wrapper.eq("email", email);
         User user = userMapper.selectOne(wrapper);
 
         /**
@@ -115,7 +122,6 @@ public class UserRealm extends AuthorizingRealm {
                 user.getPassword(),
                 ByteSource.Util.bytes(user.getPasswordSalt()),
                 getName());
-
 
         return info;
     }

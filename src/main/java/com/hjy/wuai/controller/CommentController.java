@@ -4,13 +4,11 @@ package com.hjy.wuai.controller;
 import com.hjy.wuai.pojo.Comment;
 import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.UnameAndComment;
-import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.CommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -28,8 +26,12 @@ import java.util.List;
 @RequestMapping("/comment")
 public class CommentController {
 
+    /**
+     * 引入 commentService
+     */
     @Autowired
     private CommentServiceImpl commentService;
+
 
     /**
      * 新增评论
@@ -62,18 +64,51 @@ public class CommentController {
         }
     }
 
+
     /**
-     * 查找所有评论
+     * 查找所有已审核的评论
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllComment")
-    public Result1 findAllComment() {
-        List<Comment> commentList = commentService.findAllComment();
+    @GetMapping("/findAllCommentExamine")
+    public Result1 findAllCommentExamine() {
+        List<Comment> commentList = commentService.findAllCommentExamine();
         if (commentList.size() != 0) {
             return Result1.success().data("commentList", commentList);
         } else {
             return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
+
+    /**
+     * 查找所有未审核的评论
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findAllCommentNoExamine")
+    public Result1 findAllCommentNoExamine() {
+        List<Comment> commentList = commentService.findAllCommentNoExamine();
+        if (commentList.size() != 0) {
+            return Result1.success().data("commentList", commentList);
+        } else {
+            return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 视频的 id
+     * @return 返回结果 msg
+     */
+    @GetMapping("examine")
+    public Result1 examine(Long id) {
+        if (commentService.examine(id)) {
+            return Result1.success().setMessage("审核通过");
+        } else {
+            return Result1.fail().setMessage("审核不通过");
         }
     }
 
@@ -93,6 +128,7 @@ public class CommentController {
         }
     }
 
+
     /**
      * 评论分页查询
      *
@@ -108,6 +144,7 @@ public class CommentController {
             return Result1.fail().setMessage("评论不存在");
         }
     }
+
 
     /**
      * 根据传入的作品 id 查询所有的评论

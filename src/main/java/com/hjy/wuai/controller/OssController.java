@@ -17,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
  * Oss控制器类
  */
 @RestController
-@RequestMapping("oss")
+@RequestMapping("/oss")
 public class OssController {
 
-
+    /**
+     * 引入 ossService
+     */
     @Autowired
     private OssServiceImpl ossService;
 
@@ -75,7 +77,6 @@ public class OssController {
         }
         return Result.ok(picUrl);
     }
-
 
 
     @GetMapping("delete/{filepath}")

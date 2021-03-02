@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2021/2/20 0020,下午 12:13
  * @email 541605007@qq.com
  * <p>
- * 自定义认证器
+ * 自定义认证器 暂时弃用了
  */
 @Slf4j
 @Deprecated

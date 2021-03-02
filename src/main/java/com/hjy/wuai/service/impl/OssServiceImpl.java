@@ -17,13 +17,12 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
- * @author： hjy
- * @date： 2021/2/28 0028,上午 9:54
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/28 0028,上午 9:54
+ * @email 541605007@qq.com
  * Oss服务接口实现类
  */
 @Service
@@ -31,21 +30,39 @@ import java.util.UUID;
 @Slf4j
 public class OssServiceImpl implements OssService {
 
-
+    /**
+     * 注入 ossClient
+     */
     @Autowired
     private OSSClient ossClient;
 
+
+    /**
+     * 注入 articleService
+     */
     @Autowired
     private ArticleServiceImpl articleService;
 
+    /**
+     * 注入 videoService
+     */
     @Autowired
     private VideoServiceImpl videoService;
 
+
+    /**
+     * 注入 musicService
+     */
     @Autowired
     private MusicServiceImpl musicService;
 
+
+    /**
+     * 注入 wallpaperService
+     */
     @Autowired
     private WallpaperServiceImpl wallpaperService;
+
 
     /**
      * 上传图片到OSS服务器
@@ -79,9 +96,10 @@ public class OssServiceImpl implements OssService {
             e.printStackTrace();
         } finally {
             ossClient.shutdown();
-            return url;
         }
+        return url;
     }
+
 
     /**
      * 上传图片到OSS服务器
@@ -115,9 +133,10 @@ public class OssServiceImpl implements OssService {
             e.printStackTrace();
         } finally {
             ossClient.shutdown();
-            return url;
         }
+        return url;
     }
+
 
     /**
      * 上传音频到OSS服务器
@@ -152,8 +171,8 @@ public class OssServiceImpl implements OssService {
             e.printStackTrace();
         } finally {
             ossClient.shutdown();
-            return url;
         }
+        return url;
     }
 
 
@@ -190,8 +209,8 @@ public class OssServiceImpl implements OssService {
             e.printStackTrace();
         } finally {
             ossClient.shutdown();
-            return url;
         }
+        return url;
     }
 
 

@@ -41,6 +41,7 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
+
     /**
      * 用户注册功能
      *
@@ -56,8 +57,8 @@ public class UserController {
         } else {
             return Result1.fail().setMessage("注册失败");
         }
-
     }
+
 
     /**
      * 用户登录功能
@@ -75,6 +76,7 @@ public class UserController {
             return Result1.fail().setMessage("注册失败");
         }
     }
+
 
     /**
      * 根据 id 查询用户
@@ -103,6 +105,7 @@ public class UserController {
         List<User> userList = userService.findAllUser();
         return Result1.success().data("userList", userList);
     }
+
 
     /**
      * 根据用户名精准查询
@@ -137,6 +140,7 @@ public class UserController {
         }
     }
 
+
     /**
      * 更新用户信息功能
      *
@@ -152,6 +156,7 @@ public class UserController {
         }
     }
 
+
     /**
      * 退出登录功能
      *
@@ -163,6 +168,7 @@ public class UserController {
         subject.logout();
         return "redirect:/";
     }
+
 
     /**
      * 会员充值
@@ -196,6 +202,7 @@ public class UserController {
         }
     }
 
+
     /**
      * 根据组合条件查询用户
      *
@@ -212,6 +219,7 @@ public class UserController {
         }
     }
 
+
     /**
      * 查询已删除的用户
      *
@@ -226,6 +234,7 @@ public class UserController {
             return Result1.success().data("userList", userList);
         }
     }
+
 
     /**
      * 用户的分页查询
@@ -242,7 +251,6 @@ public class UserController {
             return Result1.fail().setMessage("没有数据");
         }
     }
-
 
 }
 

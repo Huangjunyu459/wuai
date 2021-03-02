@@ -16,11 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
  * 此 controller 用来 处理用户 的会员 过期设置操作和 重置签到状态
  */
 @RestController
-@RequestMapping("timedtask")
+@RequestMapping("/timedtask")
 public class TimedTaskController {
 
+    /**
+     * 注入 userService
+     */
     @Autowired
     private UserServiceImpl userService;
+
 
     /**
      * 重置签到状态
@@ -37,6 +41,7 @@ public class TimedTaskController {
         }
     }
 
+
     /**
      * 会员逾期重置等级
      *
@@ -52,6 +57,7 @@ public class TimedTaskController {
             return Result1.fail().setMessage("重置用户为普通用户失败");
         }
     }
+
 
     /**
      * 注册时自动调用该方法检查是否存在同名的用户

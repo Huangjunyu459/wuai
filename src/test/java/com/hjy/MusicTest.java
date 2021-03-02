@@ -31,8 +31,8 @@ public class MusicTest {
 
     @Test
     void testFindAll() {
-        System.out.println(musicController.findAllMusic());
-        List<Music> wallpaperList = musicService.findAllMusic();
+        System.out.println(musicController.findAllMusicExamine());
+        List<Music> wallpaperList = musicService.findAllMusicExamine();
         Iterator<Music> iterator = wallpaperList.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next().getSong());

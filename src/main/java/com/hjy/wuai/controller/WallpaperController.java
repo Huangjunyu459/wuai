@@ -26,8 +26,12 @@ import java.util.List;
 @RequestMapping("/wallpaper")
 public class WallpaperController {
 
+    /**
+     * 注入 wallpaperService
+     */
     @Autowired
     private WallpaperServiceImpl wallpaperService;
+
 
     /**
      * 上传壁纸
@@ -35,7 +39,7 @@ public class WallpaperController {
      * @param wallpaper 壁纸实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("/save")
+    @PostMapping("save")
     public Result1 save(Wallpaper wallpaper) {
         if (wallpaperService.save(wallpaper)) {
             return Result1.success().setMessage("上传成功");
@@ -61,6 +65,7 @@ public class WallpaperController {
         }
     }
 
+
     /**
      * 更新壁纸信息
      *
@@ -75,6 +80,7 @@ public class WallpaperController {
             return Result1.fail().setMessage("更新失败");
         }
     }
+
 
     /**
      * 根据 id 删除壁纸
@@ -91,20 +97,38 @@ public class WallpaperController {
         }
     }
 
+
     /**
      * 查找所有壁纸
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllWallpaper")
-    public Result1 findAllWallpaper() {
-        List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaper();
+    @GetMapping("/findAllWallpaperExamine")
+    public Result1 findAllWallpaperExamine() {
+        List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaperExamine();
         if (wallpaperList.size() != 0) {
             return Result1.success().data("wallpaperList", wallpaperList);
         } else {
             return Result1.fail().setMessage("壁纸不存在");
         }
     }
+
+
+    /**
+     * 查找所有未审核的壁纸
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findAllWallpaperNoExamine")
+    public Result1 findAllWallpaperNoExamine() {
+        List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaperNoExamine();
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
 
     /**
      * 根据 壁纸标题查询
@@ -122,6 +146,7 @@ public class WallpaperController {
         }
     }
 
+
     /**
      * 壁纸点赞
      *
@@ -137,6 +162,7 @@ public class WallpaperController {
         }
     }
 
+
     /**
      * 查询已删除的壁纸
      *
@@ -151,6 +177,23 @@ public class WallpaperController {
             return Result1.fail().setMessage("壁纸不存在");
         }
     }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 壁纸的 id
+     * @return 返回结果 msg
+     */
+    @GetMapping("examine")
+    public Result1 examine(Long id) {
+        if (wallpaperService.examine(id)) {
+            return Result1.success().setMessage("审核通过");
+        } else {
+            return Result1.fail().setMessage("审核不通过");
+        }
+    }
+
 
     /**
      * 壁纸分页查询
@@ -168,6 +211,7 @@ public class WallpaperController {
         }
     }
 
+
     /**
      * 根据 壁纸 id 查询所属分类
      *
@@ -183,6 +227,5 @@ public class WallpaperController {
             return Result1.fail().setMessage("没有所属分类名称");
         }
     }
-
 }
 

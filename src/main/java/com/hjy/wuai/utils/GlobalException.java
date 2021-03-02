@@ -17,6 +17,12 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 @ControllerAdvice
 public class GlobalException {
 
+    /**
+     * 异常的处理方法
+     *
+     * @param e 传入的异常参数
+     * @return 返回处理结果
+     */
     @ExceptionHandler
     public String doException(Exception e) {
         if (e instanceof AuthorizationException) {
@@ -25,6 +31,8 @@ public class GlobalException {
             return "文件大小超过限制";
         } else if (e instanceof DataIntegrityViolationException) {
             return "数据完整性违规异常";
+        } else if (e instanceof NullPointerException) {
+            return "空指针异常";
         }
         return null;
     }

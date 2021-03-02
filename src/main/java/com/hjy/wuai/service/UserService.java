@@ -30,15 +30,15 @@ public interface UserService extends IService<User> {
     /**
      * 查询所有用户
      *
-     * @return
+     * @return 返回的结果
      */
     List<User> findAllUser();
 
     /**
      * 根据用户名精准查询
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 返回的结果
      */
     User findUserByUsername(String username);
 
@@ -47,7 +47,7 @@ public interface UserService extends IService<User> {
      * 根据用户名 模糊查询
      *
      * @param username 用户名
-     * @return
+     * @return 返回的结果
      */
     List<User> findUsersByUsername(String username);
 
@@ -55,15 +55,15 @@ public interface UserService extends IService<User> {
      * 会员充值功能
      *
      * @param id 用户 id
-     * @return
+     * @return 返回的结果
      */
     boolean recharge(Long id);
 
     /**
      * 会员逾期功能（把用户的会员等级设置为普通用户）
      *
-     * @param id
-     * @return
+     * @param id 用户 id
+     * @return 返回的结果
      */
     boolean overdue(Long id);
 
@@ -72,22 +72,22 @@ public interface UserService extends IService<User> {
      * 用户签到功能
      *
      * @param id 用户 id
-     * @return
+     * @return 返回的结果
      */
     boolean signIn(Long id);
 
     /**
      * 重置所有用户签到状态（每天凌晨12点后触发）
      *
-     * @return 结果
+     * @return 返回的结果
      */
     boolean resetSignIn();
 
     /**
      * 根据邮箱查询用户
      *
-     * @param email
-     * @return
+     * @param email 邮箱
+     * @return 返回的结果
      */
     User findUserByEmail(String email);
 
@@ -95,8 +95,8 @@ public interface UserService extends IService<User> {
     /**
      * 根据 组合条件 查询
      *
-     * @param entity
-     * @return
+     * @param entity 组合条件实体列
+     * @return 返回的结果
      */
     List<User> findByMap(NameAndEmail entity);
 
@@ -104,7 +104,7 @@ public interface UserService extends IService<User> {
     /**
      * 查询已删除的用户
      *
-     * @return
+     * @return 返回的结果
      */
     List<User> findIsDelete();
 
@@ -112,8 +112,9 @@ public interface UserService extends IService<User> {
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引号
+     * @return 返回的结果
      */
     IPage<User> pagingQuery(Integer index);
+
 }

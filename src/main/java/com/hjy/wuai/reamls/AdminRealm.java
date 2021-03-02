@@ -9,18 +9,22 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author： hjy
- * @date： 2021/2/20 0020,上午 11:22
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/20 0020,上午 11:22
+ * @email 541605007@qq.com
+ *
+ * 自定义的 AdminRealm ，弃用
  */
 @Deprecated
 @Slf4j
 public class AdminRealm extends AuthorizingRealm {
 
+    /**
+     * 注入 adminMapper
+     */
     @Autowired
     private AdminMapper adminMapper;
 

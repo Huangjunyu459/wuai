@@ -1,16 +1,17 @@
 package com.hjy.wuai.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author： hjy
- * @date： 2021/2/19 0019,上午 11:50
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/19 0019,上午 11:50
+ * @email 541605007@qq.com
+ * 页面跳转测试 controller
  */
-@Controller
+@Deprecated
+@RestController
 public class PageController {
 
     @RequestMapping("/{page}")

@@ -12,20 +12,20 @@ public interface OssConstant {
     /**
      * 外网访问oss服务器的域名
      */
-    public static final String END_POINT = "oss-cn-hangzhou.aliyuncs.com";
+    String END_POINT = "oss-cn-hangzhou.aliyuncs.com";
 
     /**
      * 访问KEY_ID
      */
-    public static final String ACCESS_KEY_ID = "LTAI4G4sMuip2a4CcvDnHgu4";
+    String ACCESS_KEY_ID = "LTAI4G4sMuip2a4CcvDnHgu4";
 
     /**
      * 访问密钥
      */
-    public static final String ACCESS_KEY_SECRET = "TqKbMmXFI7OgxwYwSbKTMMI8956nq5";
+    String ACCESS_KEY_SECRET = "TqKbMmXFI7OgxwYwSbKTMMI8956nq5";
 
     /**
      * 文章存储空间
      */
-    public static final String BUCKET = "2021article";
+    String BUCKET = "2021article";
 }

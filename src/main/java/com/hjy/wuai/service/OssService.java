@@ -13,16 +13,16 @@ public interface OssService {
     /**
      * 上传图片到OSS服务器
      *
-     * @param file
+     * @param file 图片文件
      * @return oss服务器图片访问url
      */
     String uploadPic(MultipartFile file);
 
 
     /**
-     * 上传图片到OSS服务器
+     * 上传作品到OSS服务器
      *
-     * @param file
+     * @param file 作品文件
      * @return oss服务文章封面访问url
      */
     String uploadArticle(MultipartFile file);
@@ -31,15 +31,16 @@ public interface OssService {
     /**
      * 上传音频到OSS服务器
      *
-     * @param file
+     * @param file 音频文件
      * @return oss服务器音频访问url
      */
     String uploadMusic(MultipartFile file);
 
+
     /**
      * 上传视频到OSS服务器
      *
-     * @param file
+     * @param file 视频文件
      * @return oss服务器视频访问url
      */
     String uploadVideo(MultipartFile file);
@@ -48,8 +49,8 @@ public interface OssService {
     /**
      * 删除文件
      *
-     * @param filePath
-     * @return
+     * @param filePath 文件路径
+     * @return 返回的结果
      */
     boolean deleteFile(String filePath);
 

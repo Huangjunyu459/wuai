@@ -27,6 +27,7 @@ public interface MusicMapper extends BaseMapper<Music> {
     @Select("select * from music where is_delete = 1")
     List<Music> findIsDelete();
 
+
     /**
      * 根据 视频的 id 查询 所属的分类名
      *
@@ -36,7 +37,7 @@ public interface MusicMapper extends BaseMapper<Music> {
     @Select("SELECT category.category_name FROM category " +
             "INNER JOIN music " +
             "ON music.category_id = category.id " +
-            "WHERE music.id = #{wid}")
+            "WHERE music.examine = 1 AND music.id = #{wid}")
     String findCategoryNameByMid(Long mid);
 
 }

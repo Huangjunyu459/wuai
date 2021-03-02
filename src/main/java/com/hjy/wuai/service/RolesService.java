@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author hjy
@@ -20,23 +20,24 @@ public interface RolesService extends IService<Roles> {
     /**
      * 查询所有作品
      *
-     * @return
+     * @return 返回的结果
      */
-     List<Roles> findAllRoles();
+    List<Roles> findAllRoles();
 
 
     /**
      * 查询已删除的作品
      *
-     * @return
+     * @return 返回的结果
      */
-     List<Roles> findIsDelete();
+    List<Roles> findIsDelete();
 
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引号
+     * @return 返回的结果
      */
-     IPage<Roles> pagingQuery(Integer index);
+    IPage<Roles> pagingQuery(Integer index);
+
 }

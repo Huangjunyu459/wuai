@@ -24,14 +24,18 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
+    /**
+     * 注入 articleMapper
+     */
     @Autowired
     private ArticleMapper articleMapper;
 
+
     /**
-     * 上传
+     * 上传作品
      *
-     * @param entity
-     * @return
+     * @param entity 实体类
+     * @return 返回上传的结果
      */
     @Override
     public boolean save(Article entity) {
@@ -42,20 +46,23 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setContent(entity.getContent());
         //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 src 路径
         article.setArticleCover(entity.getArticleCover());
-        return articleMapper.insert(article) == 1 ? true : false;
+        return articleMapper.insert(article) == 1;
     }
 
 
     /**
      * 根据 id 获取作品
      *
-     * @param id
-     * @return
+     * @param id 作品 id
+     * @return 返回结果
      */
     @Override
     public Article getById(Serializable id) {
-        return articleMapper.selectById(id);
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).eq("id", id);
+        return articleMapper.selectOne(wrapper);
     }
+
 
     /**
      * 作品更新（有待完善，具体要更新哪些信息）
@@ -70,8 +77,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article article = getById(entity.getId());
         article.setTitle(entity.getTitle());
         article.setContent(entity.getContent());
-        return articleMapper.updateById(article) == 1 ? true : false;
+        return articleMapper.updateById(article) == 1;
     }
+
 
     /**
      * 根据 id 删除
@@ -81,19 +89,49 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      */
     @Override
     public boolean removeById(Serializable id) {
-        return articleMapper.deleteById(id) == 1 ? true : false;
+        return articleMapper.deleteById(id) == 1;
     }
 
 
     /**
-     * 查询所有作品
+     * 查询所有已审核的作品
      *
      * @return
      */
     @Override
-    public List<Article> findAllArticle() {
-        return articleMapper.selectList(null);
+    public List<Article> findAllArticleExamine() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1);
+        return articleMapper.selectList(wrapper);
     }
+
+
+    /**
+     * 查询所有未审核的作品
+     *
+     * @return
+     */
+    @Override
+    public List<Article> findAllArticleNoExamine() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0);
+        return articleMapper.selectList(wrapper);
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 作品 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean examine(Long id) {
+        Article article = articleMapper.selectById(id);
+        article.setExamine(1);
+        return articleMapper.updateById(article) == 1;
+    }
+
 
     /**
      * 根据 作品名 模糊查询
@@ -119,8 +157,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public boolean likes(Long id) {
         Article article = articleMapper.selectById(id);
         article.setLove(article.getLove() + 1);
-        return articleMapper.updateById(article) == 1 ? true : false;
+        return articleMapper.updateById(article) == 1;
     }
+
 
     /**
      * 查询已删除的作品
@@ -145,6 +184,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return userIPage;
     }
 
+
     /**
      * 根据 文章的 id 查询 所属的分类名
      *
@@ -155,6 +195,5 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public String findCategoryNameByAid(Long aid) {
         return articleMapper.findCategoryNameByAid(aid);
     }
-
 
 }

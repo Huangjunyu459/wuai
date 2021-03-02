@@ -1,5 +1,6 @@
 package com.hjy.wuai.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -24,8 +25,12 @@ import java.util.List;
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
 
+    /**
+     * 注入 commentMapper
+     */
     @Autowired
     private CommentMapper commentMapper;
+
 
     /**
      * 新增评论
@@ -56,13 +61,42 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
 
     /**
-     * 查询所有评论
+     * 查询所有已审核的评论
      *
      * @return 返回的结果
      */
     @Override
-    public List<Comment> findAllComment() {
-        return commentMapper.selectList(null);
+    public List<Comment> findAllCommentExamine() {
+        QueryWrapper<Comment> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1);
+        return commentMapper.selectList(wrapper);
+    }
+
+
+    /**
+     * 查询所有未审核的评论
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Comment> findAllCommentNoExamine() {
+        QueryWrapper<Comment> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0);
+        return commentMapper.selectList(wrapper);
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 评论 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean examine(Long id) {
+        Comment comment = commentMapper.selectById(id);
+        comment.setExamine(1);
+        return commentMapper.updateById(comment) == 1;
     }
 
 
@@ -75,6 +109,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public List<Comment> findIsDelete() {
         return commentMapper.findIsDelete();
     }
+
 
     /**
      * 分页查询
@@ -99,6 +134,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     public List<UnameAndComment> findUnameAndCommentList(Long id) {
         return commentMapper.findUnameAndComment(id);
     }
+
 
     /**
      * 根据传入的用户 id 查询该用户的所有评论

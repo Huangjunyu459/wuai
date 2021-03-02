@@ -65,8 +65,8 @@ public class ArticleTest {
 
     @Test
     void testFindAll() {
-        System.out.println(articleController.findAllArticle());
-        List<Article> allArticle = articleService.findAllArticle();
+        System.out.println(articleController.findAllArticleExamine());
+        List<Article> allArticle = articleService.findAllArticleExamine();
         Iterator<Article> iterator = allArticle.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());

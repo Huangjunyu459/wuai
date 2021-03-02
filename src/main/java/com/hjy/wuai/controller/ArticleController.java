@@ -3,7 +3,6 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Result1;
-import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +26,12 @@ import java.util.List;
 @RequestMapping("/article")
 public class ArticleController {
 
+    /**
+     * 注入 articleService
+     */
     @Autowired
     private ArticleServiceImpl articleService;
+
 
     /**
      * 上传文章
@@ -62,6 +65,7 @@ public class ArticleController {
         }
     }
 
+
     /**
      * 更新文章信息
      *
@@ -76,6 +80,7 @@ public class ArticleController {
             return Result1.fail().setMessage("更新失败");
         }
     }
+
 
     /**
      * 根据 id 删除文章
@@ -92,20 +97,54 @@ public class ArticleController {
         }
     }
 
+
     /**
-     * 查找所有文章
+     * 查找所有已审核的文章
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllArticle")
-    public Result1 findAllArticle() {
-        List<Article> articleList = articleService.findAllArticle();
+    @GetMapping("/findAllArticleExamine")
+    public Result1 findAllArticleExamine() {
+        List<Article> articleList = articleService.findAllArticleExamine();
         if (articleList.size() != 0) {
             return Result1.success().data("articleList", articleList);
         } else {
             return Result1.fail().setMessage("文章不存在");
         }
     }
+
+
+    /**
+     * 查找所有已审核的文章
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findAllArticleNoExamine")
+    public Result1 findAllArticleNoExamine() {
+        List<Article> articleList = articleService.findAllArticleNoExamine();
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 视频的 id
+     * @return 返回结果 msg
+     */
+    @GetMapping("examine")
+    public Result1 examine(Long id) {
+        if (articleService.examine(id)) {
+            return Result1.success().setMessage("审核通过");
+        } else {
+            return Result1.fail().setMessage("审核不通过");
+        }
+    }
+
 
     /**
      * 根据 文章标题查询
@@ -123,6 +162,7 @@ public class ArticleController {
         }
     }
 
+
     /**
      * 文章点赞
      *
@@ -138,6 +178,7 @@ public class ArticleController {
         }
     }
 
+
     /**
      * 查询已删除的文章
      *
@@ -152,6 +193,7 @@ public class ArticleController {
             return Result1.fail().setMessage("文章不存在");
         }
     }
+
 
     /**
      * 文章分页查询
@@ -184,7 +226,6 @@ public class ArticleController {
         } else {
             return Result1.fail().setMessage("没有所属分类名称");
         }
-
     }
 }
 

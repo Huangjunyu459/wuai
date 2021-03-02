@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author hjy
@@ -17,43 +17,58 @@ import java.util.List;
 public interface GameService extends IService<Game> {
 
     /**
-     * 查询所有游戏
+     * 查询所有已审核的游戏
      *
-     * @return
+     * @return 返回的结果
      */
-     List<Game> findAllGame();
+    List<Game> findAllGameExamine();
+
+    /**
+     * 查询所有未审核的游戏
+     *
+     * @return 返回的结果
+     */
+    List<Game> findAllGameNoExamine();
+
+    /**
+     * 审核功能
+     *
+     * @param id 游戏 id
+     * @return 返回的结果
+     */
+    boolean examine(Long id);
 
 
     /**
      * 根据 游戏名 模糊查询
      *
-     * @param gameName
-     * @return
+     * @param gameName 游戏名
+     * @return 返回的结果
      */
     List<Game> findGameByGameName(String gameName);
 
     /**
      * 点赞功能
      *
-     * @param id
-     * @return
+     * @param id 游戏 id
+     * @return 返回的结果
      */
-     boolean likes(Long id);
+    boolean likes(Long id);
 
     /**
      * 查询已删除的游戏
      *
-     * @return
+     * @return 返回的结果
      */
-     List<Game> findIsDelete();
+    List<Game> findIsDelete();
 
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引号
+     * @return 返回的结果
      */
-     IPage<Game> pagingQuery(Integer index);
+    IPage<Game> pagingQuery(Integer index);
 
     /**
      * 根据 游戏的 id 查询 所属的分类名

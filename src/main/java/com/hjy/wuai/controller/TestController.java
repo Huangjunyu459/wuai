@@ -22,7 +22,7 @@ import java.util.Random;
  * @email: 541605007@qq.com
  */
 @Controller
-@RequestMapping("test")
+@RequestMapping("/test")
 @Slf4j
 @Deprecated
 public class TestController {

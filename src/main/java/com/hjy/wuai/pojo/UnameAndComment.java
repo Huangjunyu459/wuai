@@ -12,7 +12,13 @@ import lombok.Data;
 @Data
 public class UnameAndComment {
 
+    /**
+     * 用户名
+     */
     private String username;
 
+    /**
+     * 用户的评论
+     */
     private String content;
 }

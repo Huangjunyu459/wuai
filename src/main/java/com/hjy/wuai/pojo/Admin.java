@@ -63,5 +63,4 @@ public class Admin implements Serializable {
     @TableLogic
     private Integer isDelete;
 
-
 }

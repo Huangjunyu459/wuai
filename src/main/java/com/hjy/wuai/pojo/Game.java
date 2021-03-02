@@ -88,5 +88,9 @@ public class Game implements Serializable {
     @TableLogic
     private Integer isDelete;
 
+    /**
+     * 审核状态
+     */
+    private Integer examine;
 
 }

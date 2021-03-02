@@ -26,6 +26,7 @@ public interface GameMapper extends BaseMapper<Game> {
     @Select("select * from game where is_delete = 1")
     List<Game> findIsDelete();
 
+
     /**
      * 根据 视频的 id 查询 所属的分类名
      *
@@ -35,7 +36,7 @@ public interface GameMapper extends BaseMapper<Game> {
     @Select("SELECT category.category_name FROM category " +
             "INNER JOIN game " +
             "ON game.category_id = category.id " +
-            "WHERE game.id = #{gid}")
+            "WHERE game.examine = 1 AND game.id = #{gid}")
     String findCategoryNameByGid(Long gid);
 
 }

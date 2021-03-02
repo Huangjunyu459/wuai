@@ -31,7 +31,7 @@ public class WallpaperTest {
 
     @Test
     void testFindAll() {
-        List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaper();
+        List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaperExamine();
         Iterator<Wallpaper> iterator = wallpaperList.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());

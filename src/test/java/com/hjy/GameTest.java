@@ -31,8 +31,8 @@ public class GameTest {
 
     @Test
     void testFindAll() {
-        System.out.println(gameController.findAllGame());
-        List<Game> gameList = gameService.findAllGame();
+        System.out.println(gameController.findAllGameExamine());
+        List<Game> gameList = gameService.findAllGameExamine();
         Iterator<Game> iterator = gameList.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());

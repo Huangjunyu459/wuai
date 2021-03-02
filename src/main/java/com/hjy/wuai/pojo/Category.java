@@ -57,5 +57,4 @@ public class Category implements Serializable {
     @TableLogic
     private Integer isDelete;
 
-
 }

@@ -17,11 +17,27 @@ import java.util.List;
 public interface VideoService extends IService<Video> {
 
     /**
-     * 查询所有视频
+     * 查询所有已审核的视频
      *
      * @return 返回所有视频的集合
      */
-    List<Video> findAllVideo();
+    List<Video> findAllVideoExamine();
+
+
+    /**
+     * 查询所有未审核的视频
+     *
+     * @return 返回所有视频的集合
+     */
+    List<Video> findAllVideoNoExamine();
+
+    /**
+     * 审核功能
+     *
+     * @param id 视频 id
+     * @return 返回的结果
+     */
+    boolean examine(Long id);
 
 
     /**
@@ -32,6 +48,7 @@ public interface VideoService extends IService<Video> {
      */
     List<Video> findVideoByVideoName(String videoName);
 
+
     /**
      * 点赞功能
      *
@@ -40,6 +57,7 @@ public interface VideoService extends IService<Video> {
      */
     boolean likes(Long id);
 
+
     /**
      * 查询已删除的视频
      *
@@ -47,13 +65,15 @@ public interface VideoService extends IService<Video> {
      */
     List<Video> findIsDelete();
 
+
     /**
      * 分页查询
      *
      * @param index 起始页
-     * @return 返回的数据
+     * @return 返回的结果
      */
     IPage<Video> pagingQuery(Integer index);
+
 
     /**
      * 根据 视频的 id 查询 所属的分类名

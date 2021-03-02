@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author hjy
@@ -13,6 +13,13 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AdminService extends IService<Admin> {
 
-    public boolean login(String adminName,String password);
+    /**
+     * 管理员登录
+     *
+     * @param adminName 管理员名
+     * @param password  密码
+     * @return 返回的结果
+     */
+    boolean login(String adminName, String password);
 
 }

@@ -18,41 +18,56 @@ public interface ArticleService extends IService<Article> {
 
 
     /**
-     * 查询所有作品
+     * 查询所有已审核的作品
      *
-     * @return
+     * @return 返回的结果
      */
-    List<Article> findAllArticle();
+    List<Article> findAllArticleExamine();
+
+    /**
+     * 查询所有未审核的作品
+     *
+     * @return 返回的结果
+     */
+    List<Article> findAllArticleNoExamine();
+
+    /**
+     * 审核功能
+     *
+     * @param id 作品 id
+     * @return 返回的结果
+     */
+    boolean examine(Long id);
 
 
     /**
      * 根据 作品名 模糊查询
      *
-     * @param title
-     * @return
+     * @param title 作品标题
+     * @return 返回的结果
      */
     List<Article> findArticleByTitle(String title);
 
     /**
      * 点赞功能
      *
-     * @param id
-     * @return
+     * @param id 作品 id
+     * @return 返回的结果
      */
     boolean likes(Long id);
 
     /**
      * 查询已删除的作品
      *
-     * @return
+     * @return 返回的结果
      */
     List<Article> findIsDelete();
 
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引号
+     * @return 返回的结果
      */
     IPage<Article> pagingQuery(Integer index);
 
@@ -63,6 +78,5 @@ public interface ArticleService extends IService<Article> {
      * @return 分类名称
      */
     String findCategoryNameByAid(Long aid);
-
 
 }

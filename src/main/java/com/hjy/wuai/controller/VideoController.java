@@ -26,8 +26,12 @@ import java.util.List;
 @RequestMapping("/video")
 public class VideoController {
 
+    /**
+     * 注入 videoService
+     */
     @Autowired
     private VideoServiceImpl videoService;
+
 
     /**
      * 上传视频
@@ -35,7 +39,7 @@ public class VideoController {
      * @param video 视频实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("/save")
+    @PostMapping("save")
     public Result1 save(Video video) {
         if (videoService.save(video)) {
             return Result1.success().setMessage("上传成功");
@@ -61,6 +65,7 @@ public class VideoController {
         }
     }
 
+
     /**
      * 更新视频信息
      *
@@ -75,6 +80,7 @@ public class VideoController {
             return Result1.fail().setMessage("更新失败");
         }
     }
+
 
     /**
      * 根据 id 删除视频
@@ -91,20 +97,54 @@ public class VideoController {
         }
     }
 
+
     /**
-     * 查找所有视频
+     * 查找所有已审核的视频
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllVideo")
-    public Result1 findAllVideo() {
-        List<Video> videoList = videoService.findAllVideo();
+    @GetMapping("/findAllVideoExamine")
+    public Result1 findAllVideoExamine() {
+        List<Video> videoList = videoService.findAllVideoExamine();
         if (videoList.size() != 0) {
             return Result1.success().data("videoList", videoList);
         } else {
             return Result1.fail().setMessage("视频不存在");
         }
     }
+
+
+    /**
+     * 查找所有未审核的视频
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findAllVideoNoExamine")
+    public Result1 findAllVideoNoExamine() {
+        List<Video> videoList = videoService.findAllVideoNoExamine();
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 视频的 id
+     * @return 返回结果 msg
+     */
+    @GetMapping("examine")
+    public Result1 examine(Long id) {
+        if (videoService.examine(id)) {
+            return Result1.success().setMessage("审核通过");
+        } else {
+            return Result1.fail().setMessage("审核不通过");
+        }
+    }
+
 
     /**
      * 根据 视频名称 查询
@@ -122,6 +162,7 @@ public class VideoController {
         }
     }
 
+
     /**
      * 视频点赞
      *
@@ -137,6 +178,7 @@ public class VideoController {
         }
     }
 
+
     /**
      * 查询已删除的视频
      *
@@ -151,6 +193,7 @@ public class VideoController {
             return Result1.fail().setMessage("视频不存在");
         }
     }
+
 
     /**
      * 视频分页查询
@@ -183,7 +226,6 @@ public class VideoController {
         } else {
             return Result1.fail().setMessage("没有所属分类名称");
         }
-
     }
 }
 

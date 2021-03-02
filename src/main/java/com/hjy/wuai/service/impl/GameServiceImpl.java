@@ -42,7 +42,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setBdCode(entity.getBdCode());
         game.setAuthorId(entity.getAuthorId());
         game.setCategoryId(entity.getCategoryId());
-        return gameMapper.insert(game) == 1 ? true : false;
+        return gameMapper.insert(game) == 1;
     }
 
 
@@ -54,6 +54,8 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      */
     @Override
     public Game getById(Serializable id) {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).eq("id", id);
         return gameMapper.selectById(id);
     }
 
@@ -71,7 +73,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setGameName(entity.getGameName());
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
-        return gameMapper.updateById(game) == 1 ? true : false;
+        return gameMapper.updateById(game) == 1;
     }
 
     /**
@@ -82,18 +84,45 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      */
     @Override
     public boolean removeById(Serializable id) {
-        return gameMapper.deleteById(id) == 1 ? true : false;
+        return gameMapper.deleteById(id) == 1;
     }
 
 
     /**
-     * 查询所有游戏
+     * 查询所有已审核的游戏
      *
      * @return
      */
     @Override
-    public List<Game> findAllGame() {
-        return gameMapper.selectList(null);
+    public List<Game> findAllGameExamine() {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1);
+        return gameMapper.selectList(wrapper);
+    }
+
+    /**
+     * 查询所有未审核的游戏
+     *
+     * @return
+     */
+    @Override
+    public List<Game> findAllGameNoExamine() {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0);
+        return gameMapper.selectList(wrapper);
+    }
+
+    /**
+     * 审核功能
+     *
+     * @param id 游戏 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean examine(Long id) {
+        Game game = gameMapper.selectById(id);
+        game.setExamine(1);
+        return gameMapper.updateById(game) == 1;
     }
 
     /**
@@ -120,7 +149,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     public boolean likes(Long id) {
         Game game = gameMapper.selectById(id);
         game.setLove(game.getLove() + 1);
-        return gameMapper.updateById(game) == 1 ? true : false;
+        return gameMapper.updateById(game) == 1;
     }
 
     /**

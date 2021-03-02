@@ -25,14 +25,18 @@ import java.util.List;
 @Service
 public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements VideoService {
 
+    /**
+     * 注入 videoMapper
+     */
     @Autowired
     private VideoMapper videoMapper;
 
+
     /**
-     * 上传
+     * 上传视频
      *
-     * @param entity
-     * @return
+     * @param entity 视频实体类
+     * @return 返回的结果
      */
     @Override
     public boolean save(Video entity) {
@@ -42,63 +46,97 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         video.setOssSrc(entity.getOssSrc());
         video.setAuthorId(entity.getAuthorId());
         video.setCategoryId(entity.getCategoryId());
-        return videoMapper.insert(video) == 1 ? true : false;
+        return videoMapper.insert(video) == 1;
     }
 
 
     /**
      * 根据 id 获取视频
      *
-     * @param id
-     * @return
+     * @param id 视频的 id
+     * @return 返回的结果
      */
     @Override
     public Video getById(Serializable id) {
-        return videoMapper.selectById(id);
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).eq("id", id);
+        return videoMapper.selectOne(wrapper);
     }
+
 
     /**
      * 视频更新（有待完善，具体要更新哪些信息）
      *
      * @param entity 视频实体
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean updateById(Video entity) {
 
-        //  获取要更新的用户
+        //  获取要更新的视频
         Video video = getById(entity.getId());
         video.setVideoName(entity.getVideoName());
-        return videoMapper.updateById(video) == 1 ? true : false;
+        return videoMapper.updateById(video) == 1;
     }
+
 
     /**
      * 根据 id 删除
      *
      * @param id 用户 id
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean removeById(Serializable id) {
-        return videoMapper.deleteById(id) == 1 ? true : false;
+        return videoMapper.deleteById(id) == 1;
     }
 
 
     /**
-     * 查询所有视频
+     * 查询所有已审核的视频
      *
-     * @return
+     * @return 返回的结果
      */
     @Override
-    public List<Video> findAllVideo() {
-        return videoMapper.selectList(null);
+    public List<Video> findAllVideoExamine() {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1);
+        return videoMapper.selectList(wrapper);
     }
+
+
+    /**
+     * 查询所有未审核视频
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Video> findAllVideoNoExamine() {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0);
+        return videoMapper.selectList(wrapper);
+    }
+
+
+    /**
+     * 审核功能
+     *
+     * @param id 视频 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean examine(Long id) {
+        Video video = videoMapper.selectById(id);
+        video.setExamine(1);
+        return videoMapper.updateById(video) == 1;
+    }
+
 
     /**
      * 根据 视频名 模糊查询
      *
-     * @param videoName
-     * @return
+     * @param videoName 视频名称
+     * @return 返回的结果
      */
     @Override
     public List<Video> findVideoByVideoName(String videoName) {
@@ -111,14 +149,14 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     /**
      * 点赞功能
      *
-     * @param id
-     * @return
+     * @param id 视频 id
+     * @return 返回的结果
      */
     @Override
     public boolean likes(Long id) {
         Video video = videoMapper.selectById(id);
         video.setLove(video.getLove() + 1);
-        return videoMapper.updateById(video) == 1 ? true : false;
+        return videoMapper.updateById(video) == 1;
     }
 
     /**
@@ -134,8 +172,8 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引页
+     * @return 返回的结果
      */
     @Override
     public IPage<Video> pagingQuery(Integer index) {
@@ -143,6 +181,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         IPage<Video> videoIPage = videoMapper.selectPage(page, null);
         return videoIPage;
     }
+
 
     /**
      * 根据 视频的 id 查询 所属的分类名
@@ -154,6 +193,5 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     public String findCategoryNameByVid(Long vid) {
         return videoMapper.findCategoryNameByVid(vid);
     }
-
 
 }

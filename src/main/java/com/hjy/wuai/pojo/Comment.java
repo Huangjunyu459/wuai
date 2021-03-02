@@ -69,5 +69,9 @@ public class Comment implements Serializable {
     @Version
     private Integer version;
 
+    /**
+     * 审核状态
+     */
+    private Integer examine;
 
 }

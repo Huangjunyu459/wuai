@@ -34,7 +34,7 @@ public class ShiroConfig {
     /**
      * 自定义认证器，暂时不用
      *
-     * @return
+     * @return 返回一个 myModularRealmAuthenticator 对象
      */
     public MyModularRealmAuthenticator getMyModularRealmAuthenticator() {
         MyModularRealmAuthenticator myModularRealmAuthenticator = new MyModularRealmAuthenticator();
@@ -45,7 +45,7 @@ public class ShiroConfig {
      * 获取 AdminRealm，弃用
      *
      * @param matcher 加密器
-     * @return
+     * @return 返回一个 adminRealm 对象
      */
     public AdminRealm getAdminRealm(HashedCredentialsMatcher matcher) {
         AdminRealm adminRealm = new AdminRealm();
@@ -57,7 +57,7 @@ public class ShiroConfig {
      * 获取 UserRealm
      *
      * @param matcher 加密器
-     * @return
+     * @return 返回一个 userRealm 对象
      */
     @Bean
     public UserRealm getUserRealm(HashedCredentialsMatcher matcher) {
@@ -69,7 +69,7 @@ public class ShiroConfig {
     /**
      * RememberMe 管理器
      *
-     * @return 返回一个管理器对象
+     * @return 返回一个 cookieRememberMeManager 对象
      */
     public CookieRememberMeManager getCookieRememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -85,7 +85,7 @@ public class ShiroConfig {
     /**
      * 自定义 sessionManager 会话管理器
      *
-     * @return 返回一个会话管理器对象
+     * @return 返回一个 defaultWebSessionManager 对象
      */
     @Bean
     public DefaultWebSessionManager getDefaultWebSessionManager() {
@@ -110,7 +110,7 @@ public class ShiroConfig {
     /**
      * shiro 的权限注解
      *
-     * @return 返回 shiro 权限注解对象
+     * @return 返回一个 authorizationAttributeSourceAdvisor 对象
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
@@ -122,7 +122,7 @@ public class ShiroConfig {
     /**
      * 加密器
      *
-     * @return 返回设置加密方法后的加密器
+     * @return 返回一个 matcher 对象
      */
     @Bean
     public HashedCredentialsMatcher getHashedCredentialsMatcher() {
@@ -137,7 +137,7 @@ public class ShiroConfig {
     /**
      * 启用 thymeleaf 对 shiro 的方言支持
      *
-     * @return 返回 thymeleaf 对 shiro 的方言支持的对象
+     * @return 返回一个 iniRealm 对象
      */
     @Bean
     public ShiroDialect getShiroDialect() {
@@ -147,7 +147,7 @@ public class ShiroConfig {
     /**
      * 废弃，不使用文件的 realm
      *
-     * @return 返回一个读取本地文件的 realm
+     * @return 返回一个 myModularRealmAuthenticator 对象
      */
     public IniRealm getIniRealm() {
         IniRealm iniRealm = new IniRealm("classpath:shiro.ini");
@@ -158,7 +158,7 @@ public class ShiroConfig {
      * 废弃，改用自定义 realm
      *
      * @param dataSource 数据源
-     * @return 返回一个 jdbc 的realm
+     * @return 返回一个 jdbcRealm 对象
      */
     public JdbcRealm getJdbcRealm(DataSource dataSource) {
         JdbcRealm jdbcRealm = new JdbcRealm();
@@ -173,7 +173,7 @@ public class ShiroConfig {
      * 弃用
      *
      * @param matcher 加密器
-     * @return 返回一个自定义的 myRealm 对象
+     * @return 返回一个 myRealm 对象
      */
     public MyRealm getMyRealm(HashedCredentialsMatcher matcher) {
         MyRealm myRealm = new MyRealm();
@@ -188,7 +188,7 @@ public class ShiroConfig {
      *
      * @param userRealm      用户类的 Realm
      * @param sessionManager 会话管理器
-     * @return 返回一个 默认的网络安全管理器
+     * @return 返回一个 securityManager 对象
      */
     @Bean
     public DefaultWebSecurityManager getDefaultWebSecurityManager(UserRealm userRealm, DefaultWebSessionManager sessionManager) {

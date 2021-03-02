@@ -18,11 +18,26 @@ import java.util.List;
 public interface CommentService extends IService<Comment> {
 
     /**
-     * 查询所有评论
+     * 查询所有已审核的评论
      *
-     * @return
+     * @return 返回的结果
      */
-    List<Comment> findAllComment();
+    List<Comment> findAllCommentExamine();
+
+    /**
+     * 查询所有未审核的评论
+     *
+     * @return 返回的结果
+     */
+    List<Comment> findAllCommentNoExamine();
+
+    /**
+     * 审核功能
+     *
+     * @param id 游戏 id
+     * @return 返回的结果
+     */
+    boolean examine(Long id);
 
 
     /**
@@ -45,17 +60,16 @@ public interface CommentService extends IService<Comment> {
     /**
      * 查询已删除的评论
      *
-     * @return
+     * @return 返回的结果
      */
     List<Comment> findIsDelete();
 
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引号
+     * @return 返回的结果
      */
     IPage<Comment> pagingQuery(Integer index);
-
 
 }

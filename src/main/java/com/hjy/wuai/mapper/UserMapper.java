@@ -26,6 +26,4 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user where is_delete = 1")
     List<User> findIsDelete();
 
-
-
 }

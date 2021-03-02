@@ -26,6 +26,7 @@ public interface WallpaperMapper extends BaseMapper<Wallpaper> {
     @Select("select * from wallpaper where is_delete = 1")
     List<Wallpaper> findIsDelete();
 
+
     /**
      * 根据 壁纸的 id 查询 所属的分类名
      *
@@ -35,7 +36,7 @@ public interface WallpaperMapper extends BaseMapper<Wallpaper> {
     @Select("SELECT category.category_name FROM category " +
             "INNER JOIN wallpaper " +
             "ON wallpaper.category_id = category.id " +
-            "WHERE wallpaper.id = #{wid}")
+            "WHERE wallpaper.examine = 1 AND  wallpaper.id = #{wid}")
     String findCategoryNameByWid(Long wid);
 
 }

@@ -28,6 +28,7 @@ public interface CommentMapper extends BaseMapper<Comment> {
     @Select("SELECT username,content FROM COMMENT " +
             "INNER JOIN USER ON comment.user_id = user.id " +
             "WHERE comment.is_delete = 0 " +
+            "AND comment.examine = 1  " +
             "AND article_id = #{id}")
     List<UnameAndComment> findUnameAndComment(Long id);
 

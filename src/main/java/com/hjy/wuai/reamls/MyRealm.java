@@ -12,15 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
- * @author： hjy
- * @date： 2021/2/19 0019,下午 15:58
- * @email: 541605007@qq.com
+ * @author hjy
+ * @date 2021/2/19 0019,下午 15:58
+ * @email 541605007@qq.com
  * <p>
- * 自定义 MyRealm 类，继承 AuthorizingRealm（实现了 Realm 接口）
+ * 自定义 MyRealm 类，继承 AuthorizingRealm（实现了 Realm 接口），弃用
  */
 @Deprecated
 public class MyRealm extends AuthorizingRealm {
 
+    /**
+     * 注入 userMapper
+     */
     @Autowired
     private UserMapper userMapper;
 

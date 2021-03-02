@@ -18,7 +18,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class NameAndEmail implements Serializable {
 
-
     /**
      * 用户名
      */

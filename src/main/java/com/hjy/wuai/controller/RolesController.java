@@ -18,7 +18,7 @@ import java.util.List;
  * @email: 541605007@qq.com
  */
 @RestController
-@RequestMapping("roles")
+@RequestMapping("/roles")
 public class RolesController {
 
     @Autowired

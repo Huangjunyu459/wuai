@@ -31,8 +31,8 @@ public class VideoTest {
 
     @Test
     void testFindAll() {
-        System.out.println(videoController.findAllVideo());
-        List<Video> wallpaperList = videoService.findAllVideo();
+        System.out.println(videoController.findAllVideoExamine());
+        List<Video> wallpaperList = videoService.findAllVideoExamine();
         Iterator<Video> iterator = wallpaperList.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());

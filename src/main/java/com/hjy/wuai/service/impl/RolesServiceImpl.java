@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author hjy
@@ -26,86 +26,92 @@ import java.util.List;
 @Service
 public class RolesServiceImpl extends ServiceImpl<RolesMapper, Roles> implements RolesService {
 
+    /**
+     * 注入 rolesMapper
+     */
     @Autowired
     private RolesMapper rolesMapper;
 
 
     /**
-     * 上传
+     * 新建角色
      *
-     * @param entity
+     * @param entity 角色实体
      * @return
      */
     @Override
     public boolean save(Roles entity) {
-        return rolesMapper.insert(entity) == 1 ? true : false;
+        return rolesMapper.insert(entity) == 1;
     }
 
 
     /**
-     * 根据 id 获取游戏
+     * 根据 id 获取角色
      *
-     * @param id
-     * @return
+     * @param id 角色 id
+     * @return 返回的结果
      */
     @Override
     public Roles getById(Serializable id) {
         return rolesMapper.selectById(id);
     }
 
+
     /**
-     * 游戏更新（有待完善，具体要更新哪些信息）
+     * 角色更新（有待完善，具体要更新哪些信息）
      *
-     * @param entity 游戏实体
-     * @return
+     * @param entity 角色实体
+     * @return 返回的结果
      */
     @Override
     public boolean updateById(Roles entity) {
 
-        //  获取要更新的用户
+        //  获取要更新的角色
         Roles roles = getById(entity.getId());
         roles.setRoleId(entity.getRoleId());
         roles.setRoleName(entity.getRoleName());
-        return rolesMapper.updateById(roles) == 1 ? true : false;
+        return rolesMapper.updateById(roles) == 1;
     }
 
     /**
      * 根据 id 删除
      *
      * @param id 用户 id
-     * @return
+     * @return 返回的结果
      */
     @Override
     public boolean removeById(Serializable id) {
-        return rolesMapper.deleteById(id) == 1 ? true : false;
+        return rolesMapper.deleteById(id) == 1;
     }
 
 
     /**
      * 查询所有游戏
      *
-     * @return
+     * @return 返回的结果
      */
     @Override
     public List<Roles> findAllRoles() {
         return rolesMapper.selectList(null);
     }
 
+
     /**
      * 查询已删除的角色
      *
-     * @return
+     * @return 返回的结果
      */
     @Override
     public List<Roles> findIsDelete() {
         return rolesMapper.findIsDelete();
     }
 
+
     /**
      * 分页查询
      *
-     * @param index
-     * @return
+     * @param index 索引页
+     * @return 返回的结果
      */
     @Override
     public IPage<Roles> pagingQuery(Integer index) {
@@ -113,4 +119,5 @@ public class RolesServiceImpl extends ServiceImpl<RolesMapper, Roles> implements
         IPage<Roles> rolesIPage = rolesMapper.selectPage(page, null);
         return rolesIPage;
     }
+
 }

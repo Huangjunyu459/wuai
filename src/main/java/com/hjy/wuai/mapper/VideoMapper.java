@@ -26,6 +26,7 @@ public interface VideoMapper extends BaseMapper<Video> {
     @Select("select * from video where is_delete = 1")
     List<Video> findIsDelete();
 
+
     /**
      * 根据 视频的 id 查询 所属的分类名
      *
@@ -35,7 +36,7 @@ public interface VideoMapper extends BaseMapper<Video> {
     @Select("SELECT category.category_name FROM category " +
             "INNER JOIN video " +
             "ON video.category_id = category.id " +
-            "WHERE video.id = #{wid}")
+            "WHERE video.examine = 1 AND video.id = #{wid}")
     String findCategoryNameByVid(Long vid);
 
 }

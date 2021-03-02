@@ -65,5 +65,4 @@ public class Roles implements Serializable {
     @TableLogic
     private Integer isDelete;
 
-
 }

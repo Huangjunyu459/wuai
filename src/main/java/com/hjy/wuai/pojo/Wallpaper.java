@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class    Wallpaper implements Serializable {
+public class Wallpaper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -82,5 +82,10 @@ public class    Wallpaper implements Serializable {
     @TableLogic
     private Integer isDelete;
 
+
+    /**
+     * 审核状态
+     */
+    private Integer examine;
 
 }
