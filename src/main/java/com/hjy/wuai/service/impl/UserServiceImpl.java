@@ -225,6 +225,34 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.updateById(user) == 1;
     }
 
+    /**
+     * 扣除积分功能
+     *
+     * @param id 用户 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean deductScore(Long id) {
+        User user = userMapper.selectById(id);
+        user.setScore(user.getScore() - 5);
+        return userMapper.updateById(user) == 1;
+    }
+
+    /**
+     * 资源下载方法
+     *
+     * @param id 用户 id
+     * @return 返回的结果
+     */
+    @Override
+    public boolean download(Long id) {
+        User user = userMapper.selectById(id);
+        if (user.getScore() >= 5) {
+            return deductScore(id);
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 重置所有用户签到状态（每天凌晨12点后触发）

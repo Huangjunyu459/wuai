@@ -77,6 +77,22 @@ public interface UserService extends IService<User> {
     boolean signIn(Long id);
 
     /**
+     * 下载资源时，扣除用户相应的积分
+     *
+     * @param id 用户 id
+     * @return 返回的结果
+     */
+    boolean deductScore(Long id);
+
+    /**
+     * 下载资源功能
+     *
+     * @param id 用户 id
+     * @return 返回的结果
+     */
+    boolean download(Long id);
+
+    /**
      * 重置所有用户签到状态（每天凌晨12点后触发）
      *
      * @return 返回的结果

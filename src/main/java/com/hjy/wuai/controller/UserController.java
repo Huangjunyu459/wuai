@@ -187,6 +187,38 @@ public class UserController {
 
 
     /**
+     * 用户签到功能
+     *
+     * @param id 用户id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("signIn")
+    public Result1 signIn(Long id) {
+        if (userService.signIn(id)) {
+            return Result1.success().setMessage("签到成功");
+        } else {
+            return Result1.fail().setMessage("签到失败");
+        }
+    }
+
+
+    /**
+     * 资源下载方法
+     *
+     * @param id 用户 id
+     * @return 返回的结果
+     */
+    @GetMapping("download")
+    public Result1 download(Long id) {
+        if (userService.download(id)) {
+            return Result1.success().setMessage("跳转下载页面成功");
+        } else {
+            return Result1.fail().setMessage("跳转下载页面失败");
+        }
+    }
+
+
+    /**
      * 根据 邮箱 查询用户
      *
      * @param email 邮箱
