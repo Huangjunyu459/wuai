@@ -36,7 +36,15 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      */
     @Override
     public boolean save(Music entity) {
-        return musicMapper.insert(entity) == 1 ? true : false;
+        Music music = new Music();
+        music.setSinger(entity.getSinger());
+        music.setSong(entity.getSong());
+        //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 String类的集合，依次获取ossSong和ossSrc
+        music.setOssSong(entity.getOssSong());
+        music.setOssSrc(entity.getOssSrc());
+        music.setAuthorId(entity.getAuthorId());
+        music.setCategoryId(entity.getCategoryId());
+        return musicMapper.insert(music) == 1 ? true : false;
     }
 
 
@@ -143,8 +151,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      * 根据
      * 音频的 id 查询 所属的分类名
      *
-     * @param mid
-     * 音频id
+     * @param mid 音频id
      * @return 分类的名称
      */
     @Override

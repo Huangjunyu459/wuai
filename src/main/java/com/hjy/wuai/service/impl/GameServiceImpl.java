@@ -35,7 +35,14 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      */
     @Override
     public boolean save(Game entity) {
-        return gameMapper.insert(entity) == 1 ? true : false;
+        Game game = new Game();
+        game.setGameName(entity.getGameName());
+        game.setDescription(entity.getDescription());
+        game.setBdSrc(entity.getBdSrc());
+        game.setBdCode(entity.getBdCode());
+        game.setAuthorId(entity.getAuthorId());
+        game.setCategoryId(entity.getCategoryId());
+        return gameMapper.insert(game) == 1 ? true : false;
     }
 
 

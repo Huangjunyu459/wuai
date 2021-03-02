@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Wallpaper implements Serializable {
+public class    Wallpaper implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,12 +46,12 @@ public class Wallpaper implements Serializable {
     /**
      * 壁纸存储在 oos 的名称
      */
-    private String oosTitle;
+    private String ossTitle;
 
     /**
      * oos的路径
      */
-    private String oosSrc;
+    private String ossSrc;
 
     /**
      * 创建时间

@@ -36,7 +36,7 @@ public class ArticleController {
      * @param article 文章实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("/save")
+    @PostMapping("save")
     public Result1 save(Article article) {
         if (articleService.save(article)) {
             return Result1.success().setMessage("上传成功");

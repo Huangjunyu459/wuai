@@ -36,7 +36,13 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
      */
     @Override
     public boolean save(Wallpaper entity) {
-        return wallpaperMapper.insert(entity) == 1 ? true : false;
+        Wallpaper wallpaper = new Wallpaper();
+        wallpaper.setTitle(entity.getTitle());
+        wallpaper.setOssTitle(entity.getOssTitle());
+        wallpaper.setOssSrc(entity.getOssSrc());
+        wallpaper.setAuthorId(entity.getAuthorId());
+        wallpaper.setCategoryId(entity.getCategoryId());
+        return wallpaperMapper.insert(wallpaper) == 1 ? true : false;
     }
 
 

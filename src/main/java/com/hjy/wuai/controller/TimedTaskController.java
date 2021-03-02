@@ -1,6 +1,7 @@
 package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,11 @@ public class TimedTaskController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * 重置签到状态
+     *
+     * @return 返回的结果
+     */
     @GetMapping("resetSignIn")
     public Result1 resetSignIn() {
         boolean statue = userService.resetSignIn();
@@ -31,6 +37,12 @@ public class TimedTaskController {
         }
     }
 
+    /**
+     * 会员逾期重置等级
+     *
+     * @param id 用户id
+     * @return 返回的结果
+     */
     @GetMapping("overdue")
     public Result1 overdue(Long id) {
         boolean statue = userService.overdue(id);
@@ -38,6 +50,24 @@ public class TimedTaskController {
             return Result1.success().setMessage("重置用户为普通用户成功");
         } else {
             return Result1.fail().setMessage("重置用户为普通用户失败");
+        }
+    }
+
+    /**
+     * 注册时自动调用该方法检查是否存在同名的用户
+     * <p>
+     * statue 用于返回给前端进行判断，展示对应的 message
+     *
+     * @param username 用户名
+     * @return 返回的结果
+     */
+    @GetMapping("checkUserExist")
+    public Result1 checkUserExist(String username) {
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            return Result1.success().setMessage("用户名可注册").data("statue", true);
+        } else {
+            return Result1.fail().setMessage("用户名已存在").data("statue", false);
         }
     }
 }

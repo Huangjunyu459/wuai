@@ -66,9 +66,9 @@ public class OssServiceImpl implements OssService {
             Wallpaper wallpaper = new Wallpaper();
             wallpaper.setCategoryId(1);
             wallpaper.setAuthorId(1365502991892807681L);
-            wallpaper.setOosSrc(url);
+            wallpaper.setOssSrc(url);
             wallpaper.setTitle(file.getOriginalFilename());
-            wallpaper.setOosTitle(fileName);
+            wallpaper.setOssTitle(fileName);
             try {
                 wallpaperService.save(wallpaper);
             } catch (Exception e) {
@@ -139,7 +139,7 @@ public class OssServiceImpl implements OssService {
             music.setSinger(file.getOriginalFilename().split("-")[0]);
             music.setSong(file.getOriginalFilename().split("-")[1]);
             music.setOssSong(fileName);
-            music.setOosSrc(url);
+            music.setOssSrc(url);
             music.setAuthorId(1365502991892807681L);
             music.setCategoryId(4);
             try {
@@ -175,8 +175,8 @@ public class OssServiceImpl implements OssService {
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + fileName;
             Video video = new Video();
             video.setVideoName(file.getOriginalFilename());
-            video.setOosName(fileName);
-            video.setOosSrc(url);
+            video.setOssName(fileName);
+            video.setOssSrc(url);
             video.setCategoryId(3);
             video.setAuthorId(1365502991892807681L);
             System.out.println(video);

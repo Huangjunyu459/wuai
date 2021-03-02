@@ -35,7 +35,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      */
     @Override
     public boolean save(Article entity) {
-        return articleMapper.insert(entity) == 1 ? true : false;
+        Article article = new Article();
+        article.setTitle(entity.getTitle());
+        article.setAuthorId(entity.getAuthorId());
+        article.setCategoryId(entity.getCategoryId());
+        article.setContent(entity.getContent());
+        //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 src 路径
+        article.setArticleCover(entity.getArticleCover());
+        return articleMapper.insert(article) == 1 ? true : false;
     }
 
 

@@ -36,7 +36,7 @@ public class GameController {
      * @param game 游戏实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("/save")
+    @PostMapping("save")
     public Result1 save(Game game) {
         if (gameService.save(game)) {
             return Result1.success().setMessage("上传成功");

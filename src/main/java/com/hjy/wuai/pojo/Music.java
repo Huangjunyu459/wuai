@@ -46,7 +46,7 @@ public class Music implements Serializable {
     /**
      * 歌曲存储在 OSS 的路径
      */
-    private String oosSrc;
+    private String ossSrc;
 
     /**
      * 上传的用户id

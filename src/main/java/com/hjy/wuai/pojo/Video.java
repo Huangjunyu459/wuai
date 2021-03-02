@@ -36,12 +36,12 @@ public class Video implements Serializable {
     /**
      * 视频存储在 OSS 的名称
      */
-    private String oosName;
+    private String ossName;
 
     /**
      * 视频存储在 OSS 的路径
      */
-    private String oosSrc;
+    private String ossSrc;
 
     /**
      * 上传视频的用户的id

@@ -36,7 +36,13 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
      */
     @Override
     public boolean save(Video entity) {
-        return videoMapper.insert(entity) == 1 ? true : false;
+        Video video = new Video();
+        video.setVideoName(entity.getVideoName());
+        video.setOssName(entity.getOssName());
+        video.setOssSrc(entity.getOssSrc());
+        video.setAuthorId(entity.getAuthorId());
+        video.setCategoryId(entity.getCategoryId());
+        return videoMapper.insert(video) == 1 ? true : false;
     }
 
 
