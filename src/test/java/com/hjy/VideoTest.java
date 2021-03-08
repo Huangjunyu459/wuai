@@ -40,11 +40,11 @@ public class VideoTest {
     }
 
 
-    @Test
-    void testPage() {
-
-        videoController.pagingQuery(1);
-    }
+//    @Test
+//    void testPage() {
+//
+//        videoController.pagingQuery(1);
+//    }
 
     @Test
     void save(){

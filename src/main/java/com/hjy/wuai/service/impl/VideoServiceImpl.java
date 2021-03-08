@@ -3,9 +3,9 @@ package com.hjy.wuai.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Video;
 import com.hjy.wuai.mapper.VideoMapper;
+import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.VideoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +45,14 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         video.setOssName(entity.getOssName());
         video.setOssSrc(entity.getOssSrc());
         video.setAuthorId(entity.getAuthorId());
-        video.setCategoryId(entity.getCategoryId());
+        video.setCategoryId(3);
+        video.setExamine(1);
         return videoMapper.insert(video) == 1;
     }
 
 
     /**
-     * 根据 id 获取视频
+     * 根据 id 获取视频（过审）
      *
      * @param id 视频的 id
      * @return 返回的结果
@@ -60,6 +61,18 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     public Video getById(Serializable id) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1).eq("id", id);
+        return videoMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据 id 获取视频（未过审）
+     *
+     * @param id 视频的 id
+     * @return 返回的结果
+     */
+    public Video getByIdNoExamine(Serializable id) {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).eq("id", id);
         return videoMapper.selectOne(wrapper);
     }
 
@@ -76,6 +89,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         //  获取要更新的视频
         Video video = getById(entity.getId());
         video.setVideoName(entity.getVideoName());
+        video.setOssName(entity.getOssName());
+        video.setOssSrc(entity.getOssSrc());
+        video.setLove(entity.getLove());
         return videoMapper.updateById(video) == 1;
     }
 
@@ -125,7 +141,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
      * @return 返回的结果
      */
     @Override
-    public boolean examine(Long id) {
+    public boolean examine(String id) {
         Video video = videoMapper.selectById(id);
         video.setExamine(1);
         return videoMapper.updateById(video) == 1;
@@ -133,16 +149,41 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
 
 
     /**
-     * 根据 视频名 模糊查询
+     * 根据 视频名 模糊查询(过审)
      *
      * @param videoName 视频名称
      * @return 返回的结果
      */
     @Override
-    public List<Video> findVideoByVideoName(String videoName) {
+    public List<Video> findVideoByVideoNameExamine(String videoName) {
         QueryWrapper<Video> wrapper = new QueryWrapper<>();
-        wrapper.like("video_name", videoName);
+        wrapper.like("video_name", videoName).eq("examine", 1);
         return videoMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 视频名 模糊查询(未过审)
+     *
+     * @param videoName 视频名称
+     * @return 返回的结果
+     */
+    @Override
+    public List<Video> findVideoByVideoNameNoExamine(String videoName) {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.like("video_name", videoName).eq("examine", 0);
+        return videoMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 视频名 模糊查询(已删除)
+     *
+     * @param videoName 视频名称
+     * @return 返回的结果
+     */
+    @Override
+    public List<Video> findVideoByVideoNameIsDelete(String videoName) {
+        videoName = "%" + videoName + "%";
+        return videoMapper.findVideoByVideoNameIsDelete(videoName);
     }
 
 
@@ -153,7 +194,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
      * @return 返回的结果
      */
     @Override
-    public boolean likes(Long id) {
+    public boolean likes(String id) {
         Video video = videoMapper.selectById(id);
         video.setLove(video.getLove() + 1);
         return videoMapper.updateById(video) == 1;
@@ -170,16 +211,45 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     }
 
     /**
-     * 分页查询
+     * 分页查询（过审）
      *
      * @param index 索引页
      * @return 返回的结果
      */
     @Override
-    public IPage<Video> pagingQuery(Integer index) {
-        IPage<Video> page = new Page<>(index, 5);
-        IPage<Video> videoIPage = videoMapper.selectPage(page, null);
+    public IPage<Video> pagingQueryExamine(String videoName, Integer index, Integer size) {
+        IPage<Video> page = new Page<>(index, size);
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).like("video_name", videoName);
+        IPage<Video> videoIPage = videoMapper.selectPage(page, wrapper);
         return videoIPage;
+    }
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public IPage<Video> pagingQueryNoExamine(String videoName, Integer index, Integer size) {
+        IPage<Video> page = new Page<>(index, size);
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).like("video_name", videoName);
+        IPage<Video> videoIPage = videoMapper.selectPage(page, wrapper);
+        return videoIPage;
+    }
+
+    /**
+     * 分页查询（已删除）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public List<Video> pagingQueryIsDelete(String videoName, Integer index, Integer size) {
+        videoName = "%" + videoName + "%";
+        return videoMapper.pagingQueryIsDelete(videoName,index, size);
     }
 
 
@@ -190,7 +260,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
      * @return 分类的名称
      */
     @Override
-    public String findCategoryNameByVid(Long vid) {
+    public String findCategoryNameByVid(String vid) {
         return videoMapper.findCategoryNameByVid(vid);
     }
 

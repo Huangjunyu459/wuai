@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.WallpaperMapper;
+import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,14 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
         wallpaper.setOssTitle(entity.getOssTitle());
         wallpaper.setOssSrc(entity.getOssSrc());
         wallpaper.setAuthorId(entity.getAuthorId());
-        wallpaper.setCategoryId(entity.getCategoryId());
+        wallpaper.setCategoryId(1);
+        wallpaper.setExamine(1);
         return wallpaperMapper.insert(wallpaper) == 1;
     }
 
 
     /**
-     * 根据 id 获取壁纸
+     * 根据 id 获取壁纸（已过审）
      *
      * @param id 壁纸的id
      * @return 返回的结果
@@ -60,6 +62,18 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
     public Wallpaper getById(Serializable id) {
         QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1).eq("id", id);
+        return wallpaperMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据 id 获取壁纸（未过审）
+     *
+     * @param id 壁纸的id
+     * @return 返回的结果
+     */
+    public Wallpaper getByIdNoExamine(Serializable id) {
+        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).eq("id", id);
         return wallpaperMapper.selectOne(wrapper);
     }
 
@@ -74,9 +88,12 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
     public boolean updateById(Wallpaper entity) {
 
         //  获取要更新的壁纸
-        Wallpaper Wallpaper = getById(entity.getId());
-        Wallpaper.setTitle(entity.getTitle());
-        return wallpaperMapper.updateById(Wallpaper) == 1;
+        Wallpaper wallpaper = getById(entity.getId());
+        wallpaper.setTitle(entity.getTitle());
+        wallpaper.setOssTitle(entity.getOssTitle());
+        wallpaper.setOssSrc(entity.getOssSrc());
+        wallpaper.setLove(entity.getLove());
+        return wallpaperMapper.updateById(wallpaper) == 1;
     }
 
     /**
@@ -124,7 +141,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
      * @return 返回的结果
      */
     @Override
-    public boolean examine(Long id) {
+    public boolean examine(String id) {
         Wallpaper wallpaper = wallpaperMapper.selectById(id);
         wallpaper.setExamine(1);
         return wallpaperMapper.updateById(wallpaper) == 1;
@@ -132,16 +149,41 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
 
 
     /**
-     * 根据 壁纸标题 模糊查询
+     * 根据 壁纸标题 模糊查询(已过审)
      *
      * @param title 壁纸标题
      * @return 返回的结果
      */
     @Override
-    public List<Wallpaper> findWallpaperByTitle(String title) {
+    public List<Wallpaper> findWallpaperByTitleExamine(String title) {
         QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
         wrapper.like("title", title).eq("examine", 1);
         return wallpaperMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 壁纸标题 模糊查询(未过审)
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果
+     */
+    @Override
+    public List<Wallpaper> findWallpaperByTitleNoExamine(String title) {
+        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+        wrapper.like("title", title).eq("examine", 0);
+        return wallpaperMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 壁纸标题 模糊查询(已删除)
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果
+     */
+    @Override
+    public List<Wallpaper> findWallpaperByTitleByIsDelete(String title) {
+        title = "%" + title + "%";
+        return wallpaperMapper.findWallpaperByTitleByIsDelete(title);
     }
 
 
@@ -152,7 +194,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
      * @return 返回的结果
      */
     @Override
-    public boolean likes(Long id) {
+    public boolean likes(String id) {
         Wallpaper Wallpaper = wallpaperMapper.selectById(id);
         Wallpaper.setLove(Wallpaper.getLove() + 1);
         return wallpaperMapper.updateById(Wallpaper) == 1;
@@ -171,18 +213,46 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
 
 
     /**
-     * 分页查询
+     * 分页查询（过审）
      *
      * @param index 索引页
      * @return 返回的结果
      */
     @Override
-    public IPage<Wallpaper> pagingQuery(Integer index) {
-        IPage<Wallpaper> page = new Page<>(index, 5);
+    public IPage<Wallpaper> pagingQueryExamine(String title, Integer index, Integer size) {
+        IPage<Wallpaper> page = new Page<>(index, size);
         QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
-        wrapper.eq("examine", 1);
-        IPage<Wallpaper> userIPage = wallpaperMapper.selectPage(page, wrapper);
-        return userIPage;
+        wrapper.eq("examine", 1).like("title", title);
+        IPage<Wallpaper> wallpaperIPage = wallpaperMapper.selectPage(page, wrapper);
+        return wallpaperIPage;
+    }
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public IPage<Wallpaper> pagingQueryNoExamine(String title, Integer index, Integer size) {
+        IPage<Wallpaper> page = new Page<>(index, size);
+        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).like("title", title);
+        IPage<Wallpaper> wallpaperIPage = wallpaperMapper.selectPage(page, wrapper);
+        return wallpaperIPage;
+    }
+
+    /**
+     * 分页查询（已删除的分类）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public List<Wallpaper> pagingQueryIsDelete(String title, Integer index, Integer size) {
+        title = "%" + title + "%";
+        List<Wallpaper> wallpaperList = wallpaperMapper.pagingQueryIsDelete(title, index, size);
+        return wallpaperList;
     }
 
 
@@ -193,7 +263,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
      * @return 分类的名称
      */
     @Override
-    public String findCategoryNameByWid(Long wid) {
+    public String findCategoryNameByWid(String wid) {
         return wallpaperMapper.findCategoryNameByWid(wid);
     }
 

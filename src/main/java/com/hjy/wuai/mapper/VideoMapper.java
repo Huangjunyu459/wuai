@@ -1,7 +1,9 @@
 package com.hjy.wuai.mapper;
 
+import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.pojo.Video;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hjy.wuai.pojo.Wallpaper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +39,28 @@ public interface VideoMapper extends BaseMapper<Video> {
             "INNER JOIN video " +
             "ON video.category_id = category.id " +
             "WHERE video.examine = 1 AND video.id = #{wid}")
-    String findCategoryNameByVid(Long vid);
+    String findCategoryNameByVid(String vid);
+
+
+    /**
+     * 根据名字模糊查找已删除的视频
+     *
+     * @param videoName 壁纸标题
+     * @return 返回的结果
+     */
+    @Select("SELECT * FROM video WHERE is_delete = 1 AND video_name LIKE #{videoName} ")
+    List<Video> findVideoByVideoNameIsDelete(String videoName);
+
+
+    /**
+     * 分页查询已删除的用户
+     *
+     * @param index
+     * @param size
+     * @param videoName
+     * @return
+     */
+    @Select("select * from video where is_delete = 1  AND video_name like #{videoName} limit #{index} , #{size}")
+    List<Video> pagingQueryIsDelete(String videoName,Integer index, Integer size);
 
 }

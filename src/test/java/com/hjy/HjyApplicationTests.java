@@ -99,10 +99,10 @@ class HjyApplicationTests {
 
     }
 
-    @Test
+/*    @Test
     void testRecharge() {
         System.out.println(userController.recharge(1365472501483728897L));
-    }
+    }*/
 
 
     @Test
@@ -125,10 +125,10 @@ class HjyApplicationTests {
         }
     }
 
-    @Test
+/*    @Test
     public void testSignIn() {
         userService.signIn(1365502991892807681L);
-    }
+    }*/
 
 
 
@@ -139,15 +139,15 @@ class HjyApplicationTests {
         System.out.println(userController.findUserByEmail("qz@qq.com"));
     }
 
-    @Test
-    public void testFindByMap() {
-        NameAndEmail entity = new NameAndEmail(null, "qz@qq.com");
-        List<User> userList = userService.findByMap(entity);
-        Iterator<User> iterator = userList.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-    }
+//    @Test
+//    public void testFindByMap() {
+//        NameAndEmail entity = new NameAndEmail(null, "qz@qq.com");
+//        List<User> userList = userService.findByMap(entity);
+//        Iterator<User> iterator = userList.iterator();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+//    }
 
     @Test
     void testFindIsDelete() {
@@ -168,7 +168,6 @@ class HjyApplicationTests {
 //
 //        page.getRecords().forEach(System.out::println);
 //        System.out.println(page.getTotal());
-        userController.pagingQuery(1);
 
     }
 

@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.GameMapper;
+import com.hjy.wuai.pojo.Category;
 import com.hjy.wuai.pojo.Game;
+import com.hjy.wuai.pojo.Music;
 import com.hjy.wuai.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,25 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     private GameMapper gameMapper;
 
     /**
-     * 上传
+     * 管理员上传游戏
+     *
+     * @param entity
+     * @return
+     */
+    public boolean saveByAdmin(Game entity) {
+        Game game = new Game();
+        game.setGameName(entity.getGameName());
+        game.setDescription(entity.getDescription());
+        game.setBdSrc(entity.getBdSrc());
+        game.setBdCode(entity.getBdCode());
+        game.setAuthorId(entity.getAuthorId());
+        game.setCategoryId(2);
+        game.setExamine(1);
+        return gameMapper.insert(game) == 1;
+    }
+
+    /**
+     * 管理员上传游戏
      *
      * @param entity
      * @return
@@ -41,7 +61,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
         game.setAuthorId(entity.getAuthorId());
-        game.setCategoryId(entity.getCategoryId());
+        game.setCategoryId(2);
         return gameMapper.insert(game) == 1;
     }
 
@@ -56,8 +76,21 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     public Game getById(Serializable id) {
         QueryWrapper<Game> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1).eq("id", id);
-        return gameMapper.selectById(id);
+        return gameMapper.selectOne(wrapper);
     }
+
+    /**
+     * 根据 id 获取游戏（未过审）
+     *
+     * @param id
+     * @return
+     */
+    public Game getByIdNoExamine(Serializable id) {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).eq("id", id);
+        return gameMapper.selectOne(wrapper);
+    }
+
 
     /**
      * 游戏更新（有待完善，具体要更新哪些信息）
@@ -71,6 +104,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         //  获取要更新的用户
         Game game = getById(entity.getId());
         game.setGameName(entity.getGameName());
+        game.setDescription(entity.getDescription());
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
         return gameMapper.updateById(game) == 1;
@@ -119,25 +153,49 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      * @return 返回的结果
      */
     @Override
-    public boolean examine(Long id) {
+    public boolean examine(String id) {
         Game game = gameMapper.selectById(id);
         game.setExamine(1);
         return gameMapper.updateById(game) == 1;
     }
 
     /**
-     * 根据 作品名 模糊查询
+     * 根据 作品名 模糊查询（已过审）
      *
-     * @param gameName
-     * @return
+     * @param gameName 游戏名
+     * @return 返回的结果
      */
     @Override
-    public List<Game> findGameByGameName(String gameName) {
+    public List<Game> findGameByGameNameExamine(String gameName) {
         QueryWrapper<Game> wrapper = new QueryWrapper<>();
-        wrapper.like("game_name", gameName);
+        wrapper.like("game_name", gameName).eq("examine", 1);
         return gameMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据 作品名 模糊查询（未过审）
+     *
+     * @param gameName 游戏名
+     * @return 返回的结果
+     */
+    @Override
+    public List<Game> findGameByGameNameNoExamine(String gameName) {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.like("game_name", gameName).eq("examine", 0);
+        return gameMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据游戏名名 模糊查询（已删除的游戏）
+     *
+     * @param gameName 游戏名
+     * @return 返回的结果
+     */
+    @Override
+    public List<Game> findGameByGameNameIsDelete(String gameName) {
+        gameName = "%" + gameName + "%";
+        return gameMapper.findGameByGameNameIsDelete(gameName);
+    }
 
     /**
      * 点赞功能
@@ -146,7 +204,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      * @return
      */
     @Override
-    public boolean likes(Long id) {
+    public boolean likes(String id) {
         Game game = gameMapper.selectById(id);
         game.setLove(game.getLove() + 1);
         return gameMapper.updateById(game) == 1;
@@ -163,16 +221,46 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     }
 
     /**
-     * 分页查询
+     * 分页查询（过审）
      *
-     * @param index
-     * @return
+     * @param index 索引页
+     * @return 返回的结果
      */
     @Override
-    public IPage<Game> pagingQuery(Integer index) {
-        IPage<Game> page = new Page<>(index, 5);
-        IPage<Game> gameIPage = gameMapper.selectPage(page, null);
+    public IPage<Game> pagingQueryExamine(String gameName, Integer index, Integer size) {
+        IPage<Game> page = new Page<>(index, size);
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).like("game_name", gameName);
+        IPage<Game> gameIPage = gameMapper.selectPage(page, wrapper);
         return gameIPage;
+    }
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public IPage<Game> pagingQueryNoExamine(String gameName, Integer index, Integer size) {
+        IPage<Game> page = new Page<>(index, size);
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).like("game_name", gameName);
+        IPage<Game> gameIPage = gameMapper.selectPage(page, wrapper);
+        return gameIPage;
+    }
+
+    /**
+     * 分页查询（已删除的分类）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public List<Game> pagingQueryIsDelete(String gameName, Integer index, Integer size) {
+        gameName = "%" + gameName + "%";
+        List<Game> gameList = gameMapper.pagingQueryIsDelete(gameName, index, size);
+        return gameList;
     }
 
     /**
@@ -182,7 +270,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
      * @return 分类的名称
      */
     @Override
-    public String findCategoryNameByGid(Long gid) {
+    public String findCategoryNameByGid(String gid) {
         return gameMapper.findCategoryNameByGid(gid);
     }
 }

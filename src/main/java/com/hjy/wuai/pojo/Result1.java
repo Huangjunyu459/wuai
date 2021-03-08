@@ -13,8 +13,8 @@ import java.util.Map;
 @Data
 public class Result1 {
 
-    public static final Integer DEFAULT_FAILED_CODE = 9999;
-    public static final Integer DEFAULT_SUCCESS_CODE = 0;
+    public static final Integer DEFAULT_FAILED_CODE = 500;
+    public static final Integer DEFAULT_SUCCESS_CODE = 200;
 
     /**
      * 状态码

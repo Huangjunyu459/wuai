@@ -4,6 +4,7 @@ import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/timedtask")
+@CrossOrigin
 public class TimedTaskController {
 
     /**
@@ -49,7 +51,7 @@ public class TimedTaskController {
      * @return 返回的结果
      */
     @GetMapping("overdue")
-    public Result1 overdue(Long id) {
+    public Result1 overdue(String id) {
         boolean statue = userService.overdue(id);
         if (statue) {
             return Result1.success().setMessage("重置用户为普通用户成功");

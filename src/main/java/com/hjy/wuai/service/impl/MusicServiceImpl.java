@@ -47,13 +47,14 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         music.setOssSong(entity.getOssSong());
         music.setOssSrc(entity.getOssSrc());
         music.setAuthorId(entity.getAuthorId());
-        music.setCategoryId(entity.getCategoryId());
+        music.setCategoryId(4);
+        music.setExamine(1);
         return musicMapper.insert(music) == 1;
     }
 
 
     /**
-     * 根据 id 获取音乐
+     * 根据 id 获取音乐（过审）
      *
      * @param id 音乐 id
      * @return 返回的结果
@@ -62,6 +63,18 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
     public Music getById(Serializable id) {
         QueryWrapper<Music> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1).eq("id", id);
+        return musicMapper.selectById(id);
+    }
+
+    /**
+     * 根据 id 获取音乐（未过审）
+     *
+     * @param id 音乐 id
+     * @return 返回的结果
+     */
+    public Music getByIdNoExamine(Serializable id) {
+        QueryWrapper<Music> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).eq("id", id);
         return musicMapper.selectById(id);
     }
 
@@ -79,6 +92,9 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         Music music = getById(entity.getId());
         music.setSinger(entity.getSinger());
         music.setSong(entity.getSong());
+        music.setOssSong(entity.getOssSong());
+        music.setOssSrc(entity.getOssSrc());
+        music.setLove(entity.getLove());
         return musicMapper.updateById(music) == 1;
     }
 
@@ -127,7 +143,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      * @return 返回的结果
      */
     @Override
-    public boolean examine(Long id) {
+    public boolean examine(String id) {
         Music music = musicMapper.selectById(id);
         music.setExamine(1);
         return musicMapper.updateById(music) == 1;
@@ -135,18 +151,42 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
 
     /**
-     * 根据 歌曲名 模糊查询
+     * 根据 歌曲名 模糊查询(已过审)
      *
      * @param song
      * @return 返回的结果
      */
     @Override
-    public List<Music> findMusicBySong(String song) {
+    public List<Music> findMusicBySongExamine(String song) {
         QueryWrapper<Music> wrapper = new QueryWrapper<>();
-        wrapper.like("song", song);
+        wrapper.like("song", song).eq("examine", 1);
         return musicMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据 歌曲名 模糊查询(未过审)
+     *
+     * @param song
+     * @return 返回的结果
+     */
+    @Override
+    public List<Music> findMusicBySongNoExamine(String song) {
+        QueryWrapper<Music> wrapper = new QueryWrapper<>();
+        wrapper.like("song", song).eq("examine", 0);
+        return musicMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 歌曲名 模糊查询(已删除)
+     *
+     * @param song
+     * @return 返回的结果
+     */
+    @Override
+    public List<Music> findMusicBySongIsDelete(String song) {
+        song = "%" + song + "%";
+        return musicMapper.findMusicBySongIsDelete(song);
+    }
 
     /**
      * 点赞功能
@@ -155,7 +195,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      * @return 返回的结果
      */
     @Override
-    public boolean likes(Long id) {
+    public boolean likes(String id) {
         Music music = musicMapper.selectById(id);
         music.setLove(music.getLove() + 1);
         return musicMapper.updateById(music) == 1;
@@ -174,16 +214,45 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
 
 
     /**
-     * 分页查询
+     * 分页查询（过审）
      *
      * @param index 索引页
      * @return 返回的结果
      */
     @Override
-    public IPage<Music> pagingQuery(Integer index) {
-        IPage<Music> page = new Page<>(index, 5);
-        IPage<Music> musicIPage = musicMapper.selectPage(page, null);
+    public IPage<Music> pagingQueryExamine(String song, Integer index, Integer size) {
+        IPage<Music> page = new Page<>(index, size);
+        QueryWrapper<Music> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).like("song", song);
+        IPage<Music> musicIPage = musicMapper.selectPage(page, wrapper);
         return musicIPage;
+    }
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public IPage<Music> pagingQueryNoExamine(String song, Integer index, Integer size) {
+        IPage<Music> page = new Page<>(index, size);
+        QueryWrapper<Music> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).like("song", song);
+        IPage<Music> musicIPage = musicMapper.selectPage(page, wrapper);
+        return musicIPage;
+    }
+
+    /**
+     * 分页查询（已删除）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public List<Music> pagingQueryIsDelete(String song, Integer index, Integer size) {
+        song = "%" + song + "%";
+        return musicMapper.pagingQueryIsDelete(song,index, size);
     }
 
 
@@ -195,7 +264,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
      * @return 分类的名称
      */
     @Override
-    public String findCategoryNameByMid(Long mid) {
+    public String findCategoryNameByMid(String mid) {
         return musicMapper.findCategoryNameByMid(mid);
     }
 

@@ -51,13 +51,30 @@ public interface UserService extends IService<User> {
      */
     List<User> findUsersByUsername(String username);
 
+
+    /**
+     * 根据用户名 模糊查询（已删除的用户）
+     *
+     * @param username 用户名
+     * @return 返回的结果
+     */
+    List<User> findUsersByUsernameIsDelete(String username);
+
+    /**
+     * 根据名字模糊查找所有的用户
+     *
+     * @param username 用户名
+     * @return 返回的结果
+     */
+    List<User> findUsersByUsernameAll(String username);
+
     /**
      * 会员充值功能
      *
      * @param id 用户 id
      * @return 返回的结果
      */
-    boolean recharge(Long id);
+    boolean recharge(String id);
 
     /**
      * 会员逾期功能（把用户的会员等级设置为普通用户）
@@ -65,7 +82,7 @@ public interface UserService extends IService<User> {
      * @param id 用户 id
      * @return 返回的结果
      */
-    boolean overdue(Long id);
+    boolean overdue(String id);
 
 
     /**
@@ -74,7 +91,7 @@ public interface UserService extends IService<User> {
      * @param id 用户 id
      * @return 返回的结果
      */
-    boolean signIn(Long id);
+    boolean signIn(String id);
 
     /**
      * 下载资源时，扣除用户相应的积分
@@ -82,7 +99,7 @@ public interface UserService extends IService<User> {
      * @param id 用户 id
      * @return 返回的结果
      */
-    boolean deductScore(Long id);
+    boolean deductScore(String id);
 
     /**
      * 下载资源功能
@@ -90,7 +107,7 @@ public interface UserService extends IService<User> {
      * @param id 用户 id
      * @return 返回的结果
      */
-    boolean download(Long id);
+    boolean download(String id);
 
     /**
      * 重置所有用户签到状态（每天凌晨12点后触发）
@@ -128,9 +145,21 @@ public interface UserService extends IService<User> {
     /**
      * 分页查询
      *
-     * @param index 索引号
+     * @param index    索引号
+     * @param size     页数大小
+     * @param username
      * @return 返回的结果
      */
-    IPage<User> pagingQuery(Integer index);
+    IPage<User> pagingQuery(String username, Integer index, Integer size);
+
+    /**
+     * 分页查询（已删除的用户）
+     *
+     * @param index    索引号
+     * @param size     页数大小
+     * @param username
+     * @return 返回的结果
+     */
+    List<User> pagingQueryIsDelete(String username, Integer index, Integer size);
 
 }

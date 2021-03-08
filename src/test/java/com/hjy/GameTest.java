@@ -40,8 +40,4 @@ public class GameTest {
     }
 
 
-    @Test
-    void testPage() {
-        gameController.pagingQuery(1);
-    }
 }

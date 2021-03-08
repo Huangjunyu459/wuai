@@ -3,13 +3,10 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Article;
 import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.ArticleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/article")
+@CrossOrigin
 public class ArticleController {
 
     /**
@@ -39,8 +37,8 @@ public class ArticleController {
      * @param article 文章实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("save")
-    public Result1 save(Article article) {
+    @PostMapping("addArticle")
+    public Result1 addArticle(@RequestBody Article article) {
         if (articleService.save(article)) {
             return Result1.success().setMessage("上传成功");
         } else {
@@ -50,14 +48,30 @@ public class ArticleController {
 
 
     /**
-     * 根据 id 获取文章
+     * 根据 id 获取文章（过审）
      *
      * @param id 文章 id
      * @return 返回的结果 msg
      */
     @GetMapping("getById")
-    public Result1 getById(Long id) {
+    public Result1 getById(String id) {
         Article article = articleService.getById(id);
+        if (article != null) {
+            return Result1.success().data("article", article);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
+    /**
+     * 根据 id 获取文章（未过审）
+     *
+     * @param id 文章 id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("getByIdNoExamine")
+    public Result1 getByIdNoExamine(String id) {
+        Article article = articleService.getByIdNoExamine(id);
         if (article != null) {
             return Result1.success().data("article", article);
         } else {
@@ -72,8 +86,8 @@ public class ArticleController {
      * @param article 文章实体
      * @return 返回的结果 msg
      */
-    @PostMapping("updateById")
-    public Result1 updateById(Article article) {
+    @PostMapping("updateArticleById")
+    public Result1 updateArticleById(@RequestBody Article article) {
         if (articleService.updateById(article)) {
             return Result1.success().setMessage("更新成功");
         } else {
@@ -88,8 +102,8 @@ public class ArticleController {
      * @param id 文章 id
      * @return 返回的结果 msg
      */
-    @GetMapping("removeById")
-    public Result1 removeById(Long id) {
+    @DeleteMapping("removeArticleById")
+    public Result1 removeArticleById(String id) {
         if (articleService.removeById(id)) {
             return Result1.success().setMessage("删除成功");
         } else {
@@ -137,7 +151,7 @@ public class ArticleController {
      * @return 返回结果 msg
      */
     @GetMapping("examine")
-    public Result1 examine(Long id) {
+    public Result1 examine(String id) {
         if (articleService.examine(id)) {
             return Result1.success().setMessage("审核通过");
         } else {
@@ -147,14 +161,46 @@ public class ArticleController {
 
 
     /**
-     * 根据 文章标题查询
+     * 根据 文章标题查询（已过审）
      *
      * @param title 文章标题
      * @return 返回的结果 msg
      */
-    @GetMapping("findArticleByTitle")
-    public Result1 findArticleByTitle(String title) {
-        List<Article> articleList = articleService.findArticleByTitle(title);
+    @GetMapping("findArticleByTitleExamine")
+    public Result1 findArticleByTitleExamine(String title) {
+        List<Article> articleList = articleService.findArticleByTitleExamine(title);
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
+    /**
+     * 根据 文章标题查询（未过审）
+     *
+     * @param title 文章标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findArticleByTitleNoExamine")
+    public Result1 findArticleByTitleNoExamine(String title) {
+        List<Article> articleList = articleService.findArticleByTitleNoExamine(title);
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
+    /**
+     * 根据 文章标题查询（已删除）
+     *
+     * @param title 文章标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findArticleByTitleIsDelete")
+    public Result1 findArticleByTitleIsDelete(String title) {
+        List<Article> articleList = articleService.findArticleByTitleIsDelete(title);
         if (articleList.size() != 0) {
             return Result1.success().data("articleList", articleList);
         } else {
@@ -170,7 +216,7 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("likes")
-    public Result1 likes(Long id) {
+    public Result1 likes( String id) {
         if (articleService.likes(id)) {
             return Result1.success().setMessage("点赞成功");
         } else {
@@ -196,18 +242,56 @@ public class ArticleController {
 
 
     /**
-     * 文章分页查询
+     * 壁纸的分页查询（过审）
      *
-     * @param index 起始页
      * @return 返回的结果 msg
      */
-    @GetMapping("pagingQuery")
-    public Result1 pagingQuery(Integer index) {
-        Serializable articleIPage = articleService.pagingQuery(index);
+    @GetMapping("pagingQueryExamine")
+    public Result1 pagingQueryExamine(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable articleIPage = articleService.pagingQueryExamine(title,index, size);
         if (articleIPage != null) {
             return Result1.success().data("articleIPage", articleIPage);
         } else {
-            return Result1.fail().setMessage("文章不存在");
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询（未过审）
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryNoExamine")
+    public Result1 pagingQueryNoExamine(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable articleIPage = articleService.pagingQueryNoExamine(title,index, size);
+        if (articleIPage != null) {
+            return Result1.success().data("articleIPage", articleIPage);
+        } else {
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryIsDelete")
+    public Result1 pagingQueryIsDelete(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        List<Article> articleList = articleService.pagingQueryIsDelete(title,index, size);
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("没有数据");
         }
     }
 
@@ -219,7 +303,7 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("findCategoryNameByAid")
-    public Result1 findCategoryNameByAid(Long aid) {
+    public Result1 findCategoryNameByAid(@PathVariable String aid) {
         String categoryName = articleService.findCategoryNameByAid(aid);
         if (categoryName != null) {
             return Result1.success().data("categoryName", categoryName);

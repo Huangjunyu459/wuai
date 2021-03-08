@@ -72,13 +72,6 @@
             <version>1.7.1</version>
         </dependency>
 
-        <!--引入 thymeleaf 对 shiro 的支持依赖-->
-        <dependency>
-            <groupId>com.github.theborakompanioni</groupId>
-            <artifactId>thymeleaf-extras-shiro</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
 
         <!--引入数据库驱动-->
         <dependency>

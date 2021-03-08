@@ -26,18 +26,18 @@ public class Comment implements Serializable {
     /**
      * 唯一标识id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    @TableId(value = "id", type = IdType.ID_WORKER_STR)
+    private String id;
 
     /**
      * 所属的文章
      */
-    private Long articleId;
+    private String articleId;
 
     /**
      * 评论人
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 评论的内容
@@ -55,7 +55,7 @@ public class Comment implements Serializable {
      * 暂时不添加回复功能，该字段被忽略
      */
     @TableField(exist = false)
-    private Long userIdParent;
+    private String userIdParent;
 
     /**
      * 逻辑删除

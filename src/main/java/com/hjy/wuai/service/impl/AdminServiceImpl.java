@@ -54,7 +54,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         QueryWrapper<Admin> wrapper = new QueryWrapper<>();
         wrapper.eq("admin_name", adminName);
         Admin admin = adminMapper.selectOne(wrapper);
-        return (Objects.equals(md5(password), admin.getPassword()));
+        if (admin == null) {
+            return false;
+        } else {
+            return (Objects.equals(md5(password), admin.getPassword()));
+        }
+
     }
 
 }

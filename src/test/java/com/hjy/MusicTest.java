@@ -40,9 +40,4 @@ public class MusicTest {
     }
 
 
-    @Test
-    void testPage() {
-
-        musicController.pagingQuery(1);
-    }
 }

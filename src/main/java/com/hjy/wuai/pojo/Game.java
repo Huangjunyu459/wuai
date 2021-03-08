@@ -26,8 +26,8 @@ public class Game implements Serializable {
     /**
      * 全局唯一标识id
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    @TableId(value = "id", type = IdType.ID_WORKER_STR)
+    private String id;
 
     /**
      * 游戏名称

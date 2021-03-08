@@ -1,6 +1,5 @@
 package com.hjy.wuai.config;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.hjy.wuai.reamls.AdminRealm;
 import com.hjy.wuai.reamls.MyRealm;
 import com.hjy.wuai.reamls.UserRealm;
@@ -134,15 +133,6 @@ public class ShiroConfig {
         return matcher;
     }
 
-    /**
-     * 启用 thymeleaf 对 shiro 的方言支持
-     *
-     * @return 返回一个 iniRealm 对象
-     */
-    @Bean
-    public ShiroDialect getShiroDialect() {
-        return new ShiroDialect();
-    }
 
     /**
      * 废弃，不使用文件的 realm

@@ -19,6 +19,16 @@ import java.io.Serializable;
 public class NameAndEmail implements Serializable {
 
     /**
+     * 评论id
+     */
+    private String id;
+
+    /**
+     * 文章id
+     */
+    private String articleId;
+
+    /**
      * 用户名
      */
     private String username;

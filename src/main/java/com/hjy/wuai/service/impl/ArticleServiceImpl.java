@@ -42,16 +42,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article article = new Article();
         article.setTitle(entity.getTitle());
         article.setAuthorId(entity.getAuthorId());
-        article.setCategoryId(entity.getCategoryId());
+        article.setCategoryId(5);
         article.setContent(entity.getContent());
         //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 src 路径
         article.setArticleCover(entity.getArticleCover());
+        article.setExamine(1);
         return articleMapper.insert(article) == 1;
     }
 
 
     /**
-     * 根据 id 获取作品
+     * 根据 id 获取作品（过审）
      *
      * @param id 作品 id
      * @return 返回结果
@@ -60,6 +61,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public Article getById(Serializable id) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1).eq("id", id);
+        return articleMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据 id 获取作品（未过审）
+     *
+     * @param id 作品 id
+     * @return 返回结果
+     */
+    public Article getByIdNoExamine(Serializable id) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).eq("id", id);
         return articleMapper.selectOne(wrapper);
     }
 
@@ -77,6 +90,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article article = getById(entity.getId());
         article.setTitle(entity.getTitle());
         article.setContent(entity.getContent());
+        article.setArticleCover(entity.getArticleCover());
+        article.setLove(entity.getLove());
         return articleMapper.updateById(article) == 1;
     }
 
@@ -126,7 +141,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @return 返回的结果
      */
     @Override
-    public boolean examine(Long id) {
+    public boolean examine(String id) {
         Article article = articleMapper.selectById(id);
         article.setExamine(1);
         return articleMapper.updateById(article) == 1;
@@ -134,16 +149,41 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 
     /**
-     * 根据 作品名 模糊查询
+     * 根据 作品名 模糊查询（过审）
      *
      * @param title
      * @return
      */
     @Override
-    public List<Article> findArticleByTitle(String title) {
+    public List<Article> findArticleByTitleExamine(String title) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
-        wrapper.like("title", title);
+        wrapper.like("title", title).eq("examine", 1);
         return articleMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 作品名 模糊查询（未过审）
+     *
+     * @param title
+     * @return
+     */
+    @Override
+    public List<Article> findArticleByTitleNoExamine(String title) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.like("title", title).eq("examine", 0);
+        return articleMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 作品名 模糊查询（已删除）
+     *
+     * @param title
+     * @return
+     */
+    @Override
+    public List<Article> findArticleByTitleIsDelete(String title) {
+        title = "%" + title + "%";
+        return articleMapper.findArticleByTitleIsDelete(title);
     }
 
 
@@ -154,7 +194,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @return
      */
     @Override
-    public boolean likes(Long id) {
+    public boolean likes(String id) {
         Article article = articleMapper.selectById(id);
         article.setLove(article.getLove() + 1);
         return articleMapper.updateById(article) == 1;
@@ -172,16 +212,45 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     /**
-     * 分页查询
+     * 分页查询（过审）
      *
      * @param index
      * @return
      */
     @Override
-    public IPage<Article> pagingQuery(Integer index) {
-        IPage<Article> page = new Page<>(index, 5);
-        IPage<Article> userIPage = articleMapper.selectPage(page, null);
-        return userIPage;
+    public IPage<Article> pagingQueryExamine(String title, Integer index, Integer size) {
+        IPage<Article> page = new Page<>(index, size);
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 1).like("title", title);
+        IPage<Article> articleIPage = articleMapper.selectPage(page, wrapper);
+        return articleIPage;
+    }
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index
+     * @return
+     */
+    @Override
+    public IPage<Article> pagingQueryNoExamine(String title, Integer index, Integer size) {
+        IPage<Article> page = new Page<>(index, size);
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("examine", 0).like("title", title);
+        IPage<Article> articleIPage = articleMapper.selectPage(page, wrapper);
+        return articleIPage;
+    }
+
+    /**
+     * 分页查询（已删除）
+     *
+     * @param index
+     * @return
+     */
+    @Override
+    public List<Article> pagingQueryIsDelete(String title, Integer index, Integer size) {
+        title = "%" + title + "%";
+        return articleMapper.pagingQueryIsDelete(title, index, size);
     }
 
 
@@ -192,7 +261,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @return 分类的名称
      */
     @Override
-    public String findCategoryNameByAid(Long aid) {
+    public String findCategoryNameByAid(String aid) {
         return articleMapper.findCategoryNameByAid(aid);
     }
 

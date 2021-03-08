@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/oss")
+@CrossOrigin
 public class OssController {
 
     /**

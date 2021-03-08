@@ -2,6 +2,8 @@ package com.hjy.wuai.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hjy.wuai.pojo.Article;
+import com.hjy.wuai.pojo.Music;
+import com.hjy.wuai.pojo.User;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +39,26 @@ public interface ArticleMapper extends BaseMapper<Article> {
             "INNER JOIN article " +
             "ON article.category_id = category.id " +
             "WHERE article.examine = 1 AND article.id = #{aid}")
-    String findCategoryNameByAid(Long aid);
+    String findCategoryNameByAid(String aid);
+
+    /**
+     * 根据名字模糊查找已删除的文章
+     *
+     * @param title 文章标题
+     * @return 返回的结果
+     */
+    @Select("SELECT * FROM article WHERE is_delete = 1 AND title LIKE #{title} ")
+    List<Article> findArticleByTitleIsDelete(String title);
+
+    /**
+     * 分页查询已删除的用户
+     *
+     * @param index
+     * @param size
+     * @param title
+     * @return
+     */
+    @Select("select * from article where is_delete = 1 AND title like #{title} limit #{index} , #{size}")
+    List<Article> pagingQueryIsDelete(String title,Integer index, Integer size);
 
 }

@@ -78,13 +78,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean save(User entity) {
-        System.out.println("进入了service层");
-        //  获取 hash 后的密码和盐的集合
-        List<String> list = passwordAndSalt(entity.getPassword());
-        entity.setPasswordSalt(list.get(0));
-        //  把加密后的密码重新设置给用户
-        entity.setPassword(list.get(1));
-        return userMapper.insert(entity) == 1 ? true : false;
+        if (findUsersByUsernameAll(entity.getUsername()).size() != 0) {
+            return false;
+        } else {
+            //  获取 hash 后的密码和盐的集合
+            List<String> list = passwordAndSalt(entity.getPassword());
+            entity.setPasswordSalt(list.get(0));
+            //  把加密后的密码重新设置给用户
+            entity.setPassword(list.get(1));
+            return userMapper.insert(entity) == 1;
+        }
     }
 
 
@@ -108,12 +111,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean updateById(User entity) {
-
+        System.out.println(entity.getId());
         List<String> list = passwordAndSalt(entity.getPassword());
 
         //  获取要更新的用户
         User user = getById(entity.getId());
         user.setUsername(entity.getUsername());
+        user.setScore(entity.getScore());
+        user.setEmail(entity.getEmail());
 
         user.setPassword(list.get(1));
         user.setPasswordSalt(list.get(0));
@@ -140,7 +145,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public List<User> findAllUser() {
-        return userMapper.selectList(null);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("create_time");
+        return userMapper.selectList(wrapper);
     }
 
 
@@ -153,7 +160,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findUserByUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", username);
+        wrapper.eq("username", username).orderByDesc("create_time");
         return userMapper.selectOne(wrapper);
     }
 
@@ -171,6 +178,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据用户名 模糊查询（已删除的用户）
+     *
+     * @param username 用户名
+     * @return 返回的结果
+     */
+    @Override
+    public List<User> findUsersByUsernameIsDelete(String username) {
+        username = "%" + username + "%";
+        return userMapper.findUsersByUsernameIsDelete(username);
+    }
+
+
+    /**
+     * 根据名字查找所有的用户
+     *
+     * @param username 用户名
+     * @return 返回的结果
+     */
+    @Override
+    public List<User> findUsersByUsernameAll(String username) {
+        return userMapper.findUsersByUsernameAll(username);
+    }
 
     /**
      * 会员充值功能
@@ -180,7 +210,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public boolean recharge(Long id) {
+    public boolean recharge(String id) {
         User user = userMapper.selectById(id);
         if (user == null) {
             return false;
@@ -199,7 +229,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public boolean overdue(Long id) {
+    public boolean overdue(String id) {
         User user = userMapper.selectById(id);
         if (user == null) {
             return false;
@@ -218,7 +248,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public boolean signIn(Long id) {
+    public boolean signIn(String id) {
         User user = userMapper.selectById(id);
         user.setScore(user.getScore() + 5);
         user.setQiandao(1);
@@ -232,7 +262,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public boolean deductScore(Long id) {
+    public boolean deductScore(String id) {
         User user = userMapper.selectById(id);
         user.setScore(user.getScore() - 5);
         return userMapper.updateById(user) == 1;
@@ -245,7 +275,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public boolean download(Long id) {
+    public boolean download(String id) {
         User user = userMapper.selectById(id);
         if (user.getScore() >= 5) {
             return deductScore(id);
@@ -328,10 +358,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 返回的结果
      */
     @Override
-    public IPage<User> pagingQuery(Integer index) {
-        IPage<User> page = new Page<>(index, 5);
-        IPage<User> userIPage = userMapper.selectPage(page, null);
-        return userIPage;
+    public IPage<User> pagingQuery(String username, Integer index, Integer size) {
+        IPage<User> page = new Page<>(index, size);
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("create_time").like("username", username);
+        return userMapper.selectPage(page, wrapper);
+    }
+
+    /**
+     * 分页查询（已删除的用户）
+     *
+     * @param index 索引页
+     * @return 返回的结果
+     */
+    @Override
+    public List<User> pagingQueryIsDelete(String username, Integer index, Integer size) {
+        username = "%" + username + "%";
+        List<User> userList = userMapper.pagingQueryIsDelete(username,index, size);
+        return userList;
     }
 
 }

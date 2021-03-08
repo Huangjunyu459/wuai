@@ -39,10 +39,10 @@ public class ArticleTest {
         article.setAuthorId(4L);
         article.setCategoryId(4);
         article.setArticleCover("这是文章封面图片的路径");
-        articleController.save(article);
+        articleController.addArticle(article);
     }
 
-    @Test
+/*    @Test
     public void testGetById() {
         System.out.println(articleController.getById(1365614906300252162L));
         System.out.println(articleService.getById(1365614906300252162L));
@@ -61,7 +61,7 @@ public class ArticleTest {
     void testRemove() {
         System.out.println(articleController.removeById(1365614672983715841L));
 
-    }
+    }*/
 
     @Test
     void testFindAll() {
@@ -73,20 +73,20 @@ public class ArticleTest {
         }
     }
 
-    @Test
-    void testFindByTitle() {
-        System.out.println(articleController.findArticleByTitle("咒术回战"));
-        List<Article> articles = articleService.findArticleByTitle("红楼");
-        Iterator<Article> iterator = articles.iterator();
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-    }
+//    @Test
+//    void testFindByTitle() {
+//        System.out.println(articleController.findArticleByTitle("咒术回战"));
+//        List<Article> articles = articleService.findArticleByTitle("红楼");
+//        Iterator<Article> iterator = articles.iterator();
+//        while (iterator.hasNext()) {
+//            System.out.println(iterator.next());
+//        }
+//    }
 
-    @Test
+/*    @Test
     void testLikes() {
         articleController.likes(1365614503978364930L);
-    }
+    }*/
 
     @Test
     void testFindIsDelete() {
@@ -104,7 +104,7 @@ public class ArticleTest {
 //        IPage<Article> articleIPage = articleMapper.selectPage(page, null);
 //        articleIPage.getRecords().forEach(System.out::println);
 
-        articleController.pagingQuery(1);
+//        articleController.pagingQuery(1);
     }
 
 

@@ -3,13 +3,10 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.Video;
+import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.VideoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/video")
+@CrossOrigin
 public class VideoController {
 
     /**
@@ -39,8 +37,8 @@ public class VideoController {
      * @param video 视频实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("save")
-    public Result1 save(Video video) {
+    @PostMapping("addVideo")
+    public Result1 addVideo(@RequestBody Video video) {
         if (videoService.save(video)) {
             return Result1.success().setMessage("上传成功");
         } else {
@@ -50,16 +48,32 @@ public class VideoController {
 
 
     /**
-     * 根据 id 获取视频
+     * 根据 id 获取视频（已过审）
      *
      * @param id 视频 id
      * @return 返回的结果 msg
      */
     @GetMapping("getById")
-    public Result1 getById(Long id) {
+    public Result1 getById(String id) {
         Video video = videoService.getById(id);
         if (video != null) {
-            return Result1.success().data("wallpaper", video);
+            return Result1.success().data("video", video);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
+    }
+
+    /**
+     * 根据 id 获取视频（未过审）
+     *
+     * @param id 视频 id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("getByIdNoExamine")
+    public Result1 getByIdNoExamine(String id) {
+        Video video = videoService.getByIdNoExamine(id);
+        if (video != null) {
+            return Result1.success().data("video", video);
         } else {
             return Result1.fail().setMessage("视频不存在");
         }
@@ -72,8 +86,8 @@ public class VideoController {
      * @param video 视频实体
      * @return 返回的结果 msg
      */
-    @PostMapping("updateById")
-    public Result1 updateById(Video video) {
+    @PostMapping("updateVideoById")
+    public Result1 updateVideoById(@RequestBody Video video) {
         if (videoService.updateById(video)) {
             return Result1.success().setMessage("更新成功");
         } else {
@@ -88,8 +102,8 @@ public class VideoController {
      * @param id 视频 id
      * @return 返回的结果 msg
      */
-    @GetMapping("removeById")
-    public Result1 removeById(Long id) {
+    @DeleteMapping("removeVideoById")
+    public Result1 removeVideoById(String id) {
         if (videoService.removeById(id)) {
             return Result1.success().setMessage("删除成功");
         } else {
@@ -137,7 +151,7 @@ public class VideoController {
      * @return 返回结果 msg
      */
     @GetMapping("examine")
-    public Result1 examine(Long id) {
+    public Result1 examine(String id) {
         if (videoService.examine(id)) {
             return Result1.success().setMessage("审核通过");
         } else {
@@ -147,14 +161,46 @@ public class VideoController {
 
 
     /**
-     * 根据 视频名称 查询
+     * 根据 视频名称 查询（已过审）
      *
      * @param videoName 视频标题
      * @return 返回的结果 msg
      */
-    @GetMapping("findVideoByVideoName")
-    public Result1 findVideoByVideoName(String videoName) {
-        List<Video> videoList = videoService.findVideoByVideoName(videoName);
+    @GetMapping("findVideoByVideoNameExamine")
+    public Result1 findVideoByVideoNameExamine(String videoName) {
+        List<Video> videoList = videoService.findVideoByVideoNameExamine(videoName);
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
+    }
+
+    /**
+     * 根据 视频名称 查询（未过审）
+     *
+     * @param videoName 视频标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findVideoByVideoNameNoExamine")
+    public Result1 findVideoByVideoNameNoExamine(String videoName) {
+        List<Video> videoList = videoService.findVideoByVideoNameNoExamine(videoName);
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
+    }
+
+    /**
+     * 根据 视频名称 查询（已删除）
+     *
+     * @param videoName 视频标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findVideoByVideoNameIsDelete")
+    public Result1 findVideoByVideoNameIsDelete(String videoName) {
+        List<Video> videoList = videoService.findVideoByVideoNameIsDelete(videoName);
         if (videoList.size() != 0) {
             return Result1.success().data("videoList", videoList);
         } else {
@@ -170,7 +216,7 @@ public class VideoController {
      * @return 返回的结果 msg
      */
     @GetMapping("likes")
-    public Result1 likes(Long id) {
+    public Result1 likes(String id) {
         if (videoService.likes(id)) {
             return Result1.success().setMessage("点赞成功");
         } else {
@@ -196,18 +242,56 @@ public class VideoController {
 
 
     /**
-     * 视频分页查询
+     * 壁纸的分页查询（过审）
      *
-     * @param index 起始页
      * @return 返回的结果 msg
      */
-    @GetMapping("pagingQuery")
-    public Result1 pagingQuery(Integer index) {
-        Serializable videoIPage = videoService.pagingQuery(index);
+    @GetMapping("pagingQueryExamine")
+    public Result1 pagingQueryExamine(String videoName,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable videoIPage = videoService.pagingQueryExamine(videoName,index, size);
         if (videoIPage != null) {
             return Result1.success().data("videoIPage", videoIPage);
         } else {
-            return Result1.fail().setMessage("视频不存在");
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询（未过审）
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryNoExamine")
+    public Result1 pagingQueryNoExamine(String videoName,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable videoIPage = videoService.pagingQueryNoExamine(videoName,index, size);
+        if (videoIPage != null) {
+            return Result1.success().data("videoIPage", videoIPage);
+        } else {
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryIsDelete")
+    public Result1 pagingQueryIsDelete(String videoName,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        List<Video> videoList = videoService.pagingQueryIsDelete(videoName,index, size);
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("没有数据");
         }
     }
 
@@ -219,7 +303,7 @@ public class VideoController {
      * @return 分类的名称
      */
     @GetMapping("findCategoryNameByVid")
-    public Result1 findCategoryNameByVid(Long vid) {
+    public Result1 findCategoryNameByVid(String vid) {
         String categoryName = videoService.findCategoryNameByVid(vid);
         if (categoryName != null) {
             return Result1.success().data("categoryName", categoryName);

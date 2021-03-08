@@ -38,10 +38,4 @@ public class WallpaperTest {
         }
     }
 
-
-    @Test
-    void testPage() {
-
-        wallpaperController.pagingQuery(1);
-    }
 }

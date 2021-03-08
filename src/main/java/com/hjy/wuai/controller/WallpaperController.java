@@ -1,15 +1,12 @@
 package com.hjy.wuai.controller;
 
 
+import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.WallpaperServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/wallpaper")
+@CrossOrigin
 public class WallpaperController {
 
     /**
@@ -39,8 +37,8 @@ public class WallpaperController {
      * @param wallpaper 壁纸实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("save")
-    public Result1 save(Wallpaper wallpaper) {
+    @PostMapping("addWallpaper")
+    public Result1 addWallpaper(@RequestBody Wallpaper wallpaper) {
         if (wallpaperService.save(wallpaper)) {
             return Result1.success().setMessage("上传成功");
         } else {
@@ -50,14 +48,30 @@ public class WallpaperController {
 
 
     /**
-     * 根据 id 获取壁纸
+     * 根据 id 获取壁纸（已过审）
      *
      * @param id 壁纸 id
      * @return 返回的结果 msg
      */
     @GetMapping("getById")
-    public Result1 getById(Long id) {
+    public Result1 getById(String id) {
         Wallpaper wallpaper = wallpaperService.getById(id);
+        if (wallpaper != null) {
+            return Result1.success().data("wallpaper", wallpaper);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
+    /**
+     * 根据 id 获取壁纸（未过审）
+     *
+     * @param id 壁纸 id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("getByIdNoExamine")
+    public Result1 getByIdNoExamine(String id) {
+        Wallpaper wallpaper = wallpaperService.getByIdNoExamine(id);
         if (wallpaper != null) {
             return Result1.success().data("wallpaper", wallpaper);
         } else {
@@ -72,8 +86,8 @@ public class WallpaperController {
      * @param wallpaper 壁纸实体
      * @return 返回的结果 msg
      */
-    @PostMapping("updateById")
-    public Result1 updateById(Wallpaper wallpaper) {
+    @PostMapping("updateWallpaperById")
+    public Result1 updateWallpaperById(@RequestBody Wallpaper wallpaper) {
         if (wallpaperService.updateById(wallpaper)) {
             return Result1.success().setMessage("更新成功");
         } else {
@@ -88,8 +102,8 @@ public class WallpaperController {
      * @param id 壁纸 id
      * @return 返回的结果 msg
      */
-    @GetMapping("removeById")
-    public Result1 removeById(Long id) {
+    @DeleteMapping("removeWallpaperById")
+    public Result1 removeWallpaperById(String id) {
         if (wallpaperService.removeById(id)) {
             return Result1.success().setMessage("删除成功");
         } else {
@@ -131,14 +145,46 @@ public class WallpaperController {
 
 
     /**
-     * 根据 壁纸标题查询
+     * 根据 壁纸标题查询（已过审）
      *
      * @param title 壁纸标题
      * @return 返回的结果 msg
      */
-    @GetMapping("findWallpaperByTitle")
-    public Result1 findWallpaperByTitle(String title) {
-        List<Wallpaper> wallpaperList = wallpaperService.findWallpaperByTitle(title);
+    @GetMapping("findWallpaperByTitleExamine")
+    public Result1 findWallpaperByTitleExamine(String title) {
+        List<Wallpaper> wallpaperList = wallpaperService.findWallpaperByTitleExamine(title);
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
+    /**
+     * 根据 壁纸标题查询（未过审）
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findWallpaperByTitleNoExamine")
+    public Result1 findWallpaperByTitleNoExamine(String title) {
+        List<Wallpaper> wallpaperList = wallpaperService.findWallpaperByTitleNoExamine(title);
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
+    /**
+     * 根据 壁纸标题查询（已删除）
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findWallpaperByTitleByIsDelete")
+    public Result1 findWallpaperByTitleByIsDelete(String title) {
+        List<Wallpaper> wallpaperList = wallpaperService.findWallpaperByTitleByIsDelete(title);
         if (wallpaperList.size() != 0) {
             return Result1.success().data("wallpaperList", wallpaperList);
         } else {
@@ -154,7 +200,7 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @GetMapping("likes")
-    public Result1 likes(Long id) {
+    public Result1 likes(String id) {
         if (wallpaperService.likes(id)) {
             return Result1.success().setMessage("点赞成功");
         } else {
@@ -186,7 +232,7 @@ public class WallpaperController {
      * @return 返回结果 msg
      */
     @GetMapping("examine")
-    public Result1 examine(Long id) {
+    public Result1 examine(String id) {
         if (wallpaperService.examine(id)) {
             return Result1.success().setMessage("审核通过");
         } else {
@@ -196,18 +242,56 @@ public class WallpaperController {
 
 
     /**
-     * 壁纸分页查询
+     * 壁纸的分页查询（过审）
      *
-     * @param index 起始页
      * @return 返回的结果 msg
      */
-    @GetMapping("pagingQuery")
-    public Result1 pagingQuery(Integer index) {
-        Serializable wallpaperIPage = wallpaperService.pagingQuery(index);
+    @GetMapping("pagingQueryExamine")
+    public Result1 pagingQueryExamine(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable wallpaperIPage = wallpaperService.pagingQueryExamine(title,index, size);
         if (wallpaperIPage != null) {
             return Result1.success().data("wallpaperIPage", wallpaperIPage);
         } else {
-            return Result1.fail().setMessage("壁纸不存在");
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询（未过审）
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryNoExamine")
+    public Result1 pagingQueryNoExamine(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable wallpaperIPage = wallpaperService.pagingQueryNoExamine(title,index, size);
+        if (wallpaperIPage != null) {
+            return Result1.success().data("wallpaperIPage", wallpaperIPage);
+        } else {
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryIsDelete")
+    public Result1 pagingQueryIsDelete(String title,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        List<Wallpaper> wallpaperList = wallpaperService.pagingQueryIsDelete(title,index, size);
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("没有数据");
         }
     }
 
@@ -219,7 +303,7 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @GetMapping("findCategoryNameByWid")
-    public Result1 findCategoryNameByWid(Long wid) {
+    public Result1 findCategoryNameByWid(String wid) {
         String categoryName = wallpaperService.findCategoryNameByWid(wid);
         if (categoryName != null) {
             return Result1.success().data("categoryName", categoryName);

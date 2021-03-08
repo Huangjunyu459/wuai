@@ -11,12 +11,10 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -29,10 +27,11 @@ import java.util.List;
  * @since 2021-02-18
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 @EnableCaching
 @EnableAsync(proxyTargetClass = true)
 @Slf4j
+@CrossOrigin
 public class UserController {
 
     /**
@@ -49,8 +48,7 @@ public class UserController {
      * @return 返回的结果 msg
      */
     @PostMapping("register")
-    public Result1 register(User user) {
-        System.out.println(user);
+    public Result1 register(@RequestBody User user) {
         boolean statue = userService.save(user);
         if (statue) {
             return Result1.success().setMessage("注册成功");
@@ -79,13 +77,30 @@ public class UserController {
 
 
     /**
+     * 根据用户 id 删除 用户
+     *
+     * @param id 用户 id
+     * @return 返回的结果 msg
+     */
+    @DeleteMapping("/removeUserById")
+    public Result1 removeUserById(String id) {
+        boolean statue = userService.removeById(id);
+        if (statue == true) {
+            return Result1.success().setMessage("用户删除成功");
+        } else {
+            return Result1.fail().setMessage("用户删除失败");
+        }
+    }
+
+
+    /**
      * 根据 id 查询用户
      *
      * @param id 用户的 id
      * @return 返回的结果 msg
      */
     @RequestMapping("findUserById")
-    public Result1 findUserById(Long id) {
+    public Result1 findUserById(String id) {
         User user = userService.getById(id);
         if (user != null) {
             return Result1.success().data("user", user);
@@ -147,8 +162,9 @@ public class UserController {
      * @param user 用户实体类
      * @return 返回的结果 msg
      */
-    @RequestMapping("updateUser")
-    public Result1 updateUser(User user) {
+    @PostMapping("updateUser")
+    public Result1 updateUser(@RequestBody User user) {
+        System.out.println("-------------");
         if (userService.updateById(user)) {
             return Result1.success().setMessage("修改成功");
         } else {
@@ -177,7 +193,7 @@ public class UserController {
      * @return 返回的结果 msg
      */
     @GetMapping("recharge")
-    public Result1 recharge(Long id) {
+    public Result1 recharge(String id) {
         if (userService.recharge(id)) {
             return Result1.success().setMessage("充值成功");
         } else {
@@ -193,7 +209,7 @@ public class UserController {
      * @return 返回的结果 msg
      */
     @GetMapping("signIn")
-    public Result1 signIn(Long id) {
+    public Result1 signIn(String id) {
         if (userService.signIn(id)) {
             return Result1.success().setMessage("签到成功");
         } else {
@@ -209,7 +225,7 @@ public class UserController {
      * @return 返回的结果
      */
     @GetMapping("download")
-    public Result1 download(Long id) {
+    public Result1 download(String id) {
         if (userService.download(id)) {
             return Result1.success().setMessage("跳转下载页面成功");
         } else {
@@ -226,9 +242,9 @@ public class UserController {
      */
     @GetMapping("findUserByEmail")
     public Result1 findUserByEmail(String email) {
-        User user = userService.findUserByEmail(email);
-        if (user != null) {
-            return Result1.success().data("user", user);
+        List<User> userList = Arrays.asList(userService.findUserByEmail(email));
+        if (userList.size() != 0) {
+            return Result1.success().data("userList", userList);
         } else {
             return Result1.fail().setMessage("用户不存在");
         }
@@ -271,12 +287,11 @@ public class UserController {
     /**
      * 用户的分页查询
      *
-     * @param index 起始页
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQuery")
-    public Result1 pagingQuery(Integer index) {
-        Serializable userIPage = userService.pagingQuery(index);
+    public Result1 pagingQuery(String username, Integer index, Integer size) {
+        Serializable userIPage = userService.pagingQuery(username, index, size);
         if (userIPage != null) {
             return Result1.success().data("userIPage", userIPage);
         } else {

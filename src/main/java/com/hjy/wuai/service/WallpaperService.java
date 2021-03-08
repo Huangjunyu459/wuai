@@ -1,6 +1,7 @@
 package com.hjy.wuai.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.apache.ibatis.annotations.Select;
@@ -24,40 +25,13 @@ public interface WallpaperService extends IService<Wallpaper> {
      */
     List<Wallpaper> findAllWallpaperExamine();
 
+
     /**
-     * 查询所有为审核的壁纸
+     * 查询所有未审核的壁纸
      *
      * @return 返回的结果
      */
     List<Wallpaper> findAllWallpaperNoExamine();
-
-
-    /**
-     * 审核功能
-     *
-     * @param id 壁纸 id
-     * @return 返回的结果
-     */
-    boolean examine(Long id);
-
-
-    /**
-     * 根据 壁纸标题 模糊查询
-     *
-     * @param title 壁纸标题
-     * @return 返回的结果
-     */
-    List<Wallpaper> findWallpaperByTitle(String title);
-
-
-    /**
-     * 点赞功能
-     *
-     * @param id 壁纸 id
-     * @return 返回的结果
-     */
-    boolean likes(Long id);
-
 
     /**
      * 查询已删除的壁纸
@@ -66,13 +40,77 @@ public interface WallpaperService extends IService<Wallpaper> {
      */
     List<Wallpaper> findIsDelete();
 
+
     /**
-     * 分页查询
+     * 根据 壁纸标题 模糊查询（已过审）
      *
-     * @param index 索引号
+     * @param title 壁纸标题
      * @return 返回的结果
      */
-    IPage<Wallpaper> pagingQuery(Integer index);
+    List<Wallpaper> findWallpaperByTitleExamine(String title);
+
+
+    /**
+     * 根据 壁纸标题 模糊查询（未过审）
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果
+     */
+    List<Wallpaper> findWallpaperByTitleNoExamine(String title);
+
+
+    /**
+     * 根据 壁纸标题 模糊查询（已删除）
+     *
+     * @param title 壁纸标题
+     * @return 返回的结果
+     */
+    List<Wallpaper> findWallpaperByTitleByIsDelete(String title);
+
+    /**
+     * 审核功能
+     *
+     * @param id 壁纸 id
+     * @return 返回的结果
+     */
+    boolean examine(String id);
+
+
+    /**
+     * 点赞功能
+     *
+     * @param id 壁纸 id
+     * @return 返回的结果
+     */
+    boolean likes(String id);
+
+
+    /**
+     * 分页查询（过审）
+     *
+     * @param index 索引号
+     * @param size  页数大小
+     * @return 返回的结果
+     */
+    IPage<Wallpaper> pagingQueryExamine(String title, Integer index, Integer size);
+
+    /**
+     * 分页查询（未过审）
+     *
+     * @param index 索引号
+     * @param size  页数大小
+     * @return 返回的结果
+     */
+    IPage<Wallpaper> pagingQueryNoExamine(String title, Integer index, Integer size);
+
+    /**
+     * 分页查询（已删除的分类）
+     *
+     * @param index 索引号
+     * @param size  页数大小
+     * @return 返回的结果
+     */
+    List<Wallpaper> pagingQueryIsDelete(String title, Integer index, Integer size);
 
 
     /**
@@ -81,6 +119,6 @@ public interface WallpaperService extends IService<Wallpaper> {
      * @param wid 壁纸 id
      * @return 分类名称
      */
-    String findCategoryNameByWid(Long wid);
+    String findCategoryNameByWid(String wid);
 
 }

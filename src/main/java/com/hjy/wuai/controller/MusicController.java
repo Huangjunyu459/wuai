@@ -3,12 +3,10 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Music;
 import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.MusicServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/music")
+@CrossOrigin
 public class MusicController {
 
     /**
@@ -38,8 +37,8 @@ public class MusicController {
      * @param music 音频实体类
      * @return 返回上传的结果 msg
      */
-    @PostMapping("/save")
-    public Result1 save(Music music) {
+    @PostMapping("addMusic")
+    public Result1 addMusic(@RequestBody Music music) {
         if (musicService.save(music)) {
             return Result1.success().setMessage("上传成功");
         } else {
@@ -49,14 +48,30 @@ public class MusicController {
 
 
     /**
-     * 根据 id 获取音频
+     * 根据 id 获取音频（已过审）
      *
      * @param id 音频 id
      * @return 返回的结果 msg
      */
     @GetMapping("getById")
-    public Result1 getById(Long id) {
+    public Result1 getById(String id) {
         Music music = musicService.getById(id);
+        if (music != null) {
+            return Result1.success().data("music", music);
+        } else {
+            return Result1.fail().setMessage("音频不存在");
+        }
+    }
+
+    /**
+     * 根据 id 获取音频（未过审）
+     *
+     * @param id 音频 id
+     * @return 返回的结果 msg
+     */
+    @GetMapping("getByIdNoExamine")
+    public Result1 getByIdNoExamine(String id) {
+        Music music = musicService.getByIdNoExamine(id);
         if (music != null) {
             return Result1.success().data("music", music);
         } else {
@@ -71,8 +86,8 @@ public class MusicController {
      * @param music 音频实体
      * @return 返回的结果 msg
      */
-    @PostMapping("updateById")
-    public Result1 updateById(Music music) {
+    @PostMapping("updateMusicById")
+    public Result1 updateMusicById(@RequestBody Music music) {
         if (musicService.updateById(music)) {
             return Result1.success().setMessage("更新成功");
         } else {
@@ -87,8 +102,8 @@ public class MusicController {
      * @param id 音频 id
      * @return 返回的结果 msg
      */
-    @GetMapping("removeById")
-    public Result1 removeById(Long id) {
+    @DeleteMapping("removeMusicById")
+    public Result1 removeMusicById(String id) {
         if (musicService.removeById(id)) {
             return Result1.success().setMessage("删除成功");
         } else {
@@ -104,9 +119,9 @@ public class MusicController {
      */
     @GetMapping("/findAllMusicExamine")
     public Result1 findAllMusicExamine() {
-        List<Music> wallpaperList = musicService.findAllMusicExamine();
-        if (wallpaperList.size() != 0) {
-            return Result1.success().data("wallpaperList", wallpaperList);
+        List<Music> musicList = musicService.findAllMusicExamine();
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
         } else {
             return Result1.fail().setMessage("音频不存在");
         }
@@ -120,9 +135,9 @@ public class MusicController {
      */
     @GetMapping("/findAllMusicNoExamine")
     public Result1 findAllMusicNoExamine() {
-        List<Music> wallpaperList = musicService.findAllMusicNoExamine();
-        if (wallpaperList.size() != 0) {
-            return Result1.success().data("wallpaperList", wallpaperList);
+        List<Music> musicList = musicService.findAllMusicNoExamine();
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
         } else {
             return Result1.fail().setMessage("音频不存在");
         }
@@ -136,7 +151,7 @@ public class MusicController {
      * @return 返回结果 msg
      */
     @GetMapping("examine")
-    public Result1 examine(Long id) {
+    public Result1 examine(String id) {
         if (musicService.examine(id)) {
             return Result1.success().setMessage("审核通过");
         } else {
@@ -146,14 +161,47 @@ public class MusicController {
 
 
     /**
-     * 根据 歌名 模糊查询
+     * 根据 歌名 模糊查询（已过审）
      *
      * @param song 音频标题
      * @return 返回的结果 msg
      */
-    @GetMapping("findMusicBySong")
-    public Result1 findMusicBySong(String song) {
-        List<Music> musicList = musicService.findMusicBySong(song);
+    @GetMapping("findMusicBySongExamine")
+    public Result1 findMusicBySongExamine(String song) {
+        List<Music> musicList = musicService.findMusicBySongExamine(song);
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
+        } else {
+            return Result1.fail().setMessage("音频不存在");
+        }
+    }
+
+
+    /**
+     * 根据 歌名 模糊查询（未过审）
+     *
+     * @param song 音频标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findMusicBySongNoExamine")
+    public Result1 findMusicBySongNoExamine(String song) {
+        List<Music> musicList = musicService.findMusicBySongNoExamine(song);
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
+        } else {
+            return Result1.fail().setMessage("音频不存在");
+        }
+    }
+
+    /**
+     * 根据 歌名 模糊查询（已删除）
+     *
+     * @param song 音频标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findMusicBySongIsDelete")
+    public Result1 findMusicBySongIsDelete(String song) {
+        List<Music> musicList = musicService.findMusicBySongIsDelete(song);
         if (musicList.size() != 0) {
             return Result1.success().data("musicList", musicList);
         } else {
@@ -169,7 +217,7 @@ public class MusicController {
      * @return 返回的结果 msg
      */
     @GetMapping("likes")
-    public Result1 likes(Long id) {
+    public Result1 likes(String id) {
         if (musicService.likes(id)) {
             return Result1.success().setMessage("点赞成功");
         } else {
@@ -195,18 +243,56 @@ public class MusicController {
 
 
     /**
-     * 音频分页查询
+     * 壁纸的分页查询（过审）
      *
-     * @param index 起始页
      * @return 返回的结果 msg
      */
-    @GetMapping("pagingQuery")
-    public Result1 pagingQuery(Integer index) {
-        Serializable musicIPage = musicService.pagingQuery(index);
+    @GetMapping("pagingQueryExamine")
+    public Result1 pagingQueryExamine(String song, Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable musicIPage = musicService.pagingQueryExamine(song,index, size);
         if (musicIPage != null) {
             return Result1.success().data("musicIPage", musicIPage);
         } else {
-            return Result1.fail().setMessage("音频不存在");
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询（未过审）
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryNoExamine")
+    public Result1 pagingQueryNoExamine(String song,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        Serializable musicIPage = musicService.pagingQueryNoExamine(song,index, size);
+        if (musicIPage != null) {
+            return Result1.success().data("musicIPage", musicIPage);
+        } else {
+            return Result1.fail().setMessage("没有数据");
+        }
+    }
+
+    /**
+     * 壁纸的分页查询
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("pagingQueryIsDelete")
+    public Result1 pagingQueryIsDelete(String song,Integer index, Integer size) {
+        if (index == 1) {
+            index -= 1;
+        }
+        List<Music> musicList = musicService.pagingQueryIsDelete(song,index, size);
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
+        } else {
+            return Result1.fail().setMessage("没有数据");
         }
     }
 
@@ -218,7 +304,7 @@ public class MusicController {
      * @return 返回的结果 msg
      */
     @GetMapping("findCategoryNameByWid")
-    public Result1 findCategoryNameByMid(Long mid) {
+    public Result1 findCategoryNameByMid(String mid) {
         String categoryName = musicService.findCategoryNameByMid(mid);
         if (categoryName != null) {
             return Result1.success().data("categoryName", categoryName);
