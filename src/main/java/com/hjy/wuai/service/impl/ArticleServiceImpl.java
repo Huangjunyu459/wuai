@@ -175,6 +175,30 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     /**
+     * 查询最新的八篇文章
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Article> findEightArticle() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 8");
+        return articleMapper.selectList(wrapper);
+    }
+
+    /**
+     * 查询最新的十六篇文章
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Article> findSixthArticle() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 16");
+        return articleMapper.selectList(wrapper);
+    }
+
+    /**
      * 根据 作品名 模糊查询（已删除）
      *
      * @param title

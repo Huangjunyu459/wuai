@@ -41,6 +41,20 @@ public interface ArticleService extends IService<Article> {
     List<Article> findIsDelete();
 
     /**
+     * 查询最新的八篇文章
+     *
+     * @return 返回的结果
+     */
+    List<Article> findEightArticle();
+
+    /**
+     * 查询最新的十六篇文章
+     *
+     * @return 返回的结果
+     */
+    List<Article> findSixthArticle();
+
+    /**
      * 根据 作品名 模糊查询（过审）
      *
      * @param title 作品标题
@@ -86,27 +100,30 @@ public interface ArticleService extends IService<Article> {
      *
      * @param index 索引号
      * @param size  页数大小
+     * @param title 文章标题
      * @return 返回的结果
      */
-    IPage<Article> pagingQueryExamine(String title,Integer index, Integer size);
+    IPage<Article> pagingQueryExamine(String title, Integer index, Integer size);
 
     /**
      * 分页查询（未过审）
      *
      * @param index 索引号
      * @param size  页数大小
+     * @param title 文章标题
      * @return 返回的结果
      */
-    IPage<Article> pagingQueryNoExamine(String title,Integer index, Integer size);
+    IPage<Article> pagingQueryNoExamine(String title, Integer index, Integer size);
 
     /**
      * 分页查询（已删除的分类）
      *
      * @param index 索引号
      * @param size  页数大小
+     * @param title 文章标题
      * @return 返回的结果
      */
-    List<Article> pagingQueryIsDelete(String title,Integer index, Integer size);
+    List<Article> pagingQueryIsDelete(String title, Integer index, Integer size);
 
     /**
      * 根据 文章的 id 查询 所属的分类名

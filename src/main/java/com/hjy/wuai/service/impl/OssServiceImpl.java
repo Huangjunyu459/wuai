@@ -76,7 +76,7 @@ public class OssServiceImpl implements OssService {
             InputStream inputStream = file.getInputStream();
             OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
             String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
-            String type = "pic/"+fileName;
+            String type = "pic/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
             Wallpaper wallpaper = new Wallpaper();
@@ -112,13 +112,13 @@ public class OssServiceImpl implements OssService {
             InputStream inputStream = file.getInputStream();
             OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
             String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
-            String type = "article/"+fileName;
+            String type = "article/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
             Article article = new Article();
             article.setTitle("title");
             article.setContent("content");
-            article.setArticleCover("oos_src");
+            article.setArticleCover(url);
             article.setAuthorId(1365502991892807681L);
             article.setCategoryId(5);
             try {
@@ -127,6 +127,54 @@ public class OssServiceImpl implements OssService {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            ossClient.shutdown();
+        }
+        return url;
+    }
+
+    /**
+     * 上传游戏的封面图到OSS服务器
+     *
+     * @return oss服务器图片访问url
+     */
+    @Override
+    public String uploadGameCover(MultipartFile file) {
+        String url = "";
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+            OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
+            String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
+            String type = "game/" + fileName;
+            ossClient.putObject(OssConstant.BUCKET, type, inputStream);
+            url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            ossClient.shutdown();
+        }
+        return url;
+    }
+
+    /**
+     * 上传音频的封面图到OSS服务器
+     *
+     * @return oss服务器图片访问url
+     */
+    @Override
+    public String uploadMusicCover(MultipartFile file) {
+        String url = "";
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+            OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
+            String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
+            String type = "music/pic/" + fileName;
+            ossClient.putObject(OssConstant.BUCKET, type, inputStream);
+            url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -148,7 +196,7 @@ public class OssServiceImpl implements OssService {
             InputStream inputStream = file.getInputStream();
             OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
             String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
-            String type = "music/"+fileName;
+            String type = "music/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
             Music music = new Music();
@@ -185,7 +233,7 @@ public class OssServiceImpl implements OssService {
             InputStream inputStream = file.getInputStream();
             OSS ossClient = new OSSClientBuilder().build(OssConstant.END_POINT, OssConstant.ACCESS_KEY_ID, OssConstant.ACCESS_KEY_SECRET);
             String fileName = UUID.randomUUID().toString().replace("-", "") + "_" + file.getOriginalFilename();
-            String type = "video/"+fileName;
+            String type = "video/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
             Video video = new Video();

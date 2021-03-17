@@ -117,7 +117,7 @@ public class WallpaperController {
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllWallpaperExamine")
+    @GetMapping("findAllWallpaperExamine")
     public Result1 findAllWallpaperExamine() {
         List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaperExamine();
         if (wallpaperList.size() != 0) {
@@ -133,9 +133,34 @@ public class WallpaperController {
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllWallpaperNoExamine")
+    @GetMapping("findAllWallpaperNoExamine")
     public Result1 findAllWallpaperNoExamine() {
         List<Wallpaper> wallpaperList = wallpaperService.findAllWallpaperNoExamine();
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
+    /**
+     * 查询前八张壁纸
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findEightWallpaper")
+    public Result1 findEightWallpaper() {
+        List<Wallpaper> wallpaperList = wallpaperService.findEightWallpaper();
+        if (wallpaperList.size() != 0) {
+            return Result1.success().data("wallpaperList", wallpaperList);
+        } else {
+            return Result1.fail().setMessage("壁纸不存在");
+        }
+    }
+
+    @GetMapping("findFiveHotWallpaper")
+    public Result1 findFiveHotWallpaper(){
+        List<Wallpaper> wallpaperList = wallpaperService.findFiveHotWallpaper();
         if (wallpaperList.size() != 0) {
             return Result1.success().data("wallpaperList", wallpaperList);
         } else {
@@ -247,11 +272,11 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryExamine")
-    public Result1 pagingQueryExamine(String title,Integer index, Integer size) {
+    public Result1 pagingQueryExamine(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable wallpaperIPage = wallpaperService.pagingQueryExamine(title,index, size);
+        Serializable wallpaperIPage = wallpaperService.pagingQueryExamine(title, index, size);
         if (wallpaperIPage != null) {
             return Result1.success().data("wallpaperIPage", wallpaperIPage);
         } else {
@@ -265,11 +290,11 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryNoExamine")
-    public Result1 pagingQueryNoExamine(String title,Integer index, Integer size) {
+    public Result1 pagingQueryNoExamine(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable wallpaperIPage = wallpaperService.pagingQueryNoExamine(title,index, size);
+        Serializable wallpaperIPage = wallpaperService.pagingQueryNoExamine(title, index, size);
         if (wallpaperIPage != null) {
             return Result1.success().data("wallpaperIPage", wallpaperIPage);
         } else {
@@ -283,11 +308,11 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryIsDelete")
-    public Result1 pagingQueryIsDelete(String title,Integer index, Integer size) {
+    public Result1 pagingQueryIsDelete(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        List<Wallpaper> wallpaperList = wallpaperService.pagingQueryIsDelete(title,index, size);
+        List<Wallpaper> wallpaperList = wallpaperService.pagingQueryIsDelete(title, index, size);
         if (wallpaperList.size() != 0) {
             return Result1.success().data("wallpaperList", wallpaperList);
         } else {

@@ -40,6 +40,20 @@ public interface WallpaperService extends IService<Wallpaper> {
      */
     List<Wallpaper> findIsDelete();
 
+    /**
+     * 查询前八张壁纸
+     *
+     * @return 返回的结果
+     */
+    List<Wallpaper> findEightWallpaper();
+
+    /**
+     * 查询最热门的前五张壁纸
+     *
+     * @return 返回的结果
+     */
+    List<Wallpaper> findFiveHotWallpaper();
+
 
     /**
      * 根据 壁纸标题 模糊查询（已过审）

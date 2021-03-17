@@ -27,6 +27,22 @@ public interface OssService {
      */
     String uploadArticle(MultipartFile file);
 
+    /**
+     * 上传游戏封面图到OSS服务器
+     *
+     * @param file 作品文件
+     * @return oss服务文章封面访问url
+     */
+    String uploadGameCover(MultipartFile file);
+
+
+    /**
+     * 上传音频的封面图到OSS服务器
+     *
+     * @param file 音频文件
+     * @return oss服务器图片访问url
+     */
+     String uploadMusicCover(MultipartFile file);
 
     /**
      * 上传音频到OSS服务器

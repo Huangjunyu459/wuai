@@ -49,6 +49,11 @@ public class Music implements Serializable {
     private String ossSrc;
 
     /**
+     * 音乐封面图
+     */
+    private String musicCover;
+
+    /**
      * 上传的用户id
      */
     private Long authorId;

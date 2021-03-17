@@ -41,6 +41,8 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setDescription(entity.getDescription());
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
+        game.setGameCover(entity.getGameCover());
+        game.setDCode(entity.getDCode());
         game.setAuthorId(entity.getAuthorId());
         game.setCategoryId(2);
         game.setExamine(1);
@@ -143,6 +145,30 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     public List<Game> findAllGameNoExamine() {
         QueryWrapper<Game> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 0);
+        return gameMapper.selectList(wrapper);
+    }
+
+    /**
+     * 返回最新的八部游戏
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Game> findEightGame() {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 8");
+        return gameMapper.selectList(wrapper);
+    }
+
+    /**
+     * 返回最新的十六部游戏
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Game> findSixthGame() {
+        QueryWrapper<Game> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 16");
         return gameMapper.selectList(wrapper);
     }
 

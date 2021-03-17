@@ -1,6 +1,7 @@
 package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Result;
+import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.service.impl.OssServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -46,11 +47,36 @@ public class OssController {
      */
     @PostMapping("uploadArticle")
     public Result<String> uploadArticle(MultipartFile file) {
-        String picUrl = ossService.uploadArticle(file);
-        if (StringUtils.isEmpty(picUrl)) {
+        String articleUrl = ossService.uploadArticle(file);
+        if (StringUtils.isEmpty(articleUrl)) {
             return Result.failed("上传失败");
         }
-        return Result.ok(picUrl);
+        return Result.ok(articleUrl);
+    }
+
+    /**
+     * 游戏的封面上传到阿里oss服务器
+     */
+    @PostMapping("uploadGameCover")
+    public Result<String> uploadGameCover(MultipartFile file) {
+        String gameCoverUrl = ossService.uploadGameCover(file);
+        if (StringUtils.isEmpty(gameCoverUrl)) {
+            return Result.failed("上传失败");
+        }
+        return Result.ok(gameCoverUrl);
+    }
+
+
+    /**
+     * 音乐封面上传到阿里oss服务器
+     */
+    @PostMapping("uploadMusicCover")
+    public Result<String> uploadMusicCover(MultipartFile file) {
+        String musicCoverUrl = ossService.uploadMusicCover(file);
+        if (StringUtils.isEmpty(musicCoverUrl)) {
+            return Result.failed("上传失败");
+        }
+        return Result.ok(musicCoverUrl);
     }
 
 
@@ -59,11 +85,11 @@ public class OssController {
      */
     @PostMapping("uploadMusic")
     public Result<String> uploadMusic(MultipartFile file) {
-        String picUrl = ossService.uploadMusic(file);
-        if (StringUtils.isEmpty(picUrl)) {
+        String musicUrl = ossService.uploadMusic(file);
+        if (StringUtils.isEmpty(musicUrl)) {
             return Result.failed("上传失败");
         }
-        return Result.ok(picUrl);
+        return Result.ok(musicUrl);
     }
 
 
@@ -72,21 +98,21 @@ public class OssController {
      */
     @PostMapping("uploadVideo")
     public Result<String> uploadVideo(MultipartFile file) {
-        String picUrl = ossService.uploadVideo(file);
-        if (StringUtils.isEmpty(picUrl)) {
+        String videoUrl = ossService.uploadVideo(file);
+        if (StringUtils.isEmpty(videoUrl)) {
             return Result.failed("上传失败");
         }
-        return Result.ok(picUrl);
+        return Result.ok(videoUrl);
     }
 
 
-    @GetMapping("delete/{filepath}")
-    public void delete(@PathVariable String filepath, Model model) {
+    @GetMapping("delete}")
+    public Result1 delete(String filepath) {
         boolean b = ossService.deleteFile(filepath);
         if (b) {
-            model.addAttribute("msg", "删除成功");
+            return Result1.success().setMessage("删除成功").data("status", b);
         } else {
-            model.addAttribute("msg", "删除失败");
+            return Result1.fail().setMessage("删除失败").data("status", b);
         }
     }
 }

@@ -66,6 +66,20 @@ public interface GameService extends IService<Game> {
     List<Game> findGameByGameNameIsDelete(String gameName);
 
     /**
+     * 查询最新的八部游戏
+     *
+     * @return 返回的结果
+     */
+    List<Game> findEightGame();
+
+    /**
+     * 查询最新的十六部游戏
+     *
+     * @return 返回的结果
+     */
+    List<Game> findSixthGame();
+
+    /**
      * 点赞功能
      *
      * @param id 游戏 id
@@ -88,7 +102,7 @@ public interface GameService extends IService<Game> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Game> pagingQueryExamine(String gameName,Integer index, Integer size);
+    IPage<Game> pagingQueryExamine(String gameName, Integer index, Integer size);
 
     /**
      * 分页查询（未过审）
@@ -97,7 +111,7 @@ public interface GameService extends IService<Game> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Game> pagingQueryNoExamine(String gameName,Integer index, Integer size);
+    IPage<Game> pagingQueryNoExamine(String gameName, Integer index, Integer size);
 
     /**
      * 分页查询（已删除的分类）
@@ -106,7 +120,7 @@ public interface GameService extends IService<Game> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    List<Game> pagingQueryIsDelete(String gameName,Integer index, Integer size);
+    List<Game> pagingQueryIsDelete(String gameName, Integer index, Integer size);
 
     /**
      * 根据 游戏的 id 查询 所属的分类名

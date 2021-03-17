@@ -208,6 +208,36 @@ public class ArticleController {
         }
     }
 
+    /**
+     * 查询最新的八篇文章
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findEightArticle")
+    public Result1 findEightArticle() {
+        List<Article> articleList = articleService.findEightArticle();
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
+    /**
+     * 查询最新的十六篇文章
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findSixthArticle")
+    public Result1 findSixthArticle() {
+        List<Article> articleList = articleService.findSixthArticle();
+        if (articleList.size() != 0) {
+            return Result1.success().data("articleList", articleList);
+        } else {
+            return Result1.fail().setMessage("文章不存在");
+        }
+    }
+
 
     /**
      * 文章点赞
@@ -216,7 +246,7 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("likes")
-    public Result1 likes( String id) {
+    public Result1 likes(String id) {
         if (articleService.likes(id)) {
             return Result1.success().setMessage("点赞成功");
         } else {
@@ -247,11 +277,11 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryExamine")
-    public Result1 pagingQueryExamine(String title,Integer index, Integer size) {
+    public Result1 pagingQueryExamine(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable articleIPage = articleService.pagingQueryExamine(title,index, size);
+        Serializable articleIPage = articleService.pagingQueryExamine(title, index, size);
         if (articleIPage != null) {
             return Result1.success().data("articleIPage", articleIPage);
         } else {
@@ -265,11 +295,11 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryNoExamine")
-    public Result1 pagingQueryNoExamine(String title,Integer index, Integer size) {
+    public Result1 pagingQueryNoExamine(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable articleIPage = articleService.pagingQueryNoExamine(title,index, size);
+        Serializable articleIPage = articleService.pagingQueryNoExamine(title, index, size);
         if (articleIPage != null) {
             return Result1.success().data("articleIPage", articleIPage);
         } else {
@@ -283,11 +313,11 @@ public class ArticleController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryIsDelete")
-    public Result1 pagingQueryIsDelete(String title,Integer index, Integer size) {
+    public Result1 pagingQueryIsDelete(String title, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        List<Article> articleList = articleService.pagingQueryIsDelete(title,index, size);
+        List<Article> articleList = articleService.pagingQueryIsDelete(title, index, size);
         if (articleList.size() != 0) {
             return Result1.success().data("articleList", articleList);
         } else {

@@ -50,6 +50,16 @@ public class Game implements Serializable {
     private String bdCode;
 
     /**
+     * 解压码
+     */
+    private String dCode;
+
+    /**
+     * 游戏封面图
+     */
+    private String gameCover;
+
+    /**
      * 上传的用户的id
      */
     private Long authorId;

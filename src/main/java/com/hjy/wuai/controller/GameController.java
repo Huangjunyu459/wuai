@@ -133,9 +133,39 @@ public class GameController {
      *
      * @return 返回的结果 msg
      */
-    @GetMapping("/findAllGameNoExamine")
+    @GetMapping("findAllGameNoExamine")
     public Result1 findAllGameNoExamine() {
         List<Game> gameList = gameService.findAllGameNoExamine();
+        if (gameList.size() != 0) {
+            return Result1.success().data("gameList", gameList);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
+    }
+
+    /**
+     * 查找最新的八部游戏
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findEightGame")
+    public Result1 findEightGame() {
+        List<Game> gameList = gameService.findEightGame();
+        if (gameList.size() != 0) {
+            return Result1.success().data("gameList", gameList);
+        } else {
+            return Result1.fail().setMessage("游戏不存在");
+        }
+    }
+
+    /**
+     * 查找最新的十六部游戏
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findSixthGame")
+    public Result1 findSixthGame() {
+        List<Game> gameList = gameService.findSixthGame();
         if (gameList.size() != 0) {
             return Result1.success().data("gameList", gameList);
         } else {

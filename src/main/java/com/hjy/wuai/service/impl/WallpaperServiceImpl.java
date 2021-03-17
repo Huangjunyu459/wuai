@@ -213,6 +213,30 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
 
 
     /**
+     * 查询前八张的壁纸
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Wallpaper> findEightWallpaper() {
+        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 8");
+        return wallpaperMapper.selectList(wrapper);
+    }
+
+    /**
+     * 查询最热门的五张壁纸
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Wallpaper> findFiveHotWallpaper() {
+        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("love").eq("examine", 1).last("limit 5");
+        return wallpaperMapper.selectList(wrapper);
+    }
+
+    /**
      * 分页查询（过审）
      *
      * @param index 索引页
