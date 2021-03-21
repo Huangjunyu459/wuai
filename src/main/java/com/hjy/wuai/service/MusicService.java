@@ -41,6 +41,13 @@ public interface MusicService extends IService<Music> {
     List<Music> findIsDelete();
 
     /**
+     * 查询最新的十六首歌曲
+     *
+     * @return 返回的结果
+     */
+    List<Music> findSixthMusic();
+
+    /**
      * 根据 歌名 模糊查询（过审）
      *
      * @param song 歌名
@@ -87,7 +94,7 @@ public interface MusicService extends IService<Music> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Music> pagingQueryExamine(String song,Integer index, Integer size);
+    IPage<Music> pagingQueryExamine(String song, Integer index, Integer size);
 
     /**
      * 分页查询（未过审）
@@ -96,7 +103,7 @@ public interface MusicService extends IService<Music> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Music> pagingQueryNoExamine(String song,Integer index, Integer size);
+    IPage<Music> pagingQueryNoExamine(String song, Integer index, Integer size);
 
     /**
      * 分页查询（已删除的分类）
@@ -105,7 +112,7 @@ public interface MusicService extends IService<Music> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    List<Music> pagingQueryIsDelete(String song,Integer index, Integer size);
+    List<Music> pagingQueryIsDelete(String song, Integer index, Integer size);
 
     /**
      * 根据 音频的 id 查询 所属的分类名

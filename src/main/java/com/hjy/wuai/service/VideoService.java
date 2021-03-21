@@ -33,6 +33,13 @@ public interface VideoService extends IService<Video> {
      */
     List<Video> findAllVideoNoExamine();
 
+    /**
+     * 查询最新的十六部视频
+     *
+     * @return 返回的结果
+     */
+    List<Video> findSixthVideo();
+
 
     /**
      * 查询已删除的视频

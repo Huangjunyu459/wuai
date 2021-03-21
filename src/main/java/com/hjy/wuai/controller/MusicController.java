@@ -143,6 +143,21 @@ public class MusicController {
         }
     }
 
+    /**
+     * 查找最新的十六首歌曲
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findSixthMusic")
+    public Result1 findSixthMusic() {
+        List<Music> musicList = musicService.findSixthMusic();
+        if (musicList.size() != 0) {
+            return Result1.success().data("musicList", musicList);
+        } else {
+            return Result1.fail().setMessage("音频不存在");
+        }
+    }
+
 
     /**
      * 审核功能
@@ -252,7 +267,7 @@ public class MusicController {
         if (index == 1) {
             index -= 1;
         }
-        Serializable musicIPage = musicService.pagingQueryExamine(song,index, size);
+        Serializable musicIPage = musicService.pagingQueryExamine(song, index, size);
         if (musicIPage != null) {
             return Result1.success().data("musicIPage", musicIPage);
         } else {
@@ -266,11 +281,11 @@ public class MusicController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryNoExamine")
-    public Result1 pagingQueryNoExamine(String song,Integer index, Integer size) {
+    public Result1 pagingQueryNoExamine(String song, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable musicIPage = musicService.pagingQueryNoExamine(song,index, size);
+        Serializable musicIPage = musicService.pagingQueryNoExamine(song, index, size);
         if (musicIPage != null) {
             return Result1.success().data("musicIPage", musicIPage);
         } else {
@@ -284,11 +299,11 @@ public class MusicController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryIsDelete")
-    public Result1 pagingQueryIsDelete(String song,Integer index, Integer size) {
+    public Result1 pagingQueryIsDelete(String song, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        List<Music> musicList = musicService.pagingQueryIsDelete(song,index, size);
+        List<Music> musicList = musicService.pagingQueryIsDelete(song, index, size);
         if (musicList.size() != 0) {
             return Result1.success().data("musicList", musicList);
         } else {

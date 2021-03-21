@@ -143,6 +143,21 @@ public class VideoController {
         }
     }
 
+    /**
+     * 查找最新的十六部视频
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("/findSixthVideo")
+    public Result1 findSixthVideo() {
+        List<Video> videoList = videoService.findSixthVideo();
+        if (videoList.size() != 0) {
+            return Result1.success().data("videoList", videoList);
+        } else {
+            return Result1.fail().setMessage("视频不存在");
+        }
+    }
+
 
     /**
      * 审核功能
@@ -247,11 +262,11 @@ public class VideoController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryExamine")
-    public Result1 pagingQueryExamine(String videoName,Integer index, Integer size) {
+    public Result1 pagingQueryExamine(String videoName, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable videoIPage = videoService.pagingQueryExamine(videoName,index, size);
+        Serializable videoIPage = videoService.pagingQueryExamine(videoName, index, size);
         if (videoIPage != null) {
             return Result1.success().data("videoIPage", videoIPage);
         } else {
@@ -265,11 +280,11 @@ public class VideoController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryNoExamine")
-    public Result1 pagingQueryNoExamine(String videoName,Integer index, Integer size) {
+    public Result1 pagingQueryNoExamine(String videoName, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable videoIPage = videoService.pagingQueryNoExamine(videoName,index, size);
+        Serializable videoIPage = videoService.pagingQueryNoExamine(videoName, index, size);
         if (videoIPage != null) {
             return Result1.success().data("videoIPage", videoIPage);
         } else {
@@ -283,11 +298,11 @@ public class VideoController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryIsDelete")
-    public Result1 pagingQueryIsDelete(String videoName,Integer index, Integer size) {
+    public Result1 pagingQueryIsDelete(String videoName, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        List<Video> videoList = videoService.pagingQueryIsDelete(videoName,index, size);
+        List<Video> videoList = videoService.pagingQueryIsDelete(videoName, index, size);
         if (videoList.size() != 0) {
             return Result1.success().data("videoList", videoList);
         } else {

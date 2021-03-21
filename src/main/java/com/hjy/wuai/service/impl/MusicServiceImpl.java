@@ -136,6 +136,17 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         return musicMapper.selectList(wrapper);
     }
 
+    /**
+     * 查询最新的十六首歌曲
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Music> findSixthMusic() {
+        QueryWrapper<Music> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 16");
+        return musicMapper.selectList(wrapper);
+    }
 
     /**
      * 审核功能
@@ -253,7 +264,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
     @Override
     public List<Music> pagingQueryIsDelete(String song, Integer index, Integer size) {
         song = "%" + song + "%";
-        return musicMapper.pagingQueryIsDelete(song,index, size);
+        return musicMapper.pagingQueryIsDelete(song, index, size);
     }
 
 

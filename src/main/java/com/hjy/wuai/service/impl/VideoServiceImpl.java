@@ -133,6 +133,17 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         return videoMapper.selectList(wrapper);
     }
 
+    /**
+     * 查询最新的十六部视频
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Video> findSixthVideo() {
+        QueryWrapper<Video> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("id").eq("examine", 1).last("limit 16");
+        return videoMapper.selectList(wrapper);
+    }
 
     /**
      * 审核功能
@@ -249,7 +260,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     @Override
     public List<Video> pagingQueryIsDelete(String videoName, Integer index, Integer size) {
         videoName = "%" + videoName + "%";
-        return videoMapper.pagingQueryIsDelete(videoName,index, size);
+        return videoMapper.pagingQueryIsDelete(videoName, index, size);
     }
 
 
