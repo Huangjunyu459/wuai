@@ -38,6 +38,7 @@ public class OssController {
         if (StringUtils.isEmpty(picUrl)) {
             return Result.failed("上传失败");
         }
+        System.out.println("success");
         return Result.ok(picUrl);
     }
 
@@ -84,8 +85,8 @@ public class OssController {
      * 音乐上传到阿里oss服务器
      */
     @PostMapping("uploadMusic")
-    public Result<String> uploadMusic(MultipartFile file) {
-        String musicUrl = ossService.uploadMusic(file);
+    public Result<String> uploadMusic(MultipartFile files) {
+        String musicUrl = ossService.uploadMusic(files);
         if (StringUtils.isEmpty(musicUrl)) {
             return Result.failed("上传失败");
         }

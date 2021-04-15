@@ -42,11 +42,9 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     public boolean save(Video entity) {
         Video video = new Video();
         video.setVideoName(entity.getVideoName());
-        video.setOssName(entity.getOssName());
         video.setOssSrc(entity.getOssSrc());
         video.setAuthorId(entity.getAuthorId());
         video.setCategoryId(3);
-        video.setExamine(1);
         return videoMapper.insert(video) == 1;
     }
 
@@ -89,7 +87,6 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         //  获取要更新的视频
         Video video = getById(entity.getId());
         video.setVideoName(entity.getVideoName());
-        video.setOssName(entity.getOssName());
         video.setOssSrc(entity.getOssSrc());
         video.setLove(entity.getLove());
         return videoMapper.updateById(video) == 1;

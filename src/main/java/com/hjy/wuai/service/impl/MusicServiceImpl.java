@@ -43,13 +43,10 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         Music music = new Music();
         music.setSinger(entity.getSinger());
         music.setSong(entity.getSong());
-        //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 String类的集合，依次获取ossSong和ossSrc
-        music.setOssSong(entity.getOssSong());
         music.setOssSrc(entity.getOssSrc());
         music.setMusicCover(entity.getMusicCover());
         music.setAuthorId(entity.getAuthorId());
         music.setCategoryId(4);
-        music.setExamine(1);
         return musicMapper.insert(music) == 1;
     }
 
@@ -93,7 +90,6 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         Music music = getById(entity.getId());
         music.setSinger(entity.getSinger());
         music.setSong(entity.getSong());
-        music.setOssSong(entity.getOssSong());
         music.setOssSrc(entity.getOssSrc());
         music.setLove(entity.getLove());
         return musicMapper.updateById(music) == 1;

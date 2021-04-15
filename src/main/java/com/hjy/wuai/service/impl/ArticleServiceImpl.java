@@ -44,9 +44,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setAuthorId(entity.getAuthorId());
         article.setCategoryId(5);
         article.setContent(entity.getContent());
-        //  这里的 setArticleCover 需要前端调用 OssController里面的上传图片的方法，获得一个 src 路径
         article.setArticleCover(entity.getArticleCover());
-        article.setExamine(1);
         return articleMapper.insert(article) == 1;
     }
 

@@ -43,10 +43,6 @@ public class Wallpaper implements Serializable {
      */
     private Integer categoryId;
 
-    /**
-     * 壁纸存储在 oos 的名称
-     */
-    private String ossTitle;
 
     /**
      * oos的路径

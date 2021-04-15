@@ -79,18 +79,6 @@ public class OssServiceImpl implements OssService {
             String type = "pic/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
-            Wallpaper wallpaper = new Wallpaper();
-            wallpaper.setCategoryId(1);
-            wallpaper.setAuthorId(1365502991892807681L);
-            wallpaper.setOssSrc(url);
-            wallpaper.setTitle(file.getOriginalFilename());
-            wallpaper.setOssTitle(fileName);
-            try {
-                wallpaperService.save(wallpaper);
-            } catch (Exception e) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -115,18 +103,6 @@ public class OssServiceImpl implements OssService {
             String type = "article/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
-            Article article = new Article();
-            article.setTitle("title");
-            article.setContent("content");
-            article.setArticleCover(url);
-            article.setAuthorId(1365502991892807681L);
-            article.setCategoryId(5);
-            try {
-                articleService.save(article);
-            } catch (Exception e) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -199,19 +175,6 @@ public class OssServiceImpl implements OssService {
             String type = "music/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
-            Music music = new Music();
-            music.setSinger(file.getOriginalFilename().split("-")[0]);
-            music.setSong(file.getOriginalFilename().split("-")[1]);
-            music.setOssSong(fileName);
-            music.setOssSrc(url);
-            music.setAuthorId(1365502991892807681L);
-            music.setCategoryId(4);
-            try {
-                musicService.save(music);
-            } catch (Exception e) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -236,19 +199,6 @@ public class OssServiceImpl implements OssService {
             String type = "video/" + fileName;
             ossClient.putObject(OssConstant.BUCKET, type, inputStream);
             url = "https://" + OssConstant.BUCKET + "." + OssConstant.END_POINT + "/" + type;
-            Video video = new Video();
-            video.setVideoName(file.getOriginalFilename());
-            video.setOssName(fileName);
-            video.setOssSrc(url);
-            video.setCategoryId(3);
-            video.setAuthorId(1365502991892807681L);
-            System.out.println(video);
-            try {
-                videoService.save(video);
-            } catch (Exception e) {
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

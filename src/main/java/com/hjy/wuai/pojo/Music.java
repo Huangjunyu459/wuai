@@ -39,11 +39,6 @@ public class Music implements Serializable {
     private String song;
 
     /**
-     * 歌曲存储在 OSS 的名字
-     */
-    private String ossSong;
-
-    /**
      * 歌曲存储在 OSS 的路径
      */
     private String ossSrc;

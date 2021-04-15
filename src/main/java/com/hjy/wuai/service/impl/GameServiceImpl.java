@@ -29,25 +29,6 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
     @Autowired
     private GameMapper gameMapper;
 
-    /**
-     * 管理员上传游戏
-     *
-     * @param entity
-     * @return
-     */
-    public boolean saveByAdmin(Game entity) {
-        Game game = new Game();
-        game.setGameName(entity.getGameName());
-        game.setDescription(entity.getDescription());
-        game.setBdSrc(entity.getBdSrc());
-        game.setBdCode(entity.getBdCode());
-        game.setGameCover(entity.getGameCover());
-        game.setDCode(entity.getDCode());
-        game.setAuthorId(entity.getAuthorId());
-        game.setCategoryId(2);
-        game.setExamine(1);
-        return gameMapper.insert(game) == 1;
-    }
 
     /**
      * 管理员上传游戏
@@ -63,6 +44,8 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
         game.setAuthorId(entity.getAuthorId());
+        game.setDCode(entity.getDCode());
+        game.setGameCover(entity.getGameCover());
         game.setCategoryId(2);
         return gameMapper.insert(game) == 1;
     }

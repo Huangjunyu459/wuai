@@ -43,11 +43,9 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
     public boolean save(Wallpaper entity) {
         Wallpaper wallpaper = new Wallpaper();
         wallpaper.setTitle(entity.getTitle());
-        wallpaper.setOssTitle(entity.getOssTitle());
         wallpaper.setOssSrc(entity.getOssSrc());
         wallpaper.setAuthorId(entity.getAuthorId());
         wallpaper.setCategoryId(1);
-        wallpaper.setExamine(1);
         return wallpaperMapper.insert(wallpaper) == 1;
     }
 
@@ -90,7 +88,6 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
         //  获取要更新的壁纸
         Wallpaper wallpaper = getById(entity.getId());
         wallpaper.setTitle(entity.getTitle());
-        wallpaper.setOssTitle(entity.getOssTitle());
         wallpaper.setOssSrc(entity.getOssSrc());
         wallpaper.setLove(entity.getLove());
         return wallpaperMapper.updateById(wallpaper) == 1;
