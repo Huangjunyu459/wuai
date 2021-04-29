@@ -42,7 +42,7 @@ public class Video implements Serializable {
     /**
      * 上传视频的用户的id
      */
-    private Long authorId;
+    private String authorId;
 
     /**
      * 分类的id
@@ -82,5 +82,10 @@ public class Video implements Serializable {
      * 审核状态
      */
     private Integer examine;
+
+    /**
+     * 是否会员专属
+     */
+    private Boolean isVip;
 
 }

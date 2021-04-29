@@ -9,6 +9,7 @@ import com.hjy.wuai.pojo.*;
 import com.hjy.wuai.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
  * @since 2021-03-02
  */
 @Service
+@Transactional
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements CommentService {
 
     /**
@@ -42,6 +44,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Comment comment = new Comment();
         comment.setArticleId(entity.getArticleId());
         comment.setUserId(entity.getUserId());
+        comment.setUserName(entity.getUserName());
         comment.setContent(entity.getContent());
         return commentMapper.insert(entity) == 1;
     }
@@ -110,6 +113,16 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
         wrapper.eq("examine", 1);
         return commentMapper.selectList(wrapper);
+    }
+
+    /**
+     * 查找最新的五条审核的评论
+     *
+     * @return 返回的结果
+     */
+    @Override
+    public List<Comment> findFiveCommentExamine(String id) {
+        return commentMapper.findFiveCommentExamine(id);
     }
 
 

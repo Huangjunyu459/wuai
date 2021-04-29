@@ -1,10 +1,13 @@
 package com.hjy.wuai.controller;
 
 
+import com.hjy.wuai.pojo.ActiveCode;
 import com.hjy.wuai.pojo.NameAndEmail;
 import com.hjy.wuai.pojo.Result1;
 import com.hjy.wuai.pojo.User;
+import com.hjy.wuai.service.impl.ActiveCodeServiceImpl;
 import com.hjy.wuai.service.impl.UserServiceImpl;
+import com.hjy.wuai.service.impl.ValidateServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -40,6 +43,99 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * 注入 activeCodeService
+     */
+    @Autowired
+    private ActiveCodeServiceImpl activeCodeService;
+
+
+    @Autowired
+    private ValidateServiceImpl validateService;
+
+
+    /**
+     * 找回密码
+     *
+     * @param email 找回密码的邮箱
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findPS")
+    public Result1 findPS(String email,String newPassword) {
+        boolean statue = userService.findPS(email,newPassword);
+        if (statue) {
+            return Result1.success().setMessage("找回密码成功");
+        } else {
+            return Result1.fail().setMessage("找回密码失败");
+        }
+    }
+
+    /**
+     * 邮箱验证码
+     *
+     * @param email 找回密码的邮箱
+     * @return 返回的结果 msg
+     */
+    @GetMapping("acceptVC")
+    public Result1 acceptVC(String email) {
+        boolean statue = validateService.sendEmailVCode(email);
+        if (statue) {
+            return Result1.success().setMessage("验证码发送成功");
+        } else {
+            return Result1.fail().setMessage("验证码发送失败");
+        }
+    }
+
+    /**
+     * 邮箱注册码
+     *
+     * @param email 找回密码的邮箱
+     * @return 返回的结果 msg
+     */
+    @GetMapping("acceptRC")
+    public Result1 acceptRC(String email) {
+        boolean statue = validateService.sendEmailRCode(email);
+        if (statue) {
+            return Result1.success().setMessage("注册码获取成功");
+        } else {
+            return Result1.fail().setMessage("注册码获取失败");
+        }
+    }
+
+    /**
+     * 检测注册码
+     *
+     * @param email 注册的邮箱
+     * @param RCode 注册码
+     * @return 返回的结果 msg
+     */
+    @GetMapping("checkRCode")
+    public Result1 checkRCode(String email, String RCode) {
+        boolean statue = validateService.checkRCode(email, RCode);
+        if (statue) {
+            return Result1.success().setMessage("注册码正确");
+        } else {
+            return Result1.fail().setMessage("注册码错误");
+        }
+    }
+
+    /**
+     * 检测注册码
+     *
+     * @param email 找回密码的邮箱
+     * @param VCode 验证码
+     * @return 返回的结果 msg
+     */
+    @GetMapping("checkVCode")
+    public Result1 checkVCode(String email, String VCode) {
+        boolean statue = validateService.checkVCode(email, VCode);
+        if (statue) {
+            return Result1.success().setMessage("验证码正确");
+        } else {
+            return Result1.fail().setMessage("验证码错误");
+        }
+    }
+
 
     /**
      * 用户注册功能
@@ -71,7 +167,7 @@ public class UserController {
             userService.checkLogin(username, password, email);
             return Result1.success().setMessage("登录成功");
         } catch (Exception e) {
-            return Result1.fail().setMessage("注册失败");
+            return Result1.fail().setMessage("登录失败");
         }
     }
 
@@ -189,12 +285,13 @@ public class UserController {
     /**
      * 会员充值
      *
-     * @param id 用户的 id
+     * @param activeCode 激活码对象
      * @return 返回的结果 msg
      */
-    @GetMapping("recharge")
-    public Result1 recharge(String id) {
-        if (userService.recharge(id)) {
+    @PostMapping("recharge")
+    public Result1 recharge(@RequestBody ActiveCode activeCode) {
+        System.out.println(activeCode);
+        if (activeCodeService.recharge(activeCode)) {
             return Result1.success().setMessage("充值成功");
         } else {
             return Result1.fail().setMessage("充值失败");
@@ -242,11 +339,11 @@ public class UserController {
      */
     @GetMapping("findUserByEmail")
     public Result1 findUserByEmail(String email) {
-        List<User> userList = Arrays.asList(userService.findUserByEmail(email));
-        if (userList.size() != 0) {
-            return Result1.success().data("userList", userList);
-        } else {
+        User user = userService.findUserByEmail(email);
+        if (user == null) {
             return Result1.fail().setMessage("用户不存在");
+        } else {
+            return Result1.success().data("user", user);
         }
     }
 

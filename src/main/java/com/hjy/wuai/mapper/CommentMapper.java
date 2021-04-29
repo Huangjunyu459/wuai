@@ -31,6 +31,17 @@ public interface CommentMapper extends BaseMapper<Comment> {
             "AND article_id = #{id}")
     List<UnameAndComment> findUnameAndCommentExamine(String id);
 
+    /**
+     * 查找最新的五条审核的评论
+     *
+     * @param id 作品id
+     * @return 返回的结果
+     */
+    @Select("SELECT * FROM COMMENT " +
+            "WHERE examine =1 AND article_id =${id} " +
+            "ORDER BY create_time DESC LIMIT 5")
+    List<Comment> findFiveCommentExamine(String id);
+
 
     /**
      * 根据id模糊查找已删除的评论
@@ -100,7 +111,7 @@ public interface CommentMapper extends BaseMapper<Comment> {
      *
      * @param index
      * @param size
-     * @param  id
+     * @param id
      * @return
      */
     @Select("select * from comment where is_delete = 1 AND id like #{id} limit #{index} , #{size}")

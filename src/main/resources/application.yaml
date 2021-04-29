@@ -11,6 +11,30 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  mail:
+    host: smtp.qq.com
+    username: 541605007@qq.com
+    password: tddoergmfrgtbeef
+    properties:
+      mail:
+        smpt:
+          auth: true
+          starttls:
+            enable: true
+            requied: true
+      default-encoding: UTF-8
+  redis:
+    host: 127.0.0.1
+    port: 6379
+#    password: root123456
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 500
+        max-wait: -1
+        min-idle: 0
+    lettuce:
+      shutdown-timeout: 0
 
 mybatis-plus:
   configuration:

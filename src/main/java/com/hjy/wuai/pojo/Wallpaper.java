@@ -36,7 +36,7 @@ public class Wallpaper implements Serializable {
     /**
      * 上传的作者id
      */
-    private Long authorId;
+    private String authorId;
 
     /**
      * 分类id
@@ -83,5 +83,10 @@ public class Wallpaper implements Serializable {
      * 审核状态
      */
     private Integer examine;
+
+    /**
+     * 是否会员专属
+     */
+    private Boolean isVip;
 
 }

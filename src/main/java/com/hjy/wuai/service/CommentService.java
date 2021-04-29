@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hjy.wuai.pojo.UnameAndComment;
 import com.hjy.wuai.pojo.Wallpaper;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -26,6 +27,15 @@ public interface CommentService extends IService<Comment> {
      * @return 返回的结果
      */
     List<Comment> findAllCommentExamine();
+
+    /**
+     * 查找最新的五条审核的评论
+     *
+     * @param id 作品 id
+     * @return 返回的结果
+     */
+    List<Comment> findFiveCommentExamine(String id);
+
 
     /**
      * 查询所有未审核的评论
@@ -73,7 +83,7 @@ public interface CommentService extends IService<Comment> {
      * @param id 评论 id
      * @return 返回的结果
      */
-    public List<Comment> findCommentByIdExamine(String id) ;
+    public List<Comment> findCommentByIdExamine(String id);
 
     /**
      * 根据 评论id 模糊查询(未过审)
@@ -108,7 +118,6 @@ public interface CommentService extends IService<Comment> {
     List<String> findUserComment(String id);
 
 
-
     /**
      * 分页查询（过审）
      *
@@ -116,7 +125,7 @@ public interface CommentService extends IService<Comment> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Comment> pagingQueryExamine(String id,Integer index, Integer size);
+    IPage<Comment> pagingQueryExamine(String id, Integer index, Integer size);
 
     /**
      * 分页查询（未过审）
@@ -125,7 +134,7 @@ public interface CommentService extends IService<Comment> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    IPage<Comment> pagingQueryNoExamine(String id,Integer index, Integer size);
+    IPage<Comment> pagingQueryNoExamine(String id, Integer index, Integer size);
 
     /**
      * 分页查询（已删除的分类）
@@ -134,6 +143,6 @@ public interface CommentService extends IService<Comment> {
      * @param size  页数大小
      * @return 返回的结果
      */
-    List<Comment> pagingQueryIsDelete(String id,Integer index, Integer size);
+    List<Comment> pagingQueryIsDelete(String id, Integer index, Integer size);
 
 }

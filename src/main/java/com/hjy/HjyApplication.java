@@ -12,5 +12,4 @@ public class HjyApplication {
     public static void main(String[] args) {
         SpringApplication.run(HjyApplication.class, args);
     }
-
 }

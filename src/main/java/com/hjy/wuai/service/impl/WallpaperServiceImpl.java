@@ -6,10 +6,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hjy.wuai.mapper.WallpaperMapper;
-import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.WallpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -32,6 +32,8 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
     @Autowired
     private WallpaperMapper wallpaperMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 数据库插入壁纸记录
@@ -46,6 +48,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
         wallpaper.setOssSrc(entity.getOssSrc());
         wallpaper.setAuthorId(entity.getAuthorId());
         wallpaper.setCategoryId(1);
+        wallpaper.setIsVip(entity.getIsVip());
         return wallpaperMapper.insert(wallpaper) == 1;
     }
 
@@ -90,6 +93,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
         wallpaper.setTitle(entity.getTitle());
         wallpaper.setOssSrc(entity.getOssSrc());
         wallpaper.setLove(entity.getLove());
+        wallpaper.setIsVip(entity.getIsVip());
         return wallpaperMapper.updateById(wallpaper) == 1;
     }
 
@@ -228,9 +232,16 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
      */
     @Override
     public List<Wallpaper> findFiveHotWallpaper() {
-        QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("love").eq("examine", 1).last("limit 5");
-        return wallpaperMapper.selectList(wrapper);
+        if (redisTemplate.hasKey("wallpaperList")) {
+            System.out.println("在redis中查找");
+            return (List<Wallpaper>) redisTemplate.opsForValue().get("wallpaperList");
+        } else {
+            QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
+            wrapper.orderByDesc("love").eq("examine", 1).last("limit 5");
+            List<Wallpaper> wallpaperList = wallpaperMapper.selectList(wrapper);
+            redisTemplate.opsForValue().set("wallpaperList", wallpaperList);
+            return wallpaperList;
+        }
     }
 
     /**

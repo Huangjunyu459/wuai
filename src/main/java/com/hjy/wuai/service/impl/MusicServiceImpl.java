@@ -47,6 +47,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         music.setMusicCover(entity.getMusicCover());
         music.setAuthorId(entity.getAuthorId());
         music.setCategoryId(4);
+        music.setIsVip(entity.getIsVip());
         return musicMapper.insert(music) == 1;
     }
 
@@ -92,6 +93,7 @@ public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music> implements
         music.setSong(entity.getSong());
         music.setOssSrc(entity.getOssSrc());
         music.setLove(entity.getLove());
+        music.setIsVip(entity.getIsVip());
         return musicMapper.updateById(music) == 1;
     }
 

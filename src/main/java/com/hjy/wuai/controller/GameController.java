@@ -39,6 +39,7 @@ public class GameController {
      */
     @PostMapping("addGame")
     public Result1 addGame(@RequestBody Game game) {
+        System.out.println(game);
         if (gameService.save(game)) {
             return Result1.success().setMessage("上传成功");
         } else {

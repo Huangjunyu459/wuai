@@ -36,7 +36,7 @@ public class Article implements Serializable {
     /**
      * 编写文章的用户id
      */
-    private Long authorId;
+    private String authorId;
 
     /**
      * 文章分类
@@ -86,5 +86,10 @@ public class Article implements Serializable {
      * 审核状态
      */
     private Integer examine;
+
+    /**
+     * 是否会员专属
+     */
+    private Boolean isVip;
 
 }

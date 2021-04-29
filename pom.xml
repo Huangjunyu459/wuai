@@ -18,6 +18,27 @@
     </properties>
     <dependencies>
 
+        <!-- 导入 fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.73</version>
+        </dependency>
+
+        <!-- apache的邮箱服务 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.5</version>
+        </dependency>
+
+
+        <!-- 导入邮箱找回密码依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!--引入阿里云 OSS 依赖-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>

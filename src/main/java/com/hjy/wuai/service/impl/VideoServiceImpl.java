@@ -45,6 +45,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         video.setOssSrc(entity.getOssSrc());
         video.setAuthorId(entity.getAuthorId());
         video.setCategoryId(3);
+        video.setIsVip(entity.getIsVip());
         return videoMapper.insert(video) == 1;
     }
 
@@ -89,6 +90,7 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
         video.setVideoName(entity.getVideoName());
         video.setOssSrc(entity.getOssSrc());
         video.setLove(entity.getLove());
+        video.setIsVip(entity.getIsVip());
         return videoMapper.updateById(video) == 1;
     }
 

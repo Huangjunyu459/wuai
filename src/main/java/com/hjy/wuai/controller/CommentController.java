@@ -113,6 +113,23 @@ public class CommentController {
     }
 
 
+
+    /**
+     * 查找最新的五条审核的评论
+     *
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findFiveCommentExamine")
+    public Result1 findFiveCommentExamine(String id) {
+        List<Comment> commentList = commentService.findFiveCommentExamine(id);
+        if (commentList.size() != 0) {
+            return Result1.success().data("commentList", commentList);
+        } else {
+            return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
+
     /**
      * 查找所有已审核的评论
      *

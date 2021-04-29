@@ -47,6 +47,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setDCode(entity.getDCode());
         game.setGameCover(entity.getGameCover());
         game.setCategoryId(2);
+        game.setIsVip(entity.getIsVip());
         return gameMapper.insert(game) == 1;
     }
 
@@ -92,6 +93,7 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements Ga
         game.setDescription(entity.getDescription());
         game.setBdSrc(entity.getBdSrc());
         game.setBdCode(entity.getBdCode());
+        game.setIsVip(entity.getIsVip());
         return gameMapper.updateById(game) == 1;
     }
 

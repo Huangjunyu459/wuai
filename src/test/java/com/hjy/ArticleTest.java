@@ -36,7 +36,6 @@ public class ArticleTest {
         Article article = new Article();
         article.setTitle("红楼梦2");
         article.setContent("五月天");
-        article.setAuthorId(4L);
         article.setCategoryId(4);
         article.setArticleCover("这是文章封面图片的路径");
         articleController.addArticle(article);

@@ -26,6 +26,14 @@ public interface UserService extends IService<User> {
      */
     void checkLogin(String username, String password, String email);
 
+    /**
+     * 找回密码
+     * @param email 邮箱
+     * @param password 新密码
+     * @return 返回的结果
+     */
+    public boolean findPS(String email, String password);
+
 
     /**
      * 查询所有用户

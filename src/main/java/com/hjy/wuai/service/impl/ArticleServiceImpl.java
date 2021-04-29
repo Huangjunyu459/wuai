@@ -45,6 +45,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setCategoryId(5);
         article.setContent(entity.getContent());
         article.setArticleCover(entity.getArticleCover());
+        article.setIsVip(entity.getIsVip());
         return articleMapper.insert(article) == 1;
     }
 
@@ -90,6 +91,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setContent(entity.getContent());
         article.setArticleCover(entity.getArticleCover());
         article.setLove(entity.getLove());
+        article.setIsVip(entity.getIsVip());
         return articleMapper.updateById(article) == 1;
     }
 

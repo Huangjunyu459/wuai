@@ -52,6 +52,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         subject.login(token);
     }
 
+    /**
+     * 找回密码
+     *
+     * @param password 密码
+     * @param email    邮箱
+     */
+    @Override
+    public boolean findPS(String email, String password) {
+        User user = findUserByEmail(email);
+        List<String> list = passwordAndSalt(password);
+        user.setPasswordSalt(list.get(0));
+        user.setPassword(list.get(1));
+        return userMapper.updateById(user) == 1;
+    }
+
 
     /**
      * 密码加盐算法
@@ -111,7 +126,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public boolean updateById(User entity) {
-        System.out.println(entity.getId());
         List<String> list = passwordAndSalt(entity.getPassword());
 
         //  获取要更新的用户
@@ -119,6 +133,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUsername(entity.getUsername());
         user.setScore(entity.getScore());
         user.setEmail(entity.getEmail());
+        user.setSign(entity.getSign());
 
         user.setPassword(list.get(1));
         user.setPasswordSalt(list.get(0));
@@ -214,6 +229,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectById(id);
         if (user == null) {
             return false;
+        } else if (user.getState() == 2) {
+            return false;
         } else {
             user.setState(2);
             userMapper.updateById(user);
@@ -250,6 +267,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean signIn(String id) {
         User user = userMapper.selectById(id);
+        if (user.getQiandao() == 1) {
+            return false;
+        }
         user.setScore(user.getScore() + 5);
         user.setQiandao(1);
         return userMapper.updateById(user) == 1;
@@ -374,7 +394,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> pagingQueryIsDelete(String username, Integer index, Integer size) {
         username = "%" + username + "%";
-        List<User> userList = userMapper.pagingQueryIsDelete(username,index, size);
+        List<User> userList = userMapper.pagingQueryIsDelete(username, index, size);
         return userList;
     }
 

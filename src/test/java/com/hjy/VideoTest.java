@@ -52,7 +52,6 @@ public class VideoTest {
         video.setVideoName("videoName");
         video.setOssSrc("url");
         video.setCategoryId(3);
-        video.setAuthorId(1365502991892807681L);
         videoService.save(video);
         System.out.println(video);
     }

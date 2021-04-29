@@ -6,6 +6,7 @@ import com.hjy.wuai.controller.UserController;
 import com.hjy.wuai.mapper.*;
 import com.hjy.wuai.pojo.*;
 import com.hjy.wuai.service.impl.UserServiceImpl;
+import com.hjy.wuai.service.impl.ValidateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -169,6 +170,14 @@ class HjyApplicationTests {
 //        page.getRecords().forEach(System.out::println);
 //        System.out.println(page.getTotal());
 
+    }
+
+    @Autowired
+    private ValidateServiceImpl validateService;
+
+    @Test
+    public void testVerificationCode(){
+        System.out.println(validateService.VerificationCode());
     }
 
 
