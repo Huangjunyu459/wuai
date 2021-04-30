@@ -39,6 +39,9 @@ public class ValidateServiceImpl implements ValidateService {
     @Value("${spring.mail.properties.default-encoding}")
     private String Default_Encoding;
 
+    @Value("${spring.mail.port}")
+    private Integer Port;
+
     /**
      * 找回密码方法
      *
@@ -55,8 +58,10 @@ public class ValidateServiceImpl implements ValidateService {
             htmlEmail.setFrom(From);
             htmlEmail.setAuthentication(From, Password);
             htmlEmail.setSubject("邮箱找回密码");
+            htmlEmail.setSmtpPort(Port);
+            htmlEmail.setSSLOnConnect(true);
             String VCode = ValidateServiceImpl.VerificationCode();
-            htmlEmail.setMsg("本次的验证码为：" + VCode);
+            htmlEmail.setMsg("本次的验证码为：" + VCode + "。有效期为15分钟");
             redisTemplate.opsForValue().set("VCode" + email, VCode, 1800, TimeUnit.SECONDS);
             htmlEmail.send();
             return true;
@@ -81,11 +86,40 @@ public class ValidateServiceImpl implements ValidateService {
             htmlEmail.setCharset(Default_Encoding);
             htmlEmail.addTo(email);
             htmlEmail.setFrom(From);
+            htmlEmail.setSmtpPort(Port);
+            htmlEmail.setSSLOnConnect(true);
             htmlEmail.setAuthentication(From, Password);
             htmlEmail.setSubject("吾爱资源分享平台注册码");
             String RCode = ValidateServiceImpl.VerificationCode();
-            htmlEmail.setMsg("本次的注册码为：" + RCode);
+            htmlEmail.setMsg("本次的注册码为：" + RCode + "。有效期为15分钟");
             redisTemplate.opsForValue().set("RCode" + email, RCode, 1800, TimeUnit.SECONDS);
+            htmlEmail.send();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 通知投稿者稿件不合规
+     *
+     * @param email 投稿者邮箱
+     * @return 返回的结果
+     */
+    @Override
+    public boolean sendEmailNoExamine(String email) {
+        HtmlEmail htmlEmail = new HtmlEmail();
+        try {
+            htmlEmail.setHostName(HostName);
+            htmlEmail.setCharset(Default_Encoding);
+            htmlEmail.addTo(email);
+            htmlEmail.setFrom(From);
+            htmlEmail.setAuthentication(From, Password);
+            htmlEmail.setSubject("吾爱资源分享平台");
+            htmlEmail.setSmtpPort(Port);
+            htmlEmail.setSSLOnConnect(true);
+            htmlEmail.setMsg("您本次的投稿内容含有违规内容，已被退回，请遵守投稿规定！");
             htmlEmail.send();
             return true;
         } catch (Exception e) {

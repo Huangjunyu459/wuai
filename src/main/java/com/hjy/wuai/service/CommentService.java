@@ -83,7 +83,23 @@ public interface CommentService extends IService<Comment> {
      * @param id 评论 id
      * @return 返回的结果
      */
-    public List<Comment> findCommentByIdExamine(String id);
+    List<Comment> findCommentByIdExamine(String id);
+
+    /**
+     * 根据 评论内容 模糊查询(已过审)
+     *
+     * @param content 评论内容
+     * @return 返回的结果
+     */
+    List<Comment> findCommentByContentExamine(String content);
+
+    /**
+     * 根据 评论内容 模糊查询(未过审)
+     *
+     * @param content 评论内容
+     * @return 返回的结果
+     */
+    List<Comment> findCommentByContentNoExamine(String content);
 
     /**
      * 根据 评论id 模糊查询(未过审)
@@ -91,7 +107,15 @@ public interface CommentService extends IService<Comment> {
      * @param id 评论 id
      * @return 返回的结果
      */
-    public List<Comment> findCommentByIdNoExamine(String id);
+    List<Comment> findCommentByIdNoExamine(String id);
+
+    /**
+     * 根据 评论内容 模糊查询(已删除)
+     *
+     * @param content 评论内容
+     * @return 返回的结果
+     */
+    List<Comment> findCommentByContentIsDelete(String content);
 
     /**
      * 根据 评论id 模糊查询(已删除)

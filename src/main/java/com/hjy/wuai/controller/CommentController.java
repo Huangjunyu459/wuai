@@ -113,7 +113,6 @@ public class CommentController {
     }
 
 
-
     /**
      * 查找最新的五条审核的评论
      *
@@ -161,6 +160,38 @@ public class CommentController {
         }
     }
 
+    /**
+     * 根据评论内容模糊查询（已过审）
+     *
+     * @param content 壁纸标题
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findCommentByContentExamine")
+    public Result1 findCommentByContentExamine(String content) {
+        List<Comment> commentList = commentService.findCommentByContentExamine(content);
+        if (commentList.size() != 0) {
+            return Result1.success().data("commentList", commentList);
+        } else {
+            return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
+    /**
+     * 根据评论内容模糊查询（未过审）
+     *
+     * @param content 评论内容
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findCommentByContentNoExamine")
+    public Result1 findCommentByContentNoExamine(String content) {
+        List<Comment> commentList = commentService.findCommentByContentNoExamine(content);
+        if (commentList.size() != 0) {
+            return Result1.success().data("commentList", commentList);
+        } else {
+            return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
 
     /**
      * 根据 评论id 查询（已过审）
@@ -187,6 +218,23 @@ public class CommentController {
     @GetMapping("findCommentByIdNoExamine")
     public Result1 findCommentByIdNoExamine(String id) {
         List<Comment> commentList = commentService.findCommentByIdNoExamine(id);
+        if (commentList.size() != 0) {
+            return Result1.success().data("commentList", commentList);
+        } else {
+            return Result1.fail().setMessage("评论不存在");
+        }
+    }
+
+
+    /**
+     * 根据 评论内容 查询（已删除）
+     *
+     * @param content 评论内容
+     * @return 返回的结果 msg
+     */
+    @GetMapping("findCommentByContentIsDelete")
+    public Result1 findCommentByContentIsDelete(String content) {
+        List<Comment> commentList = commentService.findCommentByContentIsDelete(content);
         if (commentList.size() != 0) {
             return Result1.success().data("commentList", commentList);
         } else {
@@ -249,11 +297,11 @@ public class CommentController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryExamine")
-    public Result1 pagingQueryExamine(String id,Integer index, Integer size) {
+    public Result1 pagingQueryExamine(String content, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable commentIPage = commentService.pagingQueryExamine(id,index, size);
+        Serializable commentIPage = commentService.pagingQueryExamine(content, index, size);
         if (commentIPage != null) {
             return Result1.success().data("commentIPage", commentIPage);
         } else {
@@ -267,11 +315,11 @@ public class CommentController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryNoExamine")
-    public Result1 pagingQueryNoExamine(String id,Integer index, Integer size) {
+    public Result1 pagingQueryNoExamine(String content, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        Serializable commentIPage = commentService.pagingQueryNoExamine(id,index, size);
+        Serializable commentIPage = commentService.pagingQueryNoExamine(content, index, size);
         if (commentIPage != null) {
             return Result1.success().data("commentIPage", commentIPage);
         } else {
@@ -285,11 +333,11 @@ public class CommentController {
      * @return 返回的结果 msg
      */
     @GetMapping("pagingQueryIsDelete")
-    public Result1 pagingQueryIsDelete(String id,Integer index, Integer size) {
+    public Result1 pagingQueryIsDelete(String content, Integer index, Integer size) {
         if (index == 1) {
             index -= 1;
         }
-        List<Comment> commentList = commentService.pagingQueryIsDelete(id,index, size);
+        List<Comment> commentList = commentService.pagingQueryIsDelete(content, index, size);
         if (commentList.size() != 0) {
             return Result1.success().data("commentList", commentList);
         } else {

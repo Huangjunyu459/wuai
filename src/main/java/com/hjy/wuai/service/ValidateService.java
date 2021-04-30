@@ -25,6 +25,16 @@ public interface ValidateService {
      */
     boolean sendEmailRCode(String email);
 
+
+    /**
+     * 通知投稿者稿件不合规
+     *
+     * @param email 投稿者邮箱
+     * @return 返回的结果
+     */
+    boolean sendEmailNoExamine(String email);
+
+
     /**
      * 检测注册码
      *

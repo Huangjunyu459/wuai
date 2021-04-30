@@ -44,7 +44,7 @@ public class AdminController {
      * @param admin 管理员实体类
      * @return 返回的结果
      */
-    @RequestMapping("login")
+    @PostMapping("login")
     public Result1 login(@RequestBody Admin admin) {
         boolean statue = adminService.login(admin.getAdminName(), admin.getPassword());
         if (statue) {

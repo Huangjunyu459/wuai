@@ -3,8 +3,11 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Music;
 import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.pojo.Wallpaper;
 import com.hjy.wuai.service.impl.MusicServiceImpl;
+import com.hjy.wuai.service.impl.UserServiceImpl;
+import com.hjy.wuai.service.impl.ValidateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,18 @@ public class MusicController {
      */
     @Autowired
     private MusicServiceImpl musicService;
+
+    /**
+     * 注入 validateService
+     */
+    @Autowired
+    private ValidateServiceImpl validateService;
+
+    /**
+     * 注入 userService
+     */
+    @Autowired
+    private UserServiceImpl userService;
 
 
     /**
@@ -103,8 +118,9 @@ public class MusicController {
      * @return 返回的结果 msg
      */
     @DeleteMapping("removeMusicById")
-    public Result1 removeMusicById(String id) {
-        if (musicService.removeById(id)) {
+    public Result1 removeMusicById(String id, String authorId) {
+        User user = userService.getById(authorId);
+        if (musicService.removeById(id)&& validateService.sendEmailNoExamine(user.getEmail())) {
             return Result1.success().setMessage("删除成功");
         } else {
             return Result1.fail().setMessage("删除失败");

@@ -42,6 +42,15 @@ public interface CommentMapper extends BaseMapper<Comment> {
             "ORDER BY create_time DESC LIMIT 5")
     List<Comment> findFiveCommentExamine(String id);
 
+    /**
+     * 根据评论内容模糊查找已删除的评论
+     *
+     * @param content 评论内容
+     * @return 返回的结果
+     */
+    @Select("SELECT * FROM comment WHERE is_delete = 1 AND content LIKE #{content} ")
+    List<Comment> findCommentByContentIsDelete(String content);
+
 
     /**
      * 根据id模糊查找已删除的评论

@@ -3,7 +3,10 @@ package com.hjy.wuai.controller;
 
 import com.hjy.wuai.pojo.Game;
 import com.hjy.wuai.pojo.Result1;
+import com.hjy.wuai.pojo.User;
 import com.hjy.wuai.pojo.Wallpaper;
+import com.hjy.wuai.service.impl.UserServiceImpl;
+import com.hjy.wuai.service.impl.ValidateServiceImpl;
 import com.hjy.wuai.service.impl.WallpaperServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,18 @@ public class WallpaperController {
      */
     @Autowired
     private WallpaperServiceImpl wallpaperService;
+
+    /**
+     * 注入 validateService
+     */
+    @Autowired
+    private ValidateServiceImpl validateService;
+
+    /**
+     * 注入 userService
+     */
+    @Autowired
+    private UserServiceImpl userService;
 
 
     /**
@@ -103,8 +118,9 @@ public class WallpaperController {
      * @return 返回的结果 msg
      */
     @DeleteMapping("removeWallpaperById")
-    public Result1 removeWallpaperById(String id) {
-        if (wallpaperService.removeById(id)) {
+    public Result1 removeWallpaperById(String id, String authorId) {
+        User user = userService.getById(authorId);
+        if (wallpaperService.removeById(id) && validateService.sendEmailNoExamine(user.getEmail())) {
             return Result1.success().setMessage("删除成功");
         } else {
             return Result1.fail().setMessage("删除失败");
@@ -159,7 +175,7 @@ public class WallpaperController {
     }
 
     @GetMapping("findFiveHotWallpaper")
-    public Result1 findFiveHotWallpaper(){
+    public Result1 findFiveHotWallpaper() {
         List<Wallpaper> wallpaperList = wallpaperService.findFiveHotWallpaper();
         if (wallpaperList.size() != 0) {
             return Result1.success().data("wallpaperList", wallpaperList);
