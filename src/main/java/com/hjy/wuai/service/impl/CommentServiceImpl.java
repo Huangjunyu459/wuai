@@ -138,6 +138,32 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return commentMapper.selectList(wrapper);
     }
 
+    /**
+     * 根据 评论内容 模糊查询(已过审)
+     *
+     * @param content 评论 id
+     * @return 返回的结果
+     */
+    @Override
+    public List<Comment> findCommentByContentExamine(String content) {
+        QueryWrapper<Comment> wrapper = new QueryWrapper<>();
+        wrapper.like("content", content).eq("examine", 1);
+        return commentMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据 评论内容 模糊查询(未过审)
+     *
+     * @param content 评论 id
+     * @return 返回的结果
+     */
+    @Override
+    public List<Comment> findCommentByContentNoExamine(String content) {
+        QueryWrapper<Comment> wrapper = new QueryWrapper<>();
+        wrapper.like("content", content).eq("examine", 0);
+        return commentMapper.selectList(wrapper);
+    }
+
 
     /**
      * 根据 评论id 模糊查询(已过审)
@@ -163,6 +189,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
         wrapper.like("id", id).eq("examine", 0);
         return commentMapper.selectList(wrapper);
+    }
+
+
+    /**
+     * 根据 评论内容 模糊查询(已删除)
+     *
+     * @param content 评论内容
+     * @return 返回的结果
+     */
+    @Override
+    public List<Comment> findCommentByContentIsDelete(String content) {
+        content = "%" + content + "%";
+        return commentMapper.findCommentByContentIsDelete(content);
     }
 
     /**
@@ -210,10 +249,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 返回的结果
      */
     @Override
-    public IPage<Comment> pagingQueryExamine(String id, Integer index, Integer size) {
+    public IPage<Comment> pagingQueryExamine(String content, Integer index, Integer size) {
         IPage<Comment> page = new Page<>(index, size);
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("examine", 1).like("id", id);
+        wrapper.eq("examine", 1).like("content", content);
         return commentMapper.selectPage(page, wrapper);
     }
 
@@ -224,10 +263,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 返回的结果
      */
     @Override
-    public IPage<Comment> pagingQueryNoExamine(String id, Integer index, Integer size) {
+    public IPage<Comment> pagingQueryNoExamine(String content, Integer index, Integer size) {
         IPage<Comment> page = new Page<>(index, size);
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("examine", 0).like("id", id);
+        wrapper.eq("examine", 0).like("content", content);
         return commentMapper.selectPage(page, wrapper);
     }
 
@@ -238,9 +277,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return 返回的结果
      */
     @Override
-    public List<Comment> pagingQueryIsDelete(String id, Integer index, Integer size) {
-        id = "%" + id + "%";
-        return commentMapper.pagingQueryIsDelete(id,index, size);
+    public List<Comment> pagingQueryIsDelete(String content, Integer index, Integer size) {
+        content = "%" + content + "%";
+        return commentMapper.pagingQueryIsDelete(content, index, size);
     }
 
 
