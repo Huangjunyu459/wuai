@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/video")
-@CrossOrigin
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class VideoController {
 
     /**

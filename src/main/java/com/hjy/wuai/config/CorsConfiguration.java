@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * allowedMethods: 允许请求的方法
  */
 @Configuration
+@Deprecated
 public class CorsConfiguration implements WebMvcConfigurer {
 
     @Override

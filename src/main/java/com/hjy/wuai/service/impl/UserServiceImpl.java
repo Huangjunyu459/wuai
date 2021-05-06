@@ -134,6 +134,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setScore(entity.getScore());
         user.setEmail(entity.getEmail());
         user.setSign(entity.getSign());
+        user.setAvatar(entity.getAvatar());
 
         user.setPassword(list.get(1));
         user.setPasswordSalt(list.get(0));

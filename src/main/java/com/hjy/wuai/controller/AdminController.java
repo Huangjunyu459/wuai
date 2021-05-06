@@ -23,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class AdminController {
 
     /**

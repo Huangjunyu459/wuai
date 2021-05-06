@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/music")
-@CrossOrigin
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class MusicController {
 
     /**

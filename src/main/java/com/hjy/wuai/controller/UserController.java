@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ import java.util.List;
 @EnableCaching
 @EnableAsync(proxyTargetClass = true)
 @Slf4j
-@CrossOrigin
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class UserController {
 
     /**
@@ -290,7 +289,6 @@ public class UserController {
      */
     @PostMapping("recharge")
     public Result1 recharge(@RequestBody ActiveCode activeCode) {
-        System.out.println(activeCode);
         if (activeCodeService.recharge(activeCode)) {
             return Result1.success().setMessage("充值成功");
         } else {

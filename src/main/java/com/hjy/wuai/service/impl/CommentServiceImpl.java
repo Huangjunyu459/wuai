@@ -46,7 +46,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setUserId(entity.getUserId());
         comment.setUserName(entity.getUserName());
         comment.setContent(entity.getContent());
-        return commentMapper.insert(entity) == 1;
+        return commentMapper.insert(comment) == 1;
     }
 
     /**

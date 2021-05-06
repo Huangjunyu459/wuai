@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/wallpaper")
-@CrossOrigin
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class WallpaperController {
 
     /**

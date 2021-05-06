@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/comment")
-@CrossOrigin
+@CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
 public class CommentController {
 
     /**
