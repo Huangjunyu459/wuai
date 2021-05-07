@@ -33,7 +33,7 @@ public class OssController {
      * 壁纸上传到阿里oss服务器
      */
     @PostMapping("uploadPic")
-    public Result<String> uploadPic(MultipartFile file) {
+    public Result<String> uploadPic(@RequestBody MultipartFile file) {
         String picUrl = ossService.uploadPic(file);
         if (StringUtils.isEmpty(picUrl)) {
             return Result.failed("上传失败");
@@ -47,7 +47,7 @@ public class OssController {
      * 文章的封面上传到阿里oss服务器
      */
     @PostMapping("uploadArticle")
-    public Result<String> uploadArticle(MultipartFile file) {
+    public Result<String> uploadArticle(@RequestBody MultipartFile file) {
         String articleUrl = ossService.uploadArticle(file);
         if (StringUtils.isEmpty(articleUrl)) {
             return Result.failed("上传失败");
@@ -59,7 +59,7 @@ public class OssController {
      * 游戏的封面上传到阿里oss服务器
      */
     @PostMapping("uploadGameCover")
-    public Result<String> uploadGameCover(MultipartFile file) {
+    public Result<String> uploadGameCover(@RequestBody MultipartFile file) {
         String gameCoverUrl = ossService.uploadGameCover(file);
         if (StringUtils.isEmpty(gameCoverUrl)) {
             return Result.failed("上传失败");
@@ -72,7 +72,7 @@ public class OssController {
      * 音乐封面上传到阿里oss服务器
      */
     @PostMapping("uploadMusicCover")
-    public Result<String> uploadMusicCover(MultipartFile file) {
+    public Result<String> uploadMusicCover(@RequestBody MultipartFile file) {
         String musicCoverUrl = ossService.uploadMusicCover(file);
         if (StringUtils.isEmpty(musicCoverUrl)) {
             return Result.failed("上传失败");
@@ -85,7 +85,7 @@ public class OssController {
      * 音乐上传到阿里oss服务器
      */
     @PostMapping("uploadMusic")
-    public Result<String> uploadMusic(MultipartFile files) {
+        public Result<String> uploadMusic(@RequestBody MultipartFile files) {
         String musicUrl = ossService.uploadMusic(files);
         if (StringUtils.isEmpty(musicUrl)) {
             return Result.failed("上传失败");
@@ -98,7 +98,7 @@ public class OssController {
      * 视频上传到阿里oss服务器
      */
     @PostMapping("uploadVideo")
-    public Result<String> uploadVideo(MultipartFile file) {
+    public Result<String> uploadVideo(@RequestBody MultipartFile file) {
         String videoUrl = ossService.uploadVideo(file);
         if (StringUtils.isEmpty(videoUrl)) {
             return Result.failed("上传失败");

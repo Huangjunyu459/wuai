@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -166,7 +167,7 @@ public class OssServiceImpl implements OssService {
      * @return oss服务器图片访问url
      */
     @Override
-    public String uploadMusic(MultipartFile file) {
+    public String uploadMusic(@RequestBody MultipartFile file) {
         String url = "";
         try {
             InputStream inputStream = file.getInputStream();
