@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/timedtask")
 @CrossOrigin(originPatterns = "*",allowCredentials = "true",allowedHeaders = "*",methods = {})
+@Deprecated
 public class TimedTaskController {
 
     /**

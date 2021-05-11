@@ -49,6 +49,9 @@ public class UserController {
     private ActiveCodeServiceImpl activeCodeService;
 
 
+    /**
+     * 注入 validateService
+     */
     @Autowired
     private ValidateServiceImpl validateService;
 

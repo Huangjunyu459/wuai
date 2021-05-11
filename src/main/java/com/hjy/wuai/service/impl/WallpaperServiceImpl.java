@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -239,7 +240,7 @@ public class WallpaperServiceImpl extends ServiceImpl<WallpaperMapper, Wallpaper
             QueryWrapper<Wallpaper> wrapper = new QueryWrapper<>();
             wrapper.orderByDesc("love").eq("examine", 1).last("limit 5");
             List<Wallpaper> wallpaperList = wallpaperMapper.selectList(wrapper);
-            redisTemplate.opsForValue().set("wallpaperList", wallpaperList);
+            redisTemplate.opsForValue().set("wallpaperList", wallpaperList,30, TimeUnit.MINUTES);
             return wallpaperList;
         }
     }
